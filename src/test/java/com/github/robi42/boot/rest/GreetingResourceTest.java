@@ -44,6 +44,6 @@ public class GreetingResourceTest extends JerseyTest {
         assertThat(greetings).isNotEmpty();
         assertThat(greetings.size()).isEqualTo(1);
         assertThat(greetings.get(0).getBody())
-                .startsWith(String.format("Hello %s! The time is ", TEST_NAME));
+                .startsWith(String.format("Hello, %s! The time is ", TEST_NAME));
     }
 }

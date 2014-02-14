@@ -18,14 +18,14 @@ public class GreetingRepository implements MessageRepository {
     private final String nameToGreet;
 
     @Inject
-    public GreetingRepository(final @Value("${name:World}") String nameToGreet) {
+    public GreetingRepository(final @Value("${name:world}") String nameToGreet) {
         this.nameToGreet = nameToGreet;
     }
 
     @Override
     public List<Message> findAll() {
         final Message greeting = Message.builder()
-                .body(String.format("Hello %s! The time is %s",
+                .body(String.format("Hello, %s! The time is %s",
                         nameToGreet, LocalDateTime.now().format(ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))))
                 .build();
         final List<Message> greetings = ImmutableList.of(greeting);
