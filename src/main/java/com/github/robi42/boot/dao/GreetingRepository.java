@@ -28,7 +28,7 @@ public class GreetingRepository implements MessageRepository {
                 .body(String.format("Hello %s! The time is %s",
                         nameToGreet, LocalDateTime.now().format(ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))))
                 .build();
-        final ImmutableList<Message> greetings = ImmutableList.of(greeting);
+        final List<Message> greetings = ImmutableList.of(greeting);
 
         if (log.isDebugEnabled()) {
             greetings.forEach(g -> log.debug("Yippie! {}", g.getBody()));
