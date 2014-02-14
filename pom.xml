@@ -41,11 +41,11 @@
         <spring-hk2-bridge.version>2.2.0</spring-hk2-bridge.version>
         <jersey.version>2.5.1</jersey.version>
         <jackson.version>2.3.1</jackson.version>
-        <jackson-datatype-jsr310.version>2.3.0-rc1</jackson-datatype-jsr310.version>
 
         <!-- Utilities -->
         <lombok.version>1.12.4</lombok.version>
         <guava.version>16.0.1</guava.version>
+        <joda-time.version>2.3</joda-time.version>
         <groovy.version>2.2.1</groovy.version>
 
         <!-- Testing -->
@@ -163,7 +163,13 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${jackson-datatype-jsr310.version}</version>
+            <version>${jackson.version}</version>
+        </dependency>
+        <!-- Joda Time API Data Types JSON Support -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-joda</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!-- Utilities -->
@@ -177,6 +183,11 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>

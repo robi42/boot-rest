@@ -42,7 +42,7 @@ public class GreetingResourceTest extends JerseyTest {
                 .get(new GenericType<List<Message>>() { });
 
         assertThat(greetings).isNotEmpty();
-        assertThat(greetings.size()).isEqualTo(1);
+        assertThat(greetings.size()).isEqualTo(2);
         assertThat(greetings.get(0).getBody())
                 .startsWith(String.format("Hello, %s! The time is ", TEST_NAME));
     }
