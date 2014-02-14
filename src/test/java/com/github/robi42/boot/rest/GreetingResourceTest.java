@@ -4,6 +4,7 @@ import com.github.robi42.boot.dao.GreetingRepository;
 import com.github.robi42.boot.domain.Message;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 import javax.ws.rs.core.Application;
@@ -43,7 +44,11 @@ public class GreetingResourceTest extends JerseyTest {
 
         assertThat(greetings).isNotEmpty();
         assertThat(greetings.size()).isEqualTo(2);
-        assertThat(greetings.get(0).getBody())
-                .startsWith(String.format("Hello, %s! The time is ", TEST_NAME));
+
+        final Message greeting = greetings.get(0);
+        final String lastModifiedAtFormatted = new DateTime(greeting.getLastModifiedAt())
+                .toString("yyyy-MM-dd HH:mm:ss.SSS");
+        assertThat(greeting.getBody())
+                .isEqualTo(String.format("Hello, %s! The time is %s", TEST_NAME, lastModifiedAtFormatted));
     }
 }
