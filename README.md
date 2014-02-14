@@ -9,7 +9,7 @@ Then, e.g.:
 
     export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 
-To build & run via command line:
+To build & run via command line shell:
 
     mvn clean package && java -server -jar target/boot-rest.jar
 
@@ -19,4 +19,4 @@ An endpoint to play with:
 
     curl localhost:8888/api/greetings
 
-Note: this thing is ready to be deployed on Heroku.
+Note: this thing is ready to be deployed on Heroku...
