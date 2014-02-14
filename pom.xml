@@ -45,7 +45,7 @@
 
         <!-- Utilities -->
         <lombok.version>1.12.4</lombok.version>
-        <guava.version>15.0</guava.version>
+        <guava.version>16.0.1</guava.version>
         <groovy.version>2.2.1</groovy.version>
 
         <!-- Testing -->
