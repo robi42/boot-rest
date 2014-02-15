@@ -23,8 +23,7 @@ ext {
 
 jar {
     manifest {
-        attributes 'Title': 'boot-rest', 'Version': '0.1.0',
-                'Main-Class': 'com.github.robi42.boot.ApplicationInitializer'
+        attributes 'Main-Class': 'com.github.robi42.boot.ApplicationInitializer'
     }
     archiveName = "${baseName}.jar"
 }
