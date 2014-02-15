@@ -11,7 +11,6 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
-//apply plugin: 'war'
 
 def javaVersion = 1.8
 ext {
@@ -25,6 +24,8 @@ jar {
     archiveName = "${baseName}.jar"
 }
 
+// Enables building WAR
+//apply plugin: 'war'
 //war {
 //    archiveName = "${baseName}.war"
 //}
@@ -81,7 +82,7 @@ dependencies {
     compile group: 'org.projectlombok',   name: 'lombok',     version: lombokVersion
     compile group: 'com.google.guava',    name: 'guava',      version: guavaVersion
     compile group: 'joda-time',           name: 'joda-time',  version: jodaTimeVersion
-    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
+    runtime group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
     runtime group: 'org.yaml',            name: 'snakeyaml',  version: yamlVersion
 
     // Testing
@@ -99,4 +100,5 @@ task wrapper(type: Wrapper) {
     gradleVersion = '1.11'
 }
 
+// Used by Heroku
 task stage(dependsOn: 'build')
