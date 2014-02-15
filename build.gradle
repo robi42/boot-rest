@@ -17,12 +17,12 @@ def javaVersion = 1.8
 ext {
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
-    baseName = 'boot-rest'
-    version =  '0.1.0'
 }
 
 jar {
+    baseName = 'boot-rest'
     archiveName = "${baseName}.jar"
+    version =  '0.1.0'
 }
 
 //war {
