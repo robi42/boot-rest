@@ -11,6 +11,7 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.fest.assertions.Assertions.assertThat;
@@ -27,7 +28,7 @@ public class GreetingResourceTest extends JerseyTest {
     }
 
     @Test
-    public void shouldRespondSuccessfully() {
+    public void shouldRespondSuccessfully() throws Exception {
         final Response response = target(GREETING_RESOURCE_PATH)
                 .request(APPLICATION_JSON_TYPE)
                 .get(Response.class);
@@ -37,7 +38,7 @@ public class GreetingResourceTest extends JerseyTest {
     }
 
     @Test
-    public void shouldRespondWithGreetings() {
+    public void shouldRespondWithGreetings() throws Exception {
         final List<Message> greetings = target(GREETING_RESOURCE_PATH)
                 .request(APPLICATION_JSON_TYPE)
                 .get(new GenericType<List<Message>>() { });
@@ -49,5 +50,20 @@ public class GreetingResourceTest extends JerseyTest {
                 .toString("yyyy-MM-dd HH:mm:ss.SSS");
         assertThat(greeting.getBody())
                 .isEqualTo(String.format("Hello, %s! The time is: %s", TEST_NAME, lastModifiedAtFormatted));
+    }
+
+    @Test
+    public void shouldRespondWithGreetingById() throws Exception {
+        final List<Message> greetings = target(GREETING_RESOURCE_PATH)
+                .request(APPLICATION_JSON_TYPE)
+                .get(new GenericType<List<Message>>() { });
+        final UUID greetingId = greetings.get(0).getId();
+        final Message greeting = target(String.format("%s/%s", GREETING_RESOURCE_PATH, greetingId))
+                .request(APPLICATION_JSON_TYPE)
+                .get(Message.class);
+
+        assertThat(greeting).isNotNull();
+        assertThat(greeting.getId()).isEqualTo(greetingId);
+        assertThat(greeting.getBody()).isNotEmpty();
     }
 }

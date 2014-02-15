@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -29,6 +30,13 @@ public class GreetingRepository implements MessageRepository {
             greetings.forEach(greeting -> log.debug("Yippie! {}", greeting.getBody()));
         }
         return greetings;
+    }
+
+    @Override
+    public Optional<Message> findById(final UUID id) {
+        return greetings.parallelStream()
+                .filter(greeting -> greeting.getId().equals(id))
+                .findAny();
     }
 
     private Message greeting() {
