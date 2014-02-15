@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.joda.time.DateTimeZone.UTC;
+
 @Slf4j
 @Repository
 public class GreetingRepository implements MessageRepository {
@@ -40,7 +42,7 @@ public class GreetingRepository implements MessageRepository {
     }
 
     private Message greeting() {
-        final DateTime now = DateTime.now();
+        final DateTime now = DateTime.now(UTC);
         return Message.builder()
                 .id(UUID.randomUUID())
                 .lastModifiedAt(now.toDate())
