@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+import static javax.ws.rs.core.Response.Status.OK;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -44,6 +45,7 @@ public class GreetingResourceTest extends JerseyTest {
 
         assertThat(response.getStatusInfo().getFamily())
                 .isEqualTo(Response.Status.Family.SUCCESSFUL);
+        assertThat(response.getStatus()).isEqualTo(OK.getStatusCode());
     }
 
     @Test
