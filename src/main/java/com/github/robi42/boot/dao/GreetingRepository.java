@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.util.UUID.randomUUID;
 import static org.joda.time.DateTimeZone.UTC;
 
 @Slf4j
@@ -44,7 +45,7 @@ public class GreetingRepository implements MessageRepository {
     private Message greeting() {
         final DateTime now = DateTime.now(UTC);
         return Message.builder()
-                .id(UUID.randomUUID())
+                .id(randomUUID())
                 .lastModifiedAt(now.toDate())
                 .body(String.format("Hello, %s! The time is: %s",
                         nameToGreet, now.toString("yyyy-MM-dd HH:mm:ss.SSS")))
