@@ -41,7 +41,6 @@ public class GreetingResourceTest extends JerseyTest {
         final List<Message> greetings = target(GREETING_RESOURCE_PATH)
                 .request(APPLICATION_JSON_TYPE)
                 .get(new GenericType<List<Message>>() { });
-
         assertThat(greetings).isNotEmpty();
         assertThat(greetings.size()).isEqualTo(2);
 
@@ -49,6 +48,6 @@ public class GreetingResourceTest extends JerseyTest {
         final String lastModifiedAtFormatted = new DateTime(greeting.getLastModifiedAt())
                 .toString("yyyy-MM-dd HH:mm:ss.SSS");
         assertThat(greeting.getBody())
-                .isEqualTo(String.format("Hello, %s! The time is %s", TEST_NAME, lastModifiedAtFormatted));
+                .isEqualTo(String.format("Hello, %s! The time is: %s", TEST_NAME, lastModifiedAtFormatted));
     }
 }

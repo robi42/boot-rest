@@ -36,7 +36,7 @@ public class GreetingRepository implements MessageRepository {
         return Message.builder()
                 .id(UUID.randomUUID())
                 .lastModifiedAt(now.toDate())
-                .body(String.format("Hello, %s! The time is %s",
+                .body(String.format("Hello, %s! The time is: %s",
                         nameToGreet, now.toString("yyyy-MM-dd HH:mm:ss.SSS")))
                 .build();
     }
