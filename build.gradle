@@ -1,0 +1,100 @@
+buildscript {
+    repositories {
+        maven { url 'http://repo.spring.io/libs-snapshot' }
+        mavenLocal()
+    }
+    dependencies {
+        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '1.0.0.RC3'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+//apply plugin: 'war'
+
+def javaVersion = 1.8
+ext {
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    baseName = 'boot-rest'
+    version =  '0.1.0'
+}
+
+jar {
+    archiveName = "${baseName}.jar"
+}
+
+//war {
+//    archiveName = "${baseName}.war"
+//}
+
+repositories {
+    mavenCentral()
+    maven { url 'http://repo.spring.io/libs-snapshot' }
+}
+
+// Versions
+// ========
+// Core
+def springBootVersion         = '1.0.0.RC3'
+def hibernateValidatorVersion = '5.0.2.Final'
+def servletApiVersion         = '3.1.0'
+def springHk2BridgeVersion    = '2.2.0'
+def jerseyVersion             = '2.5.1'
+def jacksonVersion            = '2.3.1'
+
+// Utilities
+def lombokVersion   = '1.12.4'
+def guavaVersion    = '16.0.1'
+def jodaTimeVersion = '2.3'
+def groovyVersion   = '2.2.1'
+def yamlVersion     = '1.13'
+
+// Testing
+def junitVersion      = '4.11'
+def festAssertVersion = '1.4'
+def mockitoVersion    = '1.9.5'
+def objenesisVersion  = '1.4'
+
+dependencies {
+    // Core
+    compile(group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion) {
+        exclude module: 'spring-boot-starter-tomcat'
+    }
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jetty',    version: springBootVersion
+    compile(group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion) {
+        exclude module: 'hsqldb'
+    }
+    compile group: 'org.hibernate',             name: 'hibernate-validator', version: hibernateValidatorVersion
+    compile group: 'javax.servlet',             name: 'javax.servlet-api',   version: servletApiVersion
+    compile group: 'org.glassfish.hk2',         name: 'spring-bridge',       version: springHk2BridgeVersion
+    compile(group: 'org.glassfish.jersey.core', name: 'jersey-common',       version: jerseyVersion) {
+        exclude module: 'guava'
+    }
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet',    version: jerseyVersion
+    compile group: 'com.fasterxml.jackson.jaxrs',     name: 'jackson-jaxrs-json-provider', version: jacksonVersion
+//    compile group: 'com.fasterxml.jackson.datatype',  name: 'jackson-datatype-jsr310',     version: jacksonVersion
+//    compile group: 'com.fasterxml.jackson.datatype',  name: 'jackson-datatype-joda',       version: jacksonVersion
+
+    // Utilities
+    compile group: 'org.projectlombok',   name: 'lombok',     version: lombokVersion
+    compile group: 'com.google.guava',    name: 'guava',      version: guavaVersion
+    compile group: 'joda-time',           name: 'joda-time',  version: jodaTimeVersion
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
+    runtime group: 'org.yaml',            name: 'snakeyaml',  version: yamlVersion
+
+    // Testing
+    testCompile group: 'junit',           name: 'junit',        version: junitVersion
+    testCompile group: 'org.easytesting', name: 'fest-assert',  version: festAssertVersion
+    testCompile(group: 'org.mockito',     name: 'mockito-core', version: mockitoVersion) {
+        exclude module: 'objenesis'
+    }
+    testCompile group: 'org.objenesis',   name: 'objenesis', version: objenesisVersion
+    testCompile group: 'org.glassfish.jersey.test-framework.providers',
+            name: 'jersey-test-framework-provider-grizzly2', version: jerseyVersion
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}

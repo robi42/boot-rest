@@ -11,12 +11,12 @@ Then, e.g.:
 
 To build & run via command line shell:
 
-    mvn clean package && java -server -jar target/boot-rest.jar
+    ./gradlew clean build && java -server -jar build/libs/boot-rest.jar
 
-Or simply run `ApplicationInitializer.main()` via IDEA (you may have to configure Java 8 there as well, BTW).
+Or simply run `ApplicationInitializer.main()` via IDEA (min. 13.1 EAP, BTW).
 
 An endpoint to play with:
 
     curl localhost:8888/api/greetings
 
-Note: this thing is ready to be deployed on Heroku (and verified to run packaged as WAR in Tomcat 8, too)...
+Note: this thing is ready to be deployed on Heroku...

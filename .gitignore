@@ -1,6 +1,13 @@
 .DS_Store
-
-target/
-.idea/
-*.iml
+*~
+*.swp
 *.log
+
+*.iml
+*.iws
+*.ipr
+.idea/
+/out
+
+.gradle/
+/build
