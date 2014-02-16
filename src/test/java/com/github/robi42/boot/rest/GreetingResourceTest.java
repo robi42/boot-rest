@@ -52,7 +52,7 @@ public class GreetingResourceTest extends JerseyTest {
     public void shouldRespondWithGreetings() throws Exception {
         final List<Message> greetings = target(GREETING_RESOURCE_PATH)
                 .request(APPLICATION_JSON_TYPE)
-                .get(new GenericType<List<Message>>() { });
+                .get(new GenericType<List<Message>>() {});
 
         assertThat(greetings).isNotEmpty();
         assertThat(greetings.size()).isEqualTo(1);
