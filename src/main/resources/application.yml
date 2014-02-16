@@ -1,3 +1,7 @@
+spring:
+  application:
+    name: boot-rest
+
 server:
   port: 8888
 
