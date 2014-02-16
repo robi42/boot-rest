@@ -8,6 +8,5 @@ import java.util.UUID;
 
 public interface MessageRepository {
     List<Message> findAll();
-
     Optional<Message> findById(UUID id);
 }
