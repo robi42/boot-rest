@@ -48,7 +48,6 @@ def jacksonVersion            = '2.3.1'
 // Utilities
 def lombokVersion   = '1.12.4'
 def guavaVersion    = '16.0.1'
-def jodaTimeVersion = '2.3'
 def groovyVersion   = '2.2.1'
 def yamlVersion     = '1.13'
 
@@ -75,13 +74,11 @@ dependencies {
     }
     compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet',    version: jerseyVersion
     compile group: 'com.fasterxml.jackson.jaxrs',     name: 'jackson-jaxrs-json-provider', version: jacksonVersion
-//    compile group: 'com.fasterxml.jackson.datatype',  name: 'jackson-datatype-jsr310',     version: jacksonVersion
-//    compile group: 'com.fasterxml.jackson.datatype',  name: 'jackson-datatype-joda',       version: jacksonVersion
+    compile group: 'com.fasterxml.jackson.datatype',  name: 'jackson-datatype-jsr310',     version: jacksonVersion
 
     // Utilities
     compile group: 'org.projectlombok',   name: 'lombok',     version: lombokVersion
     compile group: 'com.google.guava',    name: 'guava',      version: guavaVersion
-    compile group: 'joda-time',           name: 'joda-time',  version: jodaTimeVersion
     runtime group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
     runtime group: 'org.yaml',            name: 'snakeyaml',  version: yamlVersion
 

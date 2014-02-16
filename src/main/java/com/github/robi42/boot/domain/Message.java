@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Builder;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -14,6 +14,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Message {
     private UUID id;
-    private Date lastModifiedAt;
+    private LocalDateTime lastModifiedAt;
     private String body;
 }
