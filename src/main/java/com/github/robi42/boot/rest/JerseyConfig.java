@@ -2,7 +2,6 @@ package com.github.robi42.boot.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -41,7 +40,7 @@ public class JerseyConfig extends ResourceConfig {
         // Register Jackson JSON provider (incl. JDK 8 `java.time.*` a.k.a. JSR-310 support)
         final JacksonJsonProvider jsonProvider = new JacksonJsonProvider();
         final ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JSR310Module());
+        objectMapper.findAndRegisterModules();
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false); // -> ISO string serialization
         jsonProvider.setMapper(objectMapper);
         register(jsonProvider);
