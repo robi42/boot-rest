@@ -40,7 +40,7 @@ public class JerseyConfig extends ResourceConfig {
         // Register Jackson JSON provider (incl. JDK 8 `java.time.*` a.k.a. JSR-310 support)
         final JacksonJsonProvider jsonProvider = new JacksonJsonProvider();
         final ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.findAndRegisterModules();
+        objectMapper.findAndRegisterModules(); // Auto-detect `JSR310Module`...
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false); // -> ISO string serialization
         jsonProvider.setMapper(objectMapper);
         register(jsonProvider);
