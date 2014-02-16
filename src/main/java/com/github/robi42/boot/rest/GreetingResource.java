@@ -31,7 +31,7 @@ public class GreetingResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Message> greetings() {
-        log.debug("Hi from `GET /greetings`");
+        log.debug("Hi from `GET /greetings`; got {} greetings", repository.findAll().size());
         return repository.findAll();
     }
 
