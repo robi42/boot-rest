@@ -20,12 +20,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/views/**").permitAll()
-                .antMatchers("/scripts/**").permitAll()
-                .antMatchers("/styles/**").permitAll()
-                .antMatchers("/images/**").permitAll()
+                // App paths
+                .antMatchers("/", "/views/**", "/scripts/**", "/styles/**", "/images/**").permitAll()
+                // API endpoints
                 .antMatchers("/api/**").permitAll()
+                // Admin endpoints
                 .antMatchers("/admin/**").hasRole(ROLE_ADMIN)
                 .anyRequest().authenticated();
         http.httpBasic().realmName("Admin");
