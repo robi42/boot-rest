@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/views/**", "/scripts/**", "/styles/**", "/images/**").permitAll()
                 // API endpoints
                 .antMatchers("/api/**").permitAll()
-                // Admin endpoints
+                // Admin endpoints (protected)
                 .antMatchers("/admin/**").hasRole(ROLE_ADMIN)
                 .anyRequest().authenticated();
         http.httpBasic().realmName("Admin");
