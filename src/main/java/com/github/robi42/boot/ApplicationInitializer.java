@@ -44,6 +44,7 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
 
     @Bean
     public ElasticsearchOperations elasticsearchTemplate() {
+        // Note: in a real prod env one would rather connect to a dedicated remote cluster instead of embedding locally
         final Node node = nodeBuilder()
                 .settings(settingsBuilder().loadFromClasspath("elasticsearch.yml"))
                 .clusterName(elasticsearchClusterName)
