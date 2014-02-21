@@ -11,8 +11,6 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
@@ -21,25 +19,26 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class GreetingResourceTest extends JerseyTest {
-    private static final String GREETING_RESOURCE_PATH = "/greetings";
-    private static final UUID GREETING_ID = randomUUID();
+public class MessageResourceTest extends JerseyTest {
+    private static final String MESSAGE_RESOURCE_PATH = "/messages";
+    private static final String MESSAGE_ID = randomUUID().toString();
 
     @Override
     protected Application configure() {
         final MessageRepository repositoryMock = mock(MessageRepository.class);
-        final Message greetingMock = Message.builder().id(GREETING_ID).build();
-        when(repositoryMock.findAll()).thenReturn(ImmutableList.of(greetingMock));
-        when(repositoryMock.findById(GREETING_ID)).thenReturn(Optional.of(greetingMock));
+        final Message messageMock = Message.builder().id(MESSAGE_ID).build();
+        when(repositoryMock.findAll()).thenReturn(ImmutableList.of(messageMock));
+        when(repositoryMock.findOne(MESSAGE_ID)).thenReturn(messageMock);
 
         final ResourceConfig resourceConfig = new ResourceConfig();
-        resourceConfig.register(new GreetingResource(repositoryMock));
+        // TODO: mock/inject bean validator or wire up Spring app context
+        resourceConfig.register(new MessageResource(repositoryMock, null));
         return resourceConfig;
     }
 
     @Test
     public void shouldRespondSuccessfully() throws Exception {
-        final Response response = target(GREETING_RESOURCE_PATH)
+        final Response response = target(MESSAGE_RESOURCE_PATH)
                 .request(APPLICATION_JSON_TYPE)
                 .get(Response.class);
 
@@ -49,22 +48,22 @@ public class GreetingResourceTest extends JerseyTest {
     }
 
     @Test
-    public void shouldRespondWithGreetings() throws Exception {
-        final List<Message> greetings = target(GREETING_RESOURCE_PATH)
+    public void shouldRespondWithMessages() throws Exception {
+        final List<Message> messages = target(MESSAGE_RESOURCE_PATH)
                 .request(APPLICATION_JSON_TYPE)
                 .get(new GenericType<List<Message>>() {});
 
-        assertThat(greetings).isNotEmpty();
-        assertThat(greetings.size()).isEqualTo(1);
+        assertThat(messages).isNotEmpty();
+        assertThat(messages.size()).isEqualTo(1);
     }
 
     @Test
-    public void shouldRespondWithGreetingById() throws Exception {
-        final Message greeting = target(String.format("%s/%s", GREETING_RESOURCE_PATH, GREETING_ID))
+    public void shouldRespondWithMessageById() throws Exception {
+        final Message message = target(String.format("%s/%s", MESSAGE_RESOURCE_PATH, MESSAGE_ID))
                 .request(APPLICATION_JSON_TYPE)
                 .get(Message.class);
 
-        assertThat(greeting).isNotNull();
-        assertThat(greeting.getId()).isEqualTo(GREETING_ID);
+        assertThat(message).isNotNull();
+        assertThat(message.getId()).isEqualTo(MESSAGE_ID);
     }
 }

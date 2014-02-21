@@ -1,8 +1,4 @@
-spring:
-  application:
-    name: boot-rest
+spring.application.name: boot-rest
+server.port: 8888
 
-server:
-  port: 8888
-
-name: Foobert
+elasticsearch.clusterName: boot-rest-cluster

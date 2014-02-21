@@ -1,0 +1,2 @@
+node.name:    boot-rest-node
+http.enabled: false

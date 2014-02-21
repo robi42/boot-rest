@@ -39,6 +39,7 @@ repositories {
 // ========
 // Core
 def springBootVersion         = '1.0.0.RC3'
+def springDataEsVersion       = '1.0.0.BUILD-SNAPSHOT'
 def hibernateValidatorVersion = '5.0.2.Final'
 def servletApiVersion         = '3.1.0'
 def springHk2BridgeVersion    = '2.2.0'
@@ -66,10 +67,11 @@ dependencies {
     compile(group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion) {
         exclude module: 'hsqldb'
     }
-    compile group: 'org.hibernate',             name: 'hibernate-validator', version: hibernateValidatorVersion
-    compile group: 'javax.servlet',             name: 'javax.servlet-api',   version: servletApiVersion
-    compile group: 'org.glassfish.hk2',         name: 'spring-bridge',       version: springHk2BridgeVersion
-    compile(group: 'org.glassfish.jersey.core', name: 'jersey-common',       version: jerseyVersion) {
+    compile group: 'org.springframework.data',  name: 'spring-data-elasticsearch', version: springDataEsVersion
+    compile group: 'org.hibernate',             name: 'hibernate-validator',       version: hibernateValidatorVersion
+    compile group: 'javax.servlet',             name: 'javax.servlet-api',         version: servletApiVersion
+    compile group: 'org.glassfish.hk2',         name: 'spring-bridge',             version: springHk2BridgeVersion
+    compile(group: 'org.glassfish.jersey.core', name: 'jersey-common',             version: jerseyVersion) {
         exclude module: 'guava'
     }
     compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet',    version: jerseyVersion
