@@ -46,7 +46,8 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
         final Node node = nodeBuilder()
                 .settings(settingsBuilder().loadFromClasspath("elasticsearch.yml"))
                 .clusterName(elasticsearchClusterName)
-                .data(true).local(true).node();
+                .data(true).local(true)
+                .node();
         return new ElasticsearchTemplate(node.client(), new ElasticsearchEntityMapper());
     }
 
