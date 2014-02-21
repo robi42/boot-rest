@@ -26,26 +26,35 @@ public class JerseyConfig extends ResourceConfig {
         packages(true, getClass().getPackage().getName());
 
         // Set up Spring (**yay**) <-> HK2 (**nay**) DI bridge
-        SpringBridge.getSpringBridge().initializeSpringBridge(serviceLocator);
-        final SpringIntoHK2Bridge springBridge = serviceLocator.getService(SpringIntoHK2Bridge.class);
-        final ServletContext servletContext = serviceLocator.getService(ServletContext.class);
-        final WebApplicationContext springWebAppContext = WebApplicationContextUtils
-                .getWebApplicationContext(servletContext);
-        springBridge.bridgeSpringBeanFactory(springWebAppContext.getAutowireCapableBeanFactory());
+        setUpSpringBridge(serviceLocator);
 
         // Configure Jersey server
         property(BV_SEND_ERROR_IN_RESPONSE, true);
         property(MOXY_JSON_FEATURE_DISABLE, true);
 
         // Register Jackson JSON provider (incl. JDK 8 `java.time.*` a.k.a. JSR-310 support)
+        register(setUpJacksonJsonProvider());
+
+        // Register requests within Spring context
+        register(RequestContextFilter.class);
+    }
+
+    private void setUpSpringBridge(final ServiceLocator serviceLocator) {
+        SpringBridge.getSpringBridge().initializeSpringBridge(serviceLocator);
+
+        final SpringIntoHK2Bridge springBridge = serviceLocator.getService(SpringIntoHK2Bridge.class);
+        final ServletContext servletContext = serviceLocator.getService(ServletContext.class);
+        final WebApplicationContext springWebAppContext = WebApplicationContextUtils
+                .getWebApplicationContext(servletContext);
+        springBridge.bridgeSpringBeanFactory(springWebAppContext.getAutowireCapableBeanFactory());
+    }
+
+    private JacksonJsonProvider setUpJacksonJsonProvider() {
         final JacksonJsonProvider jsonProvider = new JacksonJsonProvider();
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules(); // Auto-detect `JSR310Module`...
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false); // -> ISO string serialization
         jsonProvider.setMapper(objectMapper);
-        register(jsonProvider);
-
-        // Register requests within Spring context
-        register(RequestContextFilter.class);
+        return jsonProvider;
     }
 }
