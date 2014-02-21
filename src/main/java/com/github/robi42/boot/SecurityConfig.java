@@ -20,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                // App paths
+                // SPA paths
                 .antMatchers("/", "/views/**", "/scripts/**", "/styles/**", "/images/**").permitAll()
                 // API endpoints
                 .antMatchers("/api/**").permitAll()
