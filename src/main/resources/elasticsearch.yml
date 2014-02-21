@@ -1,2 +1,3 @@
-node.name:    boot-rest-node
+node.name: boot-rest-node
+path.data: ./data
 http.enabled: false
