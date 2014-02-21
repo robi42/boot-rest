@@ -19,7 +19,9 @@ An endpoint to play with:
 
     curl localhost:8888/api/messages
 
-SPA resides at root URL, BTW.
+SPA resides at root URL, BTW.<br>
+Admin endpoints at:<br>
+`/admin/*` (auth-protected)
 
 Note: this thing is ready to be deployed on Heroku (and verified to run packaged as WAR in Tomcat 8, too)...
 
