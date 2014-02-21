@@ -7,7 +7,9 @@ import org.elasticsearch.node.Node;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.ManagementSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
@@ -27,8 +29,8 @@ import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_C
 
 @ComponentScan
 @Configuration
-@EnableAutoConfiguration
 @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
+@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class, ManagementSecurityAutoConfiguration.class})
 public class ApplicationInitializer extends SpringBootServletInitializer {
 
     @Value("${elasticsearch.clusterName}")

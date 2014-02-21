@@ -64,6 +64,7 @@ dependencies {
         exclude module: 'spring-boot-starter-tomcat'
     }
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-jetty',    version: springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion
     compile(group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion) {
         exclude module: 'hsqldb'
     }
