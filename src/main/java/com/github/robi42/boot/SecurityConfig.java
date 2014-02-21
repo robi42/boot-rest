@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // SPA resource paths
                 .antMatchers("/", "/robots.txt", "/favicon.ico", "/views/**", "/scripts/**", "/styles/**",
                         "/images/**", "/fonts/**", "/bower_components/**").permitAll()
-                // API endpoints (open)
+                // API endpoints (open...)
                 .antMatchers("/api/**").permitAll()
                 // Admin endpoints (protected)
                 .antMatchers("/admin/**").hasRole(ROLE_ADMIN)
