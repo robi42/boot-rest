@@ -13,8 +13,8 @@ public class ElasticsearchEntityMapper implements EntityMapper {
 
     public ElasticsearchEntityMapper() {
         objectMapper = new ObjectMapper();
-        objectMapper.findAndRegisterModules();
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        objectMapper.findAndRegisterModules(); // Auto-detect `JSR310Module`...
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false); // -> ISO string serialization
     }
 
     @Override
