@@ -3,6 +3,7 @@ package com.github.robi42.boot;
 import com.github.robi42.boot.dao.RepositoryRoot;
 import com.github.robi42.boot.domain.util.ElasticsearchEntityMapper;
 import com.github.robi42.boot.rest.JerseyConfig;
+import org.eclipse.jetty.servlets.GzipFilter;
 import org.elasticsearch.node.Node;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import javax.servlet.Filter;
 import javax.validation.Validator;
 
 import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
@@ -34,6 +36,11 @@ import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_C
 public class ApplicationInitializer extends SpringBootServletInitializer {
     @Value("${elasticsearch.clusterName}")
     private String elasticsearchClusterName;
+
+    @Bean
+    public Filter gzipFilter() {
+        return new GzipFilter();
+    }
 
     @Bean
     public ServletRegistrationBean jerseyServlet() {
