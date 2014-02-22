@@ -80,3 +80,10 @@ body {
 footer {
     padding: 30px 0;
 }
+
+.message-row td .btn-danger {
+    visibility: hidden;
+}
+.message-row:hover td .btn-danger {
+    visibility: visible;
+}

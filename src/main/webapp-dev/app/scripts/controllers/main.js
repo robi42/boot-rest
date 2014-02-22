@@ -1,8 +1,16 @@
-(function (window, angular, undefined) {
+(function (window, angular, $, _, undefined) {
   'use strict';
 
   angular.module('yoAngularApp')
     .controller('MainCtrl', function ($scope, $log, Message) {
+      $scope.messages = [];
+      $scope.newMessage = {body: ''};
+
+      $scope.focusMessageInput = function () {
+        $('#message-input').focus();
+      };
+      $scope.focusMessageInput();
+
       $scope.loadMessages = function () {
         $scope.messages = Message.query(function (messages) {
           $log.debug('Number of messages to display:', messages.length);
@@ -11,16 +19,25 @@
       $scope.loadMessages();
 
       $scope.saveNewMessage = function () {
-        Message.save($scope.newMessage, function () {
+        if (!$scope.newMessage.body) {
+          $('#input-validation-modal').modal({show: true})
+            .on('hidden.bs.modal', function () {
+              $scope.focusMessageInput();
+            });
+          return;
+        }
+        Message.save($scope.newMessage, function (savedMessage) {
           $scope.newMessage.body = '';
-          $scope.loadMessages();
+          $scope.messages.push(savedMessage);
         });
       };
 
-      $scope.deleteMessage = function (message) {
-        message.$delete(function () {
-          $scope.loadMessages();
+      $scope.deleteMessage = function (messageToDelete) {
+        messageToDelete.$delete(function () {
+          _($scope.messages).remove(function (message) {
+            return message.id === messageToDelete.id;
+          });
         });
       };
     });
-})(window, window.angular);
+})(window, window.angular, window.jQuery, window._);
