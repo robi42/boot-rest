@@ -19,7 +19,7 @@
       $scope.loadMessages();
 
       $scope.saveNewMessage = function () {
-        if (!$scope.newMessage.body) {
+        if (!$scope.messageForm.body.$valid) {
           $('#input-validation-modal').modal({show: true})
             .on('hidden.bs.modal', function () {
               $scope.focusMessageInput();

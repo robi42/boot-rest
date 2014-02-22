@@ -7,11 +7,11 @@
   <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h1 class="page-header">Manage Messages</h1>
 
-    <form ng-submit="saveNewMessage()">
+    <form name="messageForm" novalidate ng-submit="saveNewMessage()">
       <div class="input-group">
-        <input type="text" ng-model="newMessage.body" placeholder="Type here..." class="form-control" id="message-input">
+        <input type="text" name="body" required ng-model="newMessage.body" placeholder="Type here..." class="form-control" id="message-input">
         <span class="input-group-btn">
-          <button class="btn btn-primary">Save</button>
+          <button type="submit" class="btn btn-primary">Save</button>
         </span>
       </div>
     </form>
