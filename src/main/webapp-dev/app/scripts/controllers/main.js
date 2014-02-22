@@ -37,6 +37,7 @@
           _($scope.messages).remove(function (message) {
             return message.id === messageToDelete.id;
           });
+          $scope.focusMessageInput();
         });
       };
     });
