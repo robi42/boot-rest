@@ -1,5 +1,5 @@
 {
-  "name": "yo-angular",
+  "name": "yo-angular-app",
   "version": "0.0.0",
   "dependencies": {
     "angular": "1.2.6",
