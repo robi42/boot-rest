@@ -10,7 +10,9 @@
     'yoaModels'
   ]);
 
-  app.config(function ($routeProvider) {
+  app.config(function ($locationProvider, $routeProvider) {
+    $locationProvider.hashPrefix('!');
+
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
