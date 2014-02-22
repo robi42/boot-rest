@@ -1,12 +1,16 @@
-'use strict';
+(function (window, angular, undefined) {
+  'use strict';
 
-angular.module('yoAngularCurrentApp', [
-  'ngCookies',
-  'ngResource',
-  'ngSanitize',
-  'ngRoute'
-])
-  .config(function ($routeProvider) {
+  angular.module('yoAngularModels', ['ngResource']);
+
+  var app = angular.module('yoAngularApp', [
+    'ngCookies',
+    'ngSanitize',
+    'ngRoute',
+    'yoAngularModels'
+  ]);
+
+  app.config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -16,3 +20,4 @@ angular.module('yoAngularCurrentApp', [
         redirectTo: '/'
       });
   });
+})(window, window.angular);

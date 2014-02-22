@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole(ROLE_ADMIN)
                 .anyRequest().authenticated();
         http.httpBasic().realmName("Admin");
-        http.csrf().disable();
+        http.csrf().disable(); // Causes issues with REST...
     }
 
     @Override
