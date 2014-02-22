@@ -1,13 +1,13 @@
 (function (window, angular, undefined) {
   'use strict';
 
-  angular.module('yoAngularModels', ['ngResource']);
+  angular.module('yoaModels', ['ngResource']);
 
-  var app = angular.module('yoAngularApp', [
+  var app = angular.module('yoaApp', [
     'ngCookies',
     'ngSanitize',
     'ngRoute',
-    'yoAngularModels'
+    'yoaModels'
   ]);
 
   app.config(function ($routeProvider) {

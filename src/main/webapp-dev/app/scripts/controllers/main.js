@@ -1,7 +1,7 @@
 (function (window, angular, $, _, undefined) {
   'use strict';
 
-  angular.module('yoAngularApp')
+  angular.module('yoaApp')
     .controller('MainCtrl', function ($scope, $log, Message) {
       $scope.messages = [];
       $scope.newMessage = {body: ''};
