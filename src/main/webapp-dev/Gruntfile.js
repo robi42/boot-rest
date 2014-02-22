@@ -165,6 +165,22 @@ module.exports = function (grunt) {
       }
     },
 
+    // LESS compilation
+    recess: {
+      options: {
+        compile: true
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/styles',
+          src: '{,*/}*.less',
+          dest: '.tmp/styles/',
+          ext: '.css'
+        }]
+      }
+    },
+
     // Automatically inject Bower components into the app
     'bower-install': {
       app: {
@@ -357,6 +373,7 @@ module.exports = function (grunt) {
       'bower-install',
       'concurrent:server',
       'autoprefixer',
+      'recess',
       'connect:livereload',
       'watch'
     ]);
@@ -382,6 +399,7 @@ module.exports = function (grunt) {
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
+    'recess',
     'concat',
     'ngmin',
     'copy:dist',
