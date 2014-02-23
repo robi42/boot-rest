@@ -56,6 +56,9 @@ body {
 .nav-sidebar > .active > a {
   color: #fff;
   background-color: #428bca;
+  &:hover {
+    color: #000000;
+  }
 }
 
 //
@@ -82,13 +85,14 @@ footer {
 }
 
 //
-// Message row
+// Grid message row controls
 //
 
-.message-row td .btn-danger {
-  visibility: hidden;
-}
-
-.message-row:hover td .btn-danger {
-  visibility: visible;
+.message-row {
+  td .btn-danger {
+    visibility: hidden;
+  }
+  &:hover td .btn-danger {
+    visibility: visible;
+  }
 }
