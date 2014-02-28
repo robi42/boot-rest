@@ -7,6 +7,7 @@
     'ngCookies',
     'ngSanitize',
     'ngRoute',
+    'xeditable',
     'yoaModels'
   ]);
 
@@ -21,5 +22,9 @@
       .otherwise({
         redirectTo: '/'
       });
+  });
+
+  app.run(function (editableOptions) {
+    editableOptions.theme = 'bs3';
   });
 })(window, window.angular);

@@ -9,7 +9,7 @@
 
     <form name="messageForm" novalidate ng-submit="saveNewMessage()">
       <div class="input-group">
-        <input type="text" name="body" required ng-model="newMessage.body" placeholder="Type here..." class="form-control" id="message-input">
+        <input type="text" name="body" required ng-model="newMessage.body" placeholder="Type here..." class="form-control" id="new-message-input">
         <span class="input-group-btn">
           <button type="submit" class="btn btn-primary">Save <i class="fa fa-plus-square"></i></button>
         </span>
@@ -46,7 +46,7 @@
         <tbody>
         <tr ng-repeat="message in messages | orderBy:'lastModifiedAt':reverse=true" class="message-row">
           <td>{{message.id}}</td>
-          <td><strong>{{message.body}}</strong></td>
+          <td><strong editable-text="message.body" class="message-body-edit">{{message.body}}</strong></td>
           <td>{{message.lastModifiedAt | date:'MMMM dd yyyy, h:mm:ss.sss a'}}</td>
           <td><button ng-click="deleteMessage(message)" class="btn btn-danger">Delete <i class="fa fa-exclamation-circle"></i></button></td>
         </tr>
