@@ -1,10 +1,10 @@
 package com.github.robi42.boot.rest;
 
 import com.github.robi42.boot.dao.MessageRepository;
-import com.github.robi42.boot.domain.util.BeanValidator;
 import com.github.robi42.boot.domain.Message;
+import com.github.robi42.boot.domain.util.BeanValidator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -28,7 +28,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.util.UUID.randomUUID;
 
 @Slf4j
-@Controller
+@RestController
 @Path("/messages")
 public class MessageResource {
     private final MessageRepository repository;

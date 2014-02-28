@@ -19,7 +19,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.httpBasic().realmName("Admin")
+                .and().csrf().disable() // <- Causes issues with REST...
+                .authorizeRequests()
                 // SPA resource paths
                 .antMatchers("/", "/robots.txt", "/favicon.ico", "/views/**", "/scripts/**", "/styles/**",
                         "/images/**", "/fonts/**").permitAll()
@@ -28,8 +30,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Admin endpoints (protected)
                 .antMatchers("/admin/**").hasRole(ROLE_ADMIN)
                 .anyRequest().authenticated();
-        http.httpBasic().realmName("Admin");
-        http.csrf().disable(); // Causes issues with REST...
     }
 
     @Override
