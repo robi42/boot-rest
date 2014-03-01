@@ -66,7 +66,8 @@ public class MessageResource {
     @Path("/{messageId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Message getMessage(final @PathParam("messageId") UUID messageId) {
-        final Optional<Message> messageOptional = Optional.ofNullable(repository.findOne(messageId.toString()));
+        final Optional<Message> messageOptional = Optional.ofNullable(
+                repository.findOne(messageId.toString()));
 
         if (messageOptional.isPresent()) {
             return messageOptional.get();
@@ -81,7 +82,8 @@ public class MessageResource {
     public Message updateMessage(final @PathParam("messageId") UUID messageId, final Message.Input payload) {
         validate(payload);
 
-        final Optional<Message> messageOptional = Optional.ofNullable(repository.findOne(messageId.toString()));
+        final Optional<Message> messageOptional = Optional.ofNullable(
+                repository.findOne(messageId.toString()));
 
         if (!messageOptional.isPresent()) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
