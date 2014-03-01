@@ -19,9 +19,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.httpBasic().realmName("Admin")
-                .and().csrf().disable() // <- Causes issues with REST...
-                .authorizeRequests()
+        http.csrf().disable() // <- Causes issues with REST...
+                .httpBasic().realmName("Admin")
+                .and().authorizeRequests()
                 .antMatchers("/admin/**").hasRole(ROLE_ADMIN);
     }
 
