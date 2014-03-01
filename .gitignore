@@ -11,3 +11,5 @@
 
 .gradle/
 /build
+
+/data
