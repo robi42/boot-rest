@@ -1,18 +1,18 @@
-(function (window, angular, $, _, undefined) {
+(function (window, angular, _, undefined) {
   'use strict';
 
   var _focusNewMessageInput = function () {
-    $('#new-message-input').focus();
+    angular.element('#new-message-input').focus();
   };
 
   var _showInputValidationModal = function () {
-    $('#input-validation-modal').modal({show: true})
+    angular.element('#input-validation-modal').modal({show: true})
       .on('hidden.bs.modal', function () {
         _focusNewMessageInput();
       });
   };
 
-  angular.module('yoaApp')
+  angular.module('yoaControllers')
     .controller('MainCtrl', function ($scope, $log, Message) {
       $scope.messages = [];
       $scope.newMessage = {body: ''};
@@ -27,11 +27,15 @@
 
       // Handle update of a message body on change via in-place edit
       $scope.$watch('messages', function (newValues, oldValues) {
-        if (newValues && oldValues && (newValues !== oldValues)) {
+        var hasUpdatedMessage = newValues && oldValues && (newValues.length === oldValues.length) &&
+          (newValues !== oldValues);
+
+        if (hasUpdatedMessage) {
           _(newValues).each(function (newValue) {
             var oldValue = _(oldValues).find({id: newValue.id});
+            var hasUpdatedMessageBody = oldValue && (oldValue.body !== newValue.body);
 
-            if (oldValue && (oldValue.body !== newValue.body)) {
+            if (hasUpdatedMessageBody) {
               newValue.$update(function (updatedMessage) {
                 var indexOfUpdatedMessage = _($scope.messages).findIndex({id: updatedMessage.id});
                 $scope.messages[indexOfUpdatedMessage] = updatedMessage;
@@ -62,4 +66,4 @@
         });
       };
     });
-})(window, window.angular, window.jQuery, window._);
+})(window, window.angular, window._);

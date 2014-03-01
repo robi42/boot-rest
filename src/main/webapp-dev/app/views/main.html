@@ -9,14 +9,16 @@
 
     <form name="messageForm" novalidate ng-submit="saveNewMessage()">
       <div class="input-group">
-        <input type="text" name="body" required ng-model="newMessage.body" placeholder="Type here..." class="form-control" id="new-message-input">
+        <input type="text" name="body" required ng-model="newMessage.body" placeholder="Type here..."
+               class="form-control" id="new-message-input">
         <span class="input-group-btn">
           <button type="submit" class="btn btn-primary">Save <i class="fa fa-plus-square"></i></button>
         </span>
       </div>
     </form>
 
-    <div class="modal fade" id="input-validation-modal" tabindex="-1" role="dialog" aria-labelledby="input-validation-modal-label" aria-hidden="true">
+    <div class="modal fade" id="input-validation-modal" tabindex="-1" role="dialog"
+         aria-labelledby="input-validation-modal-label" aria-hidden="true">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
           <div class="modal-header">
@@ -44,11 +46,20 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="message in messages | orderBy:'lastModifiedAt':reverse=true" class="message-row">
+        <tr ng-repeat="message in messages | orderBy:'lastModifiedAt':reverse=true" bs-tooltip class="message-row">
           <td>{{message.id}}</td>
-          <td><strong editable-text="message.body" class="message-body-edit">{{message.body}}</strong></td>
+          <td>
+            <span editable-text="message.body" data-toggle="tooltip" data-placement="bottom" title="Click to edit"
+                  class="message-body-edit">
+              {{message.body}}
+            </span>
+          </td>
           <td>{{message.lastModifiedAt | date:'MMMM dd yyyy, h:mm:ss.sss a'}}</td>
-          <td><button ng-click="deleteMessage(message)" class="btn btn-danger">Delete <i class="fa fa-exclamation-circle"></i></button></td>
+          <td>
+            <button ng-click="deleteMessage(message)" class="btn btn-danger">
+              Delete <i class="fa fa-exclamation-circle"></i>
+            </button>
+          </td>
         </tr>
         </tbody>
       </table>

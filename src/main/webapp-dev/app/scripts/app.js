@@ -1,6 +1,8 @@
 (function (window, angular, undefined) {
   'use strict';
 
+  angular.module('yoaControllers', []);
+  angular.module('yoaDirectives', []);
   angular.module('yoaModels', ['ngResource']);
 
   var app = angular.module('yoaApp', [
@@ -8,6 +10,8 @@
     'ngSanitize',
     'ngRoute',
     'xeditable',
+    'yoaControllers',
+    'yoaDirectives',
     'yoaModels'
   ]);
 
