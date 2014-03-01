@@ -22,14 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().realmName("Admin")
                 .and().csrf().disable() // <- Causes issues with REST...
                 .authorizeRequests()
-                // SPA resource paths
-                .antMatchers("/", "/robots.txt", "/favicon.ico", "/views/**", "/scripts/**", "/styles/**",
-                        "/images/**", "/fonts/**").permitAll()
-                // API endpoints (open...)
-                .antMatchers("/api/**").permitAll()
-                // Admin endpoints (protected)
-                .antMatchers("/admin/**").hasRole(ROLE_ADMIN)
-                .anyRequest().authenticated();
+                .antMatchers("/admin/**").hasRole(ROLE_ADMIN);
     }
 
     @Override

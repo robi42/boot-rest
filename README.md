@@ -23,8 +23,8 @@ SPA resides at root URL, BTW.<br>
 Admin endpoints at:<br>
 `/admin/*` (auth-protected)
 
-Note: this thing is ready to be deployed on Heroku (and verified to run packaged as WAR in Tomcat 8, too)...
+Note: this thing is ready to be deployed on Heroku (and verified to run packaged as WAR in Tomcat 8 as `ROOT` context).
 
 FYI: using Spring Data Elasticsearch as embedded data source provider for fun.
 
-PS: SPA is developed with the help of Yeoman, Grunt, and Bower...
+PS: Bootstrap/Angular SPA is developed & built with the help of Yeoman, Grunt, and Bower...
