@@ -19,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -43,15 +44,19 @@ public class MessageResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Message createMessage(final Message.Input payload) {
+    public Response createMessage(final Message.Input payload) {
         validate(payload);
 
-        final Message message = Message.builder()
+        final Message messageToPersist = Message.builder()
                 .id(randomUUID().toString())
                 .lastModifiedAt(LocalDateTime.now())
                 .body(payload.getBody())
                 .build();
-        return repository.save(message);
+        final Message persistedMessage = repository.save(messageToPersist);
+        final String messagePath = String.format("/api/messages/%s", persistedMessage.getId());
+        return Response.created(URI.create(messagePath))
+                .entity(persistedMessage)
+                .build();
     }
 
     @GET
