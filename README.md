@@ -13,7 +13,7 @@ To build & run via command line shell:
 
     ./gradlew clean build && java -server -jar build/libs/boot-rest.jar
 
-Or simply run `ApplicationInitializer.main()` via IDEA (min. 13.1 EAP, BTW).
+Or simply run `ApplicationInitializer.main()` via IDEA (min. 13.1 EAP recommended).
 
 An endpoint to play with:
 
