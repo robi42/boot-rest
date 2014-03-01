@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('yoaDirectives')
-    .directive('bsTooltip', function () {
+    .directive('bsTooltips', function () {
       return function (scope, element) {
         element.find('[data-toggle=tooltip]').tooltip();
       };

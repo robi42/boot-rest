@@ -46,7 +46,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="message in messages | orderBy:'lastModifiedAt':reverse=true" bs-tooltip class="message-row">
+        <tr ng-repeat="message in messages | orderBy:'lastModifiedAt':reverse=true" bs-tooltips class="message-row">
           <td>{{message.id}}</td>
           <td>
             <span editable-text="message.body" data-toggle="tooltip" data-placement="bottom" title="Click to edit"
