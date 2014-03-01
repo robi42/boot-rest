@@ -9,6 +9,8 @@
 .idea/
 /out
 
+rebel.xml
+
 .gradle/
 /build
 
