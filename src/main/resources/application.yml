@@ -12,4 +12,5 @@ elasticsearch.clusterName: boot-rest-cluster
 
 spring:
   profiles: dev
-  thymeleaf.cache: false
+
+thymeleaf.cacheable: false

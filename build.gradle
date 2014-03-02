@@ -81,7 +81,7 @@ dependencies {
     // Spring Data Elasticsearch
     compile group: 'org.springframework.data', name: 'spring-data-elasticsearch', version: springDataEsVersion
     // Thymeleaf Templating
-//    compile group: 'org.thymeleaf', name: 'thymeleaf-spring4', version: thymeleafVersion
+    compile group: 'org.thymeleaf', name: 'thymeleaf-spring4', version: thymeleafVersion
     // Bean Validation
     compile group: 'org.hibernate', name: 'hibernate-validator', version: hibernateValidatorVersion
     // Servlet API
