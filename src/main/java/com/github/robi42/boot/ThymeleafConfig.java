@@ -60,7 +60,7 @@ public class ThymeleafConfig implements EnvironmentAware {
         final ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setCharacterEncoding(UTF_8.name());
-        viewResolver.setViewNames(new String[]{"error"});
+        viewResolver.setViewNames(new String[]{"error"}); // TODO: don't hard-code...
         // Needs to come before any fallback resolver (e.g. an `InternalResourceViewResolver`)
         viewResolver.setOrder(LOWEST_PRECEDENCE - 20);
         return viewResolver;
