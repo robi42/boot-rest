@@ -16,6 +16,7 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -62,7 +63,8 @@ public class ThymeleafConfig implements EnvironmentAware {
     @Bean
     public ThymeleafViewResolver thymeleafViewResolver() throws IOException {
         final ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-        final String[] templateFilenames = new ClassPathResource("templates").getFile().list();
+        final String templatePath = new ClassPathResource("templates").getURL().getFile();
+        final String[] templateFilenames = new File(templatePath).list();
         final List<String> viewNames = Arrays.asList(templateFilenames).parallelStream()
                 .map(templateFilename -> templateFilename.split("\\.")[0])
                 .collect(Collectors.toList());
