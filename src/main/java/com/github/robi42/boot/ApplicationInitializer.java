@@ -32,7 +32,8 @@ import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_C
 @ComponentScan
 @Configuration
 @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
-@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class, ManagementSecurityAutoConfiguration.class})
+@EnableAutoConfiguration(exclude =
+        {SecurityAutoConfiguration.class, ManagementSecurityAutoConfiguration.class})
 public class ApplicationInitializer extends SpringBootServletInitializer {
     @Value("${elasticsearch.clusterName}")
     private String elasticsearchClusterName;
@@ -44,7 +45,8 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
 
     @Bean
     public ServletRegistrationBean jerseyServlet() {
-        final ServletRegistrationBean registrationBean = new ServletRegistrationBean(new ServletContainer(), "/api/*");
+        final ServletRegistrationBean registrationBean =
+                new ServletRegistrationBean(new ServletContainer(), "/api/*");
         registrationBean.addInitParameter(JAXRS_APPLICATION_CLASS, JerseyConfig.class.getName());
         return registrationBean;
     }
