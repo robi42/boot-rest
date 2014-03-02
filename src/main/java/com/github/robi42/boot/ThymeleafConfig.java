@@ -9,18 +9,13 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.resourceresolver.SpringResourceResourceResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static org.springframework.core.Ordered.LOWEST_PRECEDENCE;
@@ -63,14 +58,9 @@ public class ThymeleafConfig implements EnvironmentAware {
     @Bean
     public ThymeleafViewResolver thymeleafViewResolver() throws IOException {
         final ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-        final String templatePath = new ClassPathResource("templates").getURL().getFile();
-        final String[] templateFilenames = new File(templatePath).list();
-        final List<String> viewNames = Arrays.asList(templateFilenames).parallelStream()
-                .map(templateFilename -> templateFilename.split("\\.")[0])
-                .collect(Collectors.toList());
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setCharacterEncoding(UTF_8.name());
-        viewResolver.setViewNames(viewNames.toArray(new String[viewNames.size()]));
+        viewResolver.setViewNames(new String[]{"error"});
         // Needs to come before any fallback resolver (e.g. an `InternalResourceViewResolver`)
         viewResolver.setOrder(LOWEST_PRECEDENCE - 20);
         return viewResolver;
