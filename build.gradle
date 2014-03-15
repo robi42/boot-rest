@@ -4,7 +4,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RC3'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RC4'
     }
 }
 
@@ -12,10 +12,9 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
-def javaVersion = 1.8
 ext {
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
     baseName = 'boot-rest'
     version = '0.1.0'
 }
@@ -42,15 +41,15 @@ repositories {
 // Versions
 // ========
 // Core
-def springBootVersion = '1.0.0.RC3'
+def springBootVersion = '1.0.0.RC4'
 def springDataEsVersion = '1.0.0.BUILD-SNAPSHOT'
 def thymeleafVersion = '2.1.2.RELEASE'
 def hibernateValidatorVersion = '5.0.2.Final'
 def servletApiVersion = '3.1.0'
 def jettyVersion = '9.1.2.v20140210'
 def springHk2BridgeVersion = '2.2.0'
-def jerseyVersion = '2.5.1'
-def jacksonVersion = '2.3.1'
+def jerseyVersion = '2.7'
+def jacksonVersion = '2.3.2'
 
 // Utilities
 def lombokVersion = '1.12.4'
@@ -126,8 +125,6 @@ dependencies {
         exclude module: 'objenesis'
     }
     testCompile group: 'org.objenesis', name: 'objenesis', version: objenesisVersion
-    testCompile group: 'org.glassfish.jersey.test-framework.providers',
-            name: 'jersey-test-framework-provider-grizzly2', version: jerseyVersion
 }
 
 task wrapper(type: Wrapper) {

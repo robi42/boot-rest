@@ -1,7 +1,6 @@
 package com.github.robi42.boot.domain.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.data.elasticsearch.core.EntityMapper;
 
 import java.io.IOException;
@@ -11,10 +10,8 @@ public class ElasticsearchEntityMapper implements EntityMapper {
 
     private final ObjectMapper objectMapper;
 
-    public ElasticsearchEntityMapper() {
-        objectMapper = new ObjectMapper();
-        objectMapper.findAndRegisterModules(); // Auto-detect `JSR310Module`...
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false); // -> ISO string serialization
+    public ElasticsearchEntityMapper(final ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 
     @Override

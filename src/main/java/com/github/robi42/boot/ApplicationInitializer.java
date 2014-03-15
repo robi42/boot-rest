@@ -1,5 +1,8 @@
 package com.github.robi42.boot;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.github.robi42.boot.dao.RepositoryRoot;
 import com.github.robi42.boot.domain.util.ElasticsearchEntityMapper;
 import com.github.robi42.boot.rest.JerseyConfig;
@@ -36,7 +39,7 @@ import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_C
         {SecurityAutoConfiguration.class, ManagementSecurityAutoConfiguration.class})
 public class ApplicationInitializer extends SpringBootServletInitializer {
     @Value("${elasticsearch.clusterName}")
-    private String elasticsearchClusterName;
+    protected String elasticsearchClusterName;
 
     @Bean
     public Filter gzipFilter() {
@@ -59,7 +62,25 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
                 .clusterName(elasticsearchClusterName)
                 .data(true).local(true)
                 .node();
-        return new ElasticsearchTemplate(node.client(), new ElasticsearchEntityMapper());
+        return new ElasticsearchTemplate(node.client(), new ElasticsearchEntityMapper(objectMapper()));
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return sharedObjectMapper();
+    }
+
+    public static ObjectMapper sharedObjectMapper() {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules(); // Auto-detect `JSR310Module`...
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false); // -> ISO string serialization
+        return objectMapper;
+    }
+
+    public static JacksonJsonProvider jacksonJsonProvider() {
+        final JacksonJsonProvider jsonProvider = new JacksonJsonProvider();
+        jsonProvider.setMapper(sharedObjectMapper());
+        return jsonProvider;
     }
 
     @Bean

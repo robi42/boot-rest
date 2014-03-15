@@ -1,0 +1,3 @@
+node.name: boot-rest-test-node
+path.data: ./data
+http.enabled: false

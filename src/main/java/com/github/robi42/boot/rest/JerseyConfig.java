@@ -1,8 +1,5 @@
 package com.github.robi42.boot.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.jvnet.hk2.spring.bridge.api.SpringBridge;
@@ -14,6 +11,7 @@ import org.springframework.web.filter.RequestContextFilter;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
+import static com.github.robi42.boot.ApplicationInitializer.jacksonJsonProvider;
 import static org.glassfish.jersey.server.ServerProperties.BV_SEND_ERROR_IN_RESPONSE;
 import static org.glassfish.jersey.server.ServerProperties.MOXY_JSON_FEATURE_DISABLE;
 
@@ -33,8 +31,7 @@ public class JerseyConfig extends ResourceConfig {
         property(MOXY_JSON_FEATURE_DISABLE, true);
 
         // Register Jackson JSON provider (incl. JDK 8 `java.time.*` a.k.a. JSR-310 support)
-        register(setUpJacksonJsonProvider());
-
+        register(jacksonJsonProvider());
         // Register requests within Spring context
         register(RequestContextFilter.class);
     }
@@ -47,14 +44,5 @@ public class JerseyConfig extends ResourceConfig {
         final WebApplicationContext springWebAppContext = WebApplicationContextUtils
                 .getWebApplicationContext(servletContext);
         springBridge.bridgeSpringBeanFactory(springWebAppContext.getAutowireCapableBeanFactory());
-    }
-
-    private JacksonJsonProvider setUpJacksonJsonProvider() {
-        final JacksonJsonProvider jsonProvider = new JacksonJsonProvider();
-        final ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.findAndRegisterModules(); // Auto-detect `JSR310Module`...
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false); // -> ISO string serialization
-        jsonProvider.setMapper(objectMapper);
-        return jsonProvider;
     }
 }

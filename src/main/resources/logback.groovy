@@ -13,10 +13,12 @@ appender("STDOUT", ConsoleAppender) {
     }
 }
 
-logger "org.springframework.boot", INFO
-logger "org.eclipse.jetty", INFO
-logger "org.glassfish.jersey", INFO
+def isTestEnv = System.getProperty("spring.profiles.active") == 'test'
 
-logger "com.github.robi42.boot", DEBUG
+logger "org.springframework.boot", isTestEnv ? WARN : INFO
+logger "org.eclipse.jetty", isTestEnv ? WARN : INFO
+logger "org.glassfish.jersey", isTestEnv ? WARN : INFO
+
+logger "com.github.robi42.boot", isTestEnv ? WARN : DEBUG
 
 root WARN, ["STDOUT"]
