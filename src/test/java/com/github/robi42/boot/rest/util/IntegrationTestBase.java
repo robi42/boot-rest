@@ -32,8 +32,7 @@ public abstract class IntegrationTestBase {
                     return SpringApplication.run(TestApplicationInitializer.class);
                 });
         applicationContext = applicationContextFuture.get(30, SECONDS);
-        serverPort = applicationContext.getEnvironment()
-                .getProperty("server.port", int.class);
+        serverPort = applicationContext.getEnvironment().getProperty("server.port", int.class);
         final JacksonJsonProvider jacksonJsonProvider = applicationContext.getBean(JacksonJsonProvider.class);
         webClient = newClient().register(jacksonJsonProvider);
     }
