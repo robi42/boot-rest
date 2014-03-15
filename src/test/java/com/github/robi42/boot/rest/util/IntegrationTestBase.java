@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -32,7 +33,8 @@ public abstract class IntegrationTestBase {
                     return SpringApplication.run(TestApplicationInitializer.class);
                 });
         applicationContext = applicationContextFuture.get(30, SECONDS);
-        serverPort = applicationContext.getEnvironment().getProperty("server.port", int.class);
+        final ConfigurableEnvironment environment = applicationContext.getEnvironment();
+        serverPort = environment.getProperty("server.port", int.class);
         final JacksonJsonProvider jacksonJsonProvider = applicationContext.getBean(JacksonJsonProvider.class);
         webClient = newClient().register(jacksonJsonProvider);
     }
