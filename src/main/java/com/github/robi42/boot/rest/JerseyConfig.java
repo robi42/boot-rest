@@ -31,7 +31,7 @@ public class JerseyConfig extends ResourceConfig {
         property(BV_SEND_ERROR_IN_RESPONSE, true);
         property(MOXY_JSON_FEATURE_DISABLE, true);
 
-        // Register Jackson JSON provider (incl. JDK 8 `java.time.*` a.k.a. JSR-310 support)
+        // Register Jackson JSON provider incl. JDK 8 `java.time.*` a.k.a. JSR-310 support...
         register(beanFactory.getBean(JacksonJsonProvider.class));
         // Register requests within Spring context
         register(RequestContextFilter.class);
