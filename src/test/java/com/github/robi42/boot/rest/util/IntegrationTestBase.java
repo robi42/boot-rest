@@ -1,5 +1,6 @@
 package com.github.robi42.boot.rest.util;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -12,7 +13,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 
-import static com.github.robi42.boot.ApplicationInitializer.jacksonJsonProvider;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static javax.ws.rs.client.ClientBuilder.newClient;
@@ -31,10 +31,11 @@ public abstract class IntegrationTestBase {
                     System.setProperty("spring.profiles.active", "test");
                     return SpringApplication.run(TestApplicationInitializer.class);
                 });
-        applicationContext = applicationContextFuture.get(20, SECONDS);
+        applicationContext = applicationContextFuture.get(30, SECONDS);
         serverPort = applicationContext.getEnvironment()
                 .getProperty("server.port", int.class);
-        webClient = newClient().register(jacksonJsonProvider());
+        final JacksonJsonProvider jacksonJsonProvider = applicationContext.getBean(JacksonJsonProvider.class);
+        webClient = newClient().register(jacksonJsonProvider);
     }
 
     @Before

@@ -67,19 +67,16 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
 
     @Bean
     public ObjectMapper objectMapper() {
-        return sharedObjectMapper();
-    }
-
-    public static ObjectMapper sharedObjectMapper() {
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules(); // Auto-detect `JSR310Module`...
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false); // -> ISO string serialization
         return objectMapper;
     }
 
-    public static JacksonJsonProvider jacksonJsonProvider() {
+    @Bean
+    public JacksonJsonProvider jacksonJsonProvider() {
         final JacksonJsonProvider jsonProvider = new JacksonJsonProvider();
-        jsonProvider.setMapper(sharedObjectMapper());
+        jsonProvider.setMapper(objectMapper());
         return jsonProvider;
     }
 

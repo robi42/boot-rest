@@ -1,9 +1,11 @@
 package com.github.robi42.boot.rest;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.jvnet.hk2.spring.bridge.api.SpringBridge;
 import org.jvnet.hk2.spring.bridge.api.SpringIntoHK2Bridge;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.RequestContextFilter;
@@ -11,7 +13,6 @@ import org.springframework.web.filter.RequestContextFilter;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
-import static com.github.robi42.boot.ApplicationInitializer.jacksonJsonProvider;
 import static org.glassfish.jersey.server.ServerProperties.BV_SEND_ERROR_IN_RESPONSE;
 import static org.glassfish.jersey.server.ServerProperties.MOXY_JSON_FEATURE_DISABLE;
 
@@ -24,25 +25,27 @@ public class JerseyConfig extends ResourceConfig {
         packages(true, getClass().getPackage().getName());
 
         // Set up Spring (**yay**) <-> HK2 (**nay**) DI bridge
-        setUpSpringBridge(serviceLocator);
+        final BeanFactory beanFactory = setUpSpringBridge(serviceLocator);
 
         // Configure Jersey server
         property(BV_SEND_ERROR_IN_RESPONSE, true);
         property(MOXY_JSON_FEATURE_DISABLE, true);
 
         // Register Jackson JSON provider (incl. JDK 8 `java.time.*` a.k.a. JSR-310 support)
-        register(jacksonJsonProvider());
+        register(beanFactory.getBean(JacksonJsonProvider.class));
         // Register requests within Spring context
         register(RequestContextFilter.class);
     }
 
-    private void setUpSpringBridge(final ServiceLocator serviceLocator) {
+    private BeanFactory setUpSpringBridge(final ServiceLocator serviceLocator) {
         SpringBridge.getSpringBridge().initializeSpringBridge(serviceLocator);
 
         final SpringIntoHK2Bridge springBridge = serviceLocator.getService(SpringIntoHK2Bridge.class);
         final ServletContext servletContext = serviceLocator.getService(ServletContext.class);
         final WebApplicationContext springWebAppContext = WebApplicationContextUtils
                 .getWebApplicationContext(servletContext);
-        springBridge.bridgeSpringBeanFactory(springWebAppContext.getAutowireCapableBeanFactory());
+        final BeanFactory beanFactory = springWebAppContext.getAutowireCapableBeanFactory();
+        springBridge.bridgeSpringBeanFactory(beanFactory);
+        return beanFactory;
     }
 }

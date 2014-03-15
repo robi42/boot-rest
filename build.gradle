@@ -67,64 +67,64 @@ dependencies {
     // Core
     // ====
     // Spring Boot
-    compile(group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion) {
+    compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion") {
         exclude module: 'spring-boot-starter-tomcat'
     }
     if (!buildWar) {
-        compile group: 'org.springframework.boot', name: 'spring-boot-starter-jetty', version: springBootVersion
+        compile "org.springframework.boot:spring-boot-starter-jetty:$springBootVersion"
     }
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion
-    compile(group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion) {
+    compile "org.springframework.boot:spring-boot-starter-security:$springBootVersion"
+    compile("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion") {
         exclude module: 'hsqldb'
     }
     // Spring Data Elasticsearch
-    compile group: 'org.springframework.data', name: 'spring-data-elasticsearch', version: springDataEsVersion
+    compile "org.springframework.data:spring-data-elasticsearch:$springDataEsVersion"
     // Thymeleaf Templating
-    compile group: 'org.thymeleaf', name: 'thymeleaf-spring4', version: thymeleafVersion
+    compile "org.thymeleaf:thymeleaf-spring4:$thymeleafVersion"
     // Bean Validation
-    compile group: 'org.hibernate', name: 'hibernate-validator', version: hibernateValidatorVersion
+    compile "org.hibernate:hibernate-validator:$hibernateValidatorVersion"
     // Servlet API
-    compile group: 'javax.servlet', name: 'javax.servlet-api', version: servletApiVersion
+    compile "javax.servlet:javax.servlet-api:$servletApiVersion"
     // Jetty
-    compile group: 'org.eclipse.jetty', name: 'jetty-servlets', version: jettyVersion
+    compile "org.eclipse.jetty:jetty-servlets:$jettyVersion"
     if (!buildWar) {
-        compile group: 'org.eclipse.jetty', name: 'jetty-client', version: jettyVersion
-        compile group: 'org.eclipse.jetty', name: 'jetty-continuation', version: jettyVersion
-        compile group: 'org.eclipse.jetty', name: 'jetty-http', version: jettyVersion
-        compile group: 'org.eclipse.jetty', name: 'jetty-io', version: jettyVersion
-        compile group: 'org.eclipse.jetty', name: 'jetty-jsp', version: jettyVersion
-        compile group: 'org.eclipse.jetty', name: 'jetty-security', version: jettyVersion
-        compile group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion
-        compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version: jettyVersion
-        compile group: 'org.eclipse.jetty', name: 'jetty-util', version: jettyVersion
-        compile group: 'org.eclipse.jetty', name: 'jetty-webapp', version: jettyVersion
-        compile group: 'org.eclipse.jetty', name: 'jetty-xml', version: jettyVersion
+        compile "org.eclipse.jetty:jetty-client:$jettyVersion"
+        compile "org.eclipse.jetty:jetty-continuation:$jettyVersion"
+        compile "org.eclipse.jetty:jetty-http:$jettyVersion"
+        compile "org.eclipse.jetty:jetty-io:$jettyVersion"
+        compile "org.eclipse.jetty:jetty-jsp:$jettyVersion"
+        compile "org.eclipse.jetty:jetty-security:$jettyVersion"
+        compile "org.eclipse.jetty:jetty-server:$jettyVersion"
+        compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
+        compile "org.eclipse.jetty:jetty-util:$jettyVersion"
+        compile "org.eclipse.jetty:jetty-webapp:$jettyVersion"
+        compile "org.eclipse.jetty:jetty-xml:$jettyVersion"
     }
     // Jersey
-    compile group: 'org.glassfish.hk2', name: 'spring-bridge', version: springHk2BridgeVersion
-    compile(group: 'org.glassfish.jersey.core', name: 'jersey-common', version: jerseyVersion) {
+    compile "org.glassfish.hk2:spring-bridge:$springHk2BridgeVersion"
+    compile("org.glassfish.jersey.core:jersey-common:$jerseyVersion") {
         exclude module: 'guava'
     }
-    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
+    compile "org.glassfish.jersey.containers:jersey-container-servlet:$jerseyVersion"
     // Jackson
-    compile group: 'com.fasterxml.jackson.jaxrs', name: 'jackson-jaxrs-json-provider', version: jacksonVersion
-    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: jacksonVersion
+    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
 
     // Utilities
     // =========
-    compile group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-    compile group: 'com.google.guava', name: 'guava', version: guavaVersion
-    runtime group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
-    runtime group: 'org.yaml', name: 'snakeyaml', version: yamlVersion
+    compile "org.projectlombok:lombok:$lombokVersion"
+    compile "com.google.guava:guava:$guavaVersion"
+    runtime "org.codehaus.groovy:groovy-all:$groovyVersion"
+    runtime "org.yaml:snakeyaml:$yamlVersion"
 
     // Testing
     // =======
-    testCompile group: 'junit', name: 'junit', version: junitVersion
-    testCompile group: 'org.easytesting', name: 'fest-assert', version: festAssertVersion
-    testCompile(group: 'org.mockito', name: 'mockito-core', version: mockitoVersion) {
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.easytesting:fest-assert:$festAssertVersion"
+    testCompile("org.mockito:mockito-core:$mockitoVersion") {
         exclude module: 'objenesis'
     }
-    testCompile group: 'org.objenesis', name: 'objenesis', version: objenesisVersion
+    testCompile "org.objenesis:objenesis:$objenesisVersion"
 }
 
 task wrapper(type: Wrapper) {
