@@ -55,17 +55,6 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
     }
 
     @Bean
-    public ElasticsearchOperations elasticsearchTemplate() {
-        // Note: in a real prod env one would rather connect to a dedicated remote cluster instead of embedding locally
-        final Node node = nodeBuilder()
-                .settings(settingsBuilder().loadFromClasspath("elasticsearch.yml"))
-                .clusterName(elasticsearchClusterName)
-                .data(true).local(true)
-                .node();
-        return new ElasticsearchTemplate(node.client(), new ElasticsearchEntityMapper(objectMapper()));
-    }
-
-    @Bean
     public ObjectMapper objectMapper() {
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules(); // Auto-detect `JSR310Module`...
@@ -78,6 +67,17 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
         final JacksonJsonProvider jsonProvider = new JacksonJsonProvider();
         jsonProvider.setMapper(objectMapper());
         return jsonProvider;
+    }
+
+    @Bean
+    public ElasticsearchOperations elasticsearchTemplate() {
+        // Note: in a real prod env one would rather connect to a dedicated remote cluster instead of embedding locally
+        final Node node = nodeBuilder()
+                .settings(settingsBuilder().loadFromClasspath("elasticsearch.yml"))
+                .clusterName(elasticsearchClusterName)
+                .data(true).local(true)
+                .node();
+        return new ElasticsearchTemplate(node.client(), new ElasticsearchEntityMapper(objectMapper()));
     }
 
     @Bean
