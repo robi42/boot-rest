@@ -20,7 +20,7 @@ ext {
 }
 
 jar {
-    archiveName = "${baseName}.jar"
+    archiveName = "$baseName.jar"
 }
 
 // Toggle to enable building WAR
@@ -29,7 +29,7 @@ def buildWar = false
 //def buildWar = true
 //apply plugin: 'war'
 //war {
-//    archiveName = "${baseName}.war"
+//    archiveName = "$baseName.war"
 //}
 // -----------------------------
 
