@@ -6,8 +6,12 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.github.robi42.boot.dao.RepositoryRoot;
 import com.github.robi42.boot.domain.util.ElasticsearchEntityMapper;
 import com.github.robi42.boot.rest.JerseyConfig;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.eclipse.jetty.servlets.GzipFilter;
 import org.elasticsearch.node.Node;
+import org.glassfish.jersey.apache.connector.ApacheClientProperties;
+import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
+import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -27,7 +31,9 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.servlet.Filter;
 import javax.validation.Validator;
+import javax.ws.rs.client.Client;
 
+import static javax.ws.rs.client.ClientBuilder.newClient;
 import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_CLASS;
@@ -40,6 +46,10 @@ import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_C
 public class ApplicationInitializer extends SpringBootServletInitializer {
     @Value("${elasticsearch.clusterName}")
     protected String elasticsearchClusterName;
+    @Value("${webClient.connectionPool.maxTotal}")
+    protected int webClientConnectionPoolMaxTotal;
+    @Value("${webClient.connectionPool.defaultMaxPerRoute}")
+    protected int webClientConnectionPoolDefaultMaxPerRoute;
 
     @Bean
     public Filter gzipFilter() {
@@ -67,6 +77,19 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
         final JacksonJsonProvider jsonProvider = new JacksonJsonProvider();
         jsonProvider.setMapper(objectMapper());
         return jsonProvider;
+    }
+
+    @Bean
+    public Client webClient() {
+        final PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+        connectionManager.setMaxTotal(webClientConnectionPoolMaxTotal);
+        connectionManager.setDefaultMaxPerRoute(webClientConnectionPoolDefaultMaxPerRoute);
+
+        final ClientConfig clientConfig = new ClientConfig();
+        clientConfig.property(ApacheClientProperties.CONNECTION_MANAGER, connectionManager);
+        clientConfig.connectorProvider(new ApacheConnectorProvider());
+
+        return newClient(clientConfig).register(jacksonJsonProvider());
     }
 
     @Bean

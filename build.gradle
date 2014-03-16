@@ -106,6 +106,7 @@ dependencies {
         exclude module: 'guava'
     }
     compile "org.glassfish.jersey.containers:jersey-container-servlet:$jerseyVersion"
+    compile "org.glassfish.jersey.connectors:jersey-apache-connector:$jerseyVersion"
     // Jackson
     compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"

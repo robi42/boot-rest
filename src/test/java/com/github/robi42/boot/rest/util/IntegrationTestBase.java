@@ -1,6 +1,5 @@
 package com.github.robi42.boot.rest.util;
 
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -16,7 +15,6 @@ import java.util.concurrent.TimeoutException;
 
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static javax.ws.rs.client.ClientBuilder.newClient;
 
 public abstract class IntegrationTestBase {
     protected WebTarget restApi;
@@ -35,8 +33,7 @@ public abstract class IntegrationTestBase {
         applicationContext = applicationContextFuture.get(30, SECONDS);
         final ConfigurableEnvironment environment = applicationContext.getEnvironment();
         serverPort = environment.getProperty("server.port", int.class);
-        final JacksonJsonProvider jacksonJsonProvider = applicationContext.getBean(JacksonJsonProvider.class);
-        webClient = newClient().register(jacksonJsonProvider);
+        webClient = applicationContext.getBean(Client.class);
     }
 
     @Before

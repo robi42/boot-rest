@@ -6,6 +6,10 @@ admin:
   username: admin
   password: secret
 
+webClient.connectionPool:
+  maxTotal: 100
+  defaultMaxPerRoute: 20
+
 elasticsearch.clusterName: boot-rest-cluster
 
 ---
