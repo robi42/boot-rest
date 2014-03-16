@@ -46,6 +46,7 @@ public class JerseyConfig extends ResourceConfig {
                 .getWebApplicationContext(servletContext);
         final BeanFactory beanFactory = springWebAppContext.getAutowireCapableBeanFactory();
         springBridge.bridgeSpringBeanFactory(beanFactory);
+
         return beanFactory;
     }
 }
