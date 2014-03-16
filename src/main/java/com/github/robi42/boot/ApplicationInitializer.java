@@ -83,14 +83,14 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
 
     @Bean
     public Client webClient() {
-        final PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
-        connectionManager.setMaxTotal(webClientConnectionPoolMaxTotal);
-        connectionManager.setDefaultMaxPerRoute(webClientConnectionPoolDefaultMaxPerRoute);
+        final PoolingHttpClientConnectionManager poolingConnectionManager = new PoolingHttpClientConnectionManager();
+        poolingConnectionManager.setMaxTotal(webClientConnectionPoolMaxTotal);
+        poolingConnectionManager.setDefaultMaxPerRoute(webClientConnectionPoolDefaultMaxPerRoute);
 
         final ClientConfig clientConfig = new ClientConfig();
         clientConfig.property(READ_TIMEOUT, 2000);
         clientConfig.property(CONNECT_TIMEOUT, 500);
-        clientConfig.property(CONNECTION_MANAGER, connectionManager);
+        clientConfig.property(CONNECTION_MANAGER, poolingConnectionManager);
         clientConfig.connectorProvider(new ApacheConnectorProvider());
 
         return newClient(clientConfig).register(jacksonJsonProvider());
