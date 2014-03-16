@@ -9,7 +9,6 @@ import com.github.robi42.boot.rest.JerseyConfig;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.eclipse.jetty.servlets.GzipFilter;
 import org.elasticsearch.node.Node;
-import org.glassfish.jersey.apache.connector.ApacheClientProperties;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
@@ -36,6 +35,9 @@ import javax.ws.rs.client.Client;
 import static javax.ws.rs.client.ClientBuilder.newClient;
 import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
+import static org.glassfish.jersey.apache.connector.ApacheClientProperties.CONNECTION_MANAGER;
+import static org.glassfish.jersey.client.ClientProperties.CONNECT_TIMEOUT;
+import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
 import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_CLASS;
 
 @ComponentScan
@@ -86,7 +88,9 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
         connectionManager.setDefaultMaxPerRoute(webClientConnectionPoolDefaultMaxPerRoute);
 
         final ClientConfig clientConfig = new ClientConfig();
-        clientConfig.property(ApacheClientProperties.CONNECTION_MANAGER, connectionManager);
+        clientConfig.property(READ_TIMEOUT, 2000);
+        clientConfig.property(CONNECT_TIMEOUT, 500);
+        clientConfig.property(CONNECTION_MANAGER, connectionManager);
         clientConfig.connectorProvider(new ApacheConnectorProvider());
 
         return newClient(clientConfig).register(jacksonJsonProvider());
