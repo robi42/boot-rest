@@ -1,6 +1,5 @@
-package com.github.robi42.boot.rest.util;
+package com.github.robi42.boot;
 
-import com.github.robi42.boot.ApplicationInitializer;
 import com.github.robi42.boot.dao.RepositoryRoot;
 import com.github.robi42.boot.domain.util.ElasticsearchEntityMapper;
 import org.elasticsearch.node.Node;

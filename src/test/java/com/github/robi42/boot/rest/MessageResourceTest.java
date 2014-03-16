@@ -1,7 +1,7 @@
 package com.github.robi42.boot.rest;
 
 import com.github.robi42.boot.domain.Message;
-import com.github.robi42.boot.rest.util.IntegrationTestBase;
+import com.github.robi42.boot.util.IntegrationTestBase;
 import org.junit.Test;
 
 import javax.ws.rs.core.GenericType;

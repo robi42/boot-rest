@@ -1,5 +1,6 @@
-package com.github.robi42.boot.rest.util;
+package com.github.robi42.boot.util;
 
+import com.github.robi42.boot.TestApplicationInitializer;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
