@@ -76,9 +76,7 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
 
     @Bean
     public JacksonJsonProvider jacksonJsonProvider() {
-        final JacksonJsonProvider jsonProvider = new JacksonJsonProvider();
-        jsonProvider.setMapper(objectMapper());
-        return jsonProvider;
+        return new JacksonJsonProvider(objectMapper());
     }
 
     @Bean
