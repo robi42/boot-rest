@@ -132,4 +132,4 @@ task wrapper(type: Wrapper) {
 }
 
 // Used by Heroku
-task stage(dependsOn: 'build')
+task stage(dependsOn: ['processResources', 'classes', 'jar', 'bootRepackage', 'assemble'])
