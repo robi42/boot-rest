@@ -1,9 +1,10 @@
 Boot REST
 =========
 
-Ensure having JDK 8 (preview) installed.
+Ensure having JDK 8 installed.
 
-Get it here: https://jdk8.java.net/download.html
+Get it here:<br>
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 
 Then, e.g.:
 
@@ -13,7 +14,7 @@ To build & run via command line shell:
 
     ./gradlew clean build && java -server -jar build/libs/boot-rest.jar
 
-Or simply run `ApplicationInitializer.main()` via IDEA (min. 13.1 EAP recommended).
+Or simply run `ApplicationInitializer.main()` via IDEA (min. 13.1 recommended).
 
 An endpoint to play with:
 
@@ -28,3 +29,4 @@ Note: this thing is ready to be deployed on Heroku (and verified to run packaged
 FYI: using Spring Data Elasticsearch as embedded data source provider for fun.
 
 PS: Bootstrap/Angular SPA is developed & built with the help of Yeoman, Grunt, and Bower...
+    So you'll need to have Node.js/NPM as well as Bower and Grunt CLI globally installed.

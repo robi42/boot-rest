@@ -1,14 +1,11 @@
 package com.github.robi42.boot.domain.util;
 
-import org.springframework.stereotype.Service;
-
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
 import java.util.Set;
 
-@Service
 public class BootBeanValidator implements BeanValidator {
     private final Validator validator;
 
