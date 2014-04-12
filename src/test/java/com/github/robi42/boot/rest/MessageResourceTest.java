@@ -34,6 +34,6 @@ public class MessageResourceTest extends IntegrationTestBase {
                 .request(APPLICATION_JSON_TYPE)
                 .get(new GenericType<List<Message>>() {});
 
-        assertThat(messages).isNotNull();
+        assertThat(messages).isEmpty();
     }
 }
