@@ -21,13 +21,14 @@ import javax.servlet.ServletContext;
 import static org.glassfish.jersey.server.ServerProperties.BV_SEND_ERROR_IN_RESPONSE;
 import static org.glassfish.jersey.server.ServerProperties.MOXY_JSON_FEATURE_DISABLE;
 
-public class JerseyConfig extends ResourceConfig {
+public class JerseyApplication extends ResourceConfig {
 
     @Inject
     @SuppressWarnings("SpringJavaAutowiringInspection")
-    public JerseyConfig(final ServiceLocator serviceLocator) {
-        // Register base package of REST resources
-        packages(true, getClass().getPackage().getName().replace(".util", ""));
+    public JerseyApplication(final ServiceLocator serviceLocator) {
+        // Register base package of REST providers & resources
+        final String packageName = getClass().getPackage().getName();
+        packages(true, packageName, packageName.replace(".util", ""));
 
         // Register Swagger REST API docs
         register(JaxrsApiReader.class);

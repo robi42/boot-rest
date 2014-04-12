@@ -117,7 +117,6 @@ dependencies {
     // Swagger Docs
     compile("com.wordnik:swagger-jaxrs_2.10:$swaggerVersion") {
         exclude module: 'jsr311-api'
-        exclude module: 'scala-library'
     }
 
     // Utilities

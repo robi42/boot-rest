@@ -7,8 +7,8 @@ import com.github.robi42.boot.dao.RepositoryRoot;
 import com.github.robi42.boot.domain.util.BeanValidator;
 import com.github.robi42.boot.domain.util.BootBeanValidator;
 import com.github.robi42.boot.domain.util.ElasticsearchEntityMapper;
-import com.github.robi42.boot.rest.util.JaxrsServletContainer;
-import com.github.robi42.boot.rest.util.JerseyConfig;
+import com.github.robi42.boot.rest.util.JerseyApplication;
+import com.github.robi42.boot.rest.util.JerseySwaggerServlet;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.eclipse.jetty.servlets.GzipFilter;
 import org.elasticsearch.node.Node;
@@ -59,10 +59,10 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
     }
 
     @Bean
-    public ServletRegistrationBean jerseyServlet() {
-        final ServletRegistrationBean registrationBean =
-                new ServletRegistrationBean(new JaxrsServletContainer(), "/api/*");
-        registrationBean.addInitParameter(JAXRS_APPLICATION_CLASS, JerseyConfig.class.getName());
+    public ServletRegistrationBean jaxrsServlet() {
+        final JerseySwaggerServlet servlet = new JerseySwaggerServlet();
+        final ServletRegistrationBean registrationBean = new ServletRegistrationBean(servlet, "/api/*");
+        registrationBean.addInitParameter(JAXRS_APPLICATION_CLASS, JerseyApplication.class.getName());
         return registrationBean;
     }
 

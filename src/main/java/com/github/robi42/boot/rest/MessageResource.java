@@ -31,7 +31,7 @@ import static java.util.UUID.randomUUID;
 
 @Slf4j
 @Path("/messages")
-@Api(value = "messages", description = "Messages CRUD")
+@Api(value = "messages", description = "CRUD")
 public class MessageResource {
     private final MessageRepository repository;
     private final BeanValidator validator;
@@ -77,7 +77,6 @@ public class MessageResource {
     @ApiOperation("Get a message by ID")
     public Message getMessage(final @PathParam("messageId") UUID messageId) {
         final Optional<Message> messageOptional = Optional.ofNullable(repository.findOne(messageId.toString()));
-
         if (messageOptional.isPresent()) {
             return messageOptional.get();
         }
@@ -93,7 +92,6 @@ public class MessageResource {
         validate(payload);
 
         final Optional<Message> messageOptional = Optional.ofNullable(repository.findOne(messageId.toString()));
-
         if (!messageOptional.isPresent()) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }

@@ -11,7 +11,7 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 
-public class JaxrsServletContainer extends ServletContainer {
+public class JerseySwaggerServlet extends ServletContainer {
 
     @Override
     public void init(final ServletConfig config) throws ServletException {
@@ -19,8 +19,8 @@ public class JaxrsServletContainer extends ServletContainer {
 
         // Set up Swagger REST API docs
         final SwaggerConfig swaggerConfig = new SwaggerConfig();
-        swaggerConfig.setBasePath("http://localhost:8888/api");
-        swaggerConfig.setApiVersion("0.1.0"); // TODO: don't hard-code
+        swaggerConfig.setBasePath("/"); // TODO: don't hard-code version
+        swaggerConfig.setApiVersion("0.1.0");
         ConfigFactory.setConfig(swaggerConfig);
         ScannerFactory.setScanner(new DefaultJaxrsScanner());
         ClassReaders.setReader(new DefaultJaxrsApiReader());
