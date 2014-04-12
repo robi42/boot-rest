@@ -7,13 +7,17 @@ public class BootRestException extends WebApplicationException {
 
     public BootRestException(final Response.Status status, final String message) {
         super(Response.status(status)
-                .entity(ErrorResponseBody.builder()
-                        .errorMessage(message)
-                        .build())
+                .entity(errorResponseBodyWith(message))
                 .build());
     }
 
     public BootRestException(final int statusCode, final String message) {
-        this(Response.Status.fromStatusCode(statusCode), message);
+        super(Response.status(statusCode)
+                .entity(errorResponseBodyWith(message))
+                .build());
+    }
+
+    private static ErrorResponseBody errorResponseBodyWith(final String message) {
+        return ErrorResponseBody.builder().errorMessage(message).build();
     }
 }
