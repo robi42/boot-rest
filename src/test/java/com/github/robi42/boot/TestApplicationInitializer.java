@@ -16,11 +16,10 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
-@ComponentScan
 @Configuration
+@ComponentScan
 @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
-@EnableAutoConfiguration(exclude =
-        {SecurityAutoConfiguration.class, ManagementSecurityAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class, ManagementSecurityAutoConfiguration.class})
 public class TestApplicationInitializer extends ApplicationInitializer {
 
     @Bean
