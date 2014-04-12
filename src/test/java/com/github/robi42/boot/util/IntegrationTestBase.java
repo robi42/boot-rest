@@ -31,7 +31,7 @@ public abstract class IntegrationTestBase {
                     System.setProperty("spring.profiles.active", "test");
                     return SpringApplication.run(TestApplicationInitializer.class);
                 });
-        applicationContext = applicationContextFuture.get(30, SECONDS);
+        applicationContext = applicationContextFuture.get(60, SECONDS);
         final ConfigurableEnvironment environment = applicationContext.getEnvironment();
         serverPort = environment.getProperty("server.port", int.class);
         webClient = applicationContext.getBean(Client.class);

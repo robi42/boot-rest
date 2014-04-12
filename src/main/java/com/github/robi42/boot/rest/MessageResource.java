@@ -97,10 +97,10 @@ public class MessageResource {
             throw new BootRestException(Response.Status.NOT_FOUND,
                     String.format("Message with ID '%s' not found", messageId));
         }
-        final Message message = messageOptional.get();
-        message.setBody(payload.getBody());
-        message.setLastModifiedAt(LocalDateTime.now());
-        return repository.save(message);
+        final Message messageToUpdate = messageOptional.get();
+        messageToUpdate.setBody(payload.getBody());
+        messageToUpdate.setLastModifiedAt(LocalDateTime.now());
+        return repository.save(messageToUpdate);
     }
 
     @DELETE
@@ -114,7 +114,7 @@ public class MessageResource {
         try {
             validator.validate(payload);
         } catch (ValidationException e) {
-            log.warn("{} Payload: {}", e.getMessage(), payload);
+            log.debug("{} Payload: {}", e.getMessage(), payload);
             throw new BootRestException(Response.Status.BAD_REQUEST, e.getMessage());
         }
     }
