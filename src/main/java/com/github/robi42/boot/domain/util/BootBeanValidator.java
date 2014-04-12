@@ -15,8 +15,8 @@ public class BootBeanValidator implements BeanValidator {
     }
 
     @Override
-    public void validate(final Object objectToValidate) throws ValidationException {
-        final Set<ConstraintViolation<Object>> constraintViolations = validator.validate(objectToValidate);
+    public void validate(final Object beanToValidate) throws ValidationException {
+        final Set<ConstraintViolation<Object>> constraintViolations = validator.validate(beanToValidate);
         if (!constraintViolations.isEmpty()) {
             throw new ValidationException(buildErrorMessageFrom(constraintViolations).toString());
         }
