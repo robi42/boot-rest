@@ -18,7 +18,7 @@ Or simply run `ApplicationInitializer.main()` via IDEA (min. 13.1 with installed
 
 An endpoint to play with:
 
-    curl localhost:8888/api/messages
+    curl -i localhost:8888/api/messages
 
 SPA frontend UI resides at root URL, BTW.<br>
 Admin endpoints, powered by Spring Boot, at:<br>
