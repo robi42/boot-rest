@@ -24,6 +24,7 @@ import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
@@ -42,6 +43,7 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
 import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_CLASS;
 
 @Configuration
+@Import(SecurityConfig.class)
 @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
 @EnableAutoConfiguration(exclude =
         {SecurityAutoConfiguration.class, ManagementSecurityAutoConfiguration.class})
