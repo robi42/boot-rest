@@ -7,14 +7,13 @@ import com.github.robi42.boot.dao.RepositoryRoot;
 import com.github.robi42.boot.domain.util.BeanValidator;
 import com.github.robi42.boot.domain.util.BootBeanValidator;
 import com.github.robi42.boot.domain.util.ElasticsearchEntityMapper;
-import com.github.robi42.boot.rest.RestBeanConfig;
-import com.github.robi42.boot.rest.JerseyConfig;
+import com.github.robi42.boot.rest.util.JaxrsServletContainer;
+import com.github.robi42.boot.rest.util.JerseyConfig;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.eclipse.jetty.servlets.GzipFilter;
 import org.elasticsearch.node.Node;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.ManagementSecurityAutoConfiguration;
@@ -24,9 +23,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
@@ -45,8 +42,6 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
 import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_CLASS;
 
 @Configuration
-@Import(RestBeanConfig.class)
-@ComponentScan(basePackageClasses = RepositoryRoot.class)
 @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
 @EnableAutoConfiguration(exclude =
         {SecurityAutoConfiguration.class, ManagementSecurityAutoConfiguration.class})
@@ -66,7 +61,7 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
     @Bean
     public ServletRegistrationBean jerseyServlet() {
         final ServletRegistrationBean registrationBean =
-                new ServletRegistrationBean(new ServletContainer(), "/api/*");
+                new ServletRegistrationBean(new JaxrsServletContainer(), "/api/*");
         registrationBean.addInitParameter(JAXRS_APPLICATION_CLASS, JerseyConfig.class.getName());
         return registrationBean;
     }

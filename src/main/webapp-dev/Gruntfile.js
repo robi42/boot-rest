@@ -22,7 +22,7 @@ module.exports = function (grunt) {
     yeoman: {
       // configurable paths
       app: require('./bower.json').appPath || 'app',
-      dist: 'dist'
+      dist: '../webapp'
     },
 
     // Watches files for changes and runs tasks based on the changed files
@@ -325,13 +325,23 @@ module.exports = function (grunt) {
           expand: true,
           flatten: true,
           cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>/fonts',
-          src: ['bower_components/components-font-awesome/fonts/*']
+          dest: '<%= yeoman.dist %>/bower_components/bootstrap/dist/fonts',
+          src: 'bower_components/bootstrap/dist/fonts/*'
+        }, {
+          expand: true,
+          flatten: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dist %>/bower_components/components-font-awesome/fonts',
+          src: 'bower_components/components-font-awesome/fonts/*'
         }, {
           expand: true,
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
-          src: ['generated/*']
+          src: 'generated/*'
+        }, {
+          expand: true,
+          dest: '<%= yeoman.dist %>',
+          src: 'api-docs/**'
         }]
       },
       styles: {

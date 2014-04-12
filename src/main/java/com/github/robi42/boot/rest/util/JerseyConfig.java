@@ -1,6 +1,11 @@
-package com.github.robi42.boot.rest;
+package com.github.robi42.boot.rest.util;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import com.wordnik.swagger.jaxrs.JaxrsApiReader;
+import com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider;
+import com.wordnik.swagger.jaxrs.listing.ApiListingResource;
+import com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON;
+import com.wordnik.swagger.jaxrs.listing.ResourceListingProvider;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.jvnet.hk2.spring.bridge.api.SpringBridge;
@@ -22,7 +27,14 @@ public class JerseyConfig extends ResourceConfig {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     public JerseyConfig(final ServiceLocator serviceLocator) {
         // Register base package of REST resources
-        packages(true, getClass().getPackage().getName());
+        packages(true, getClass().getPackage().getName().replace(".util", ""));
+
+        // Register Swagger REST API docs
+        register(JaxrsApiReader.class);
+        register(ApiListingResource.class);
+        register(ApiListingResourceJSON.class);
+        register(ApiDeclarationProvider.class);
+        register(ResourceListingProvider.class);
 
         // Set up Spring (**yay**) <-> HK2 (**nay**) DI bridge
         final BeanFactory beanFactory = setUpSpringBridge(serviceLocator);

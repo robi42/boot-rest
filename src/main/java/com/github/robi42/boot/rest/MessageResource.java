@@ -3,6 +3,8 @@ package com.github.robi42.boot.rest;
 import com.github.robi42.boot.dao.MessageRepository;
 import com.github.robi42.boot.domain.Message;
 import com.github.robi42.boot.domain.util.BeanValidator;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
@@ -29,12 +31,14 @@ import static java.util.UUID.randomUUID;
 
 @Slf4j
 @Path("/messages")
+@Api(value = "messages", description = "Messages CRUD")
 public class MessageResource {
     private final MessageRepository repository;
     private final BeanValidator validator;
 
     @Inject
-    public MessageResource(final MessageRepository repository, final BeanValidator validator) {
+    public MessageResource(@SuppressWarnings("SpringJavaAutowiringInspection")
+                           final MessageRepository repository, final BeanValidator validator) {
         this.repository = repository;
         this.validator = validator;
     }
@@ -42,6 +46,7 @@ public class MessageResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation("Create a new message")
     public Response createMessage(final Message.Input payload) {
         validate(payload);
 
@@ -59,6 +64,7 @@ public class MessageResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation("Get all messages")
     public List<Message> getMessages() {
         final List<Message> allMessages = newArrayList(repository.findAll());
         log.debug("Number of messages to serve: {}", allMessages.size());
@@ -68,9 +74,9 @@ public class MessageResource {
     @GET
     @Path("/{messageId}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation("Get a message by ID")
     public Message getMessage(final @PathParam("messageId") UUID messageId) {
-        final Optional<Message> messageOptional = Optional.ofNullable(
-                repository.findOne(messageId.toString()));
+        final Optional<Message> messageOptional = Optional.ofNullable(repository.findOne(messageId.toString()));
 
         if (messageOptional.isPresent()) {
             return messageOptional.get();
@@ -82,11 +88,11 @@ public class MessageResource {
     @Path("/{messageId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation("Update a message")
     public Message updateMessage(final @PathParam("messageId") UUID messageId, final Message.Input payload) {
         validate(payload);
 
-        final Optional<Message> messageOptional = Optional.ofNullable(
-                repository.findOne(messageId.toString()));
+        final Optional<Message> messageOptional = Optional.ofNullable(repository.findOne(messageId.toString()));
 
         if (!messageOptional.isPresent()) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
@@ -99,6 +105,7 @@ public class MessageResource {
 
     @DELETE
     @Path("/{messageId}")
+    @ApiOperation("Delete a message")
     public void deleteMessage(final @PathParam("messageId") UUID messageId) {
         repository.delete(messageId.toString());
     }
