@@ -45,8 +45,7 @@ import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_C
 @Configuration
 @Import(SecurityConfig.class)
 @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
-@EnableAutoConfiguration(exclude =
-        {SecurityAutoConfiguration.class, ManagementSecurityAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class, ManagementSecurityAutoConfiguration.class})
 public class ApplicationInitializer extends SpringBootServletInitializer {
     @Value("${elasticsearch.clusterName}")
     protected String elasticsearchClusterName;
