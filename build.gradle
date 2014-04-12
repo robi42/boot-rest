@@ -120,7 +120,6 @@ dependencies {
         exclude module: 'scala-library'
     }
 
-
     // Utilities
     // =========
     compile "org.projectlombok:lombok:$lombokVersion"
