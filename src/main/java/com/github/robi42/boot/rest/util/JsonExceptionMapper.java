@@ -15,7 +15,7 @@ public class JsonExceptionMapper implements ExceptionMapper<JsonProcessingExcept
     public Response toResponse(final JsonProcessingException exception) {
         return Response.status(BAD_REQUEST)
                 .entity(ErrorResponseBody.builder()
-                        .message(exception.getMessage())
+                        .errorMessage(exception.getMessage())
                         .build())
                 .build();
     }

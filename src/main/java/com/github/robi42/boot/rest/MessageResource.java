@@ -3,6 +3,7 @@ package com.github.robi42.boot.rest;
 import com.github.robi42.boot.dao.MessageRepository;
 import com.github.robi42.boot.domain.Message;
 import com.github.robi42.boot.domain.util.BeanValidator;
+import com.github.robi42.boot.rest.util.BootRestException;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
@@ -80,7 +80,8 @@ public class MessageResource {
         if (messageOptional.isPresent()) {
             return messageOptional.get();
         }
-        throw new WebApplicationException(Response.Status.NOT_FOUND);
+        throw new BootRestException(Response.Status.NOT_FOUND,
+                String.format("Message with ID '%s' not found", messageId));
     }
 
     @PUT
@@ -93,7 +94,8 @@ public class MessageResource {
 
         final Optional<Message> messageOptional = Optional.ofNullable(repository.findOne(messageId.toString()));
         if (!messageOptional.isPresent()) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
+            throw new BootRestException(Response.Status.NOT_FOUND,
+                    String.format("Message with ID '%s' not found", messageId));
         }
         final Message message = messageOptional.get();
         message.setBody(payload.getBody());
@@ -113,7 +115,7 @@ public class MessageResource {
             validator.validate(payload);
         } catch (ValidationException e) {
             log.warn("{} Payload: {}", e.getMessage(), payload);
-            throw new WebApplicationException(e.getMessage(), Response.Status.BAD_REQUEST);
+            throw new BootRestException(Response.Status.BAD_REQUEST, e.getMessage());
         }
     }
 }

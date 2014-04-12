@@ -10,5 +10,5 @@ import lombok.experimental.Builder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorResponseBody {
-    private String message;
+    private String errorMessage;
 }
