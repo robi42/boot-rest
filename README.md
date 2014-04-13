@@ -22,7 +22,7 @@ An endpoint to play with:
 
 SPA frontend UI resides at root URL, BTW.<br>
 Admin endpoints, powered by Spring Boot, at:<br>
-`/admin/*` (auth-protected)
+`/admin/*` (auth-protected)<br>
 REST API docs, powered by Swagger (UI), at:<br>
 `/api-docs/index.html`
 
@@ -30,5 +30,5 @@ Note: this thing is ready to be deployed on Heroku (and verified to run packaged
 
 FYI: using Spring Data Elasticsearch as embedded data source provider for fun.
 
-PS: Bootstrap/Angular SPA is developed & built with the help of Yeoman, Grunt, and Bower...
+PS: Bootstrap/Angular SPA is developed & built with the help of Yeoman, Grunt, and Bower...<br>
     So, you'll need to have Node.js/NPM as well as Bower and Grunt CLI (globally) installed.
