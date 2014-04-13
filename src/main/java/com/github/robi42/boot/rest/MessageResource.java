@@ -115,7 +115,7 @@ public class MessageResource {
             validator.validate(payload);
         } catch (ValidationException e) {
             log.debug("{} Payload: {}", e.getMessage(), payload);
-            throw new BootRestException(Response.Status.BAD_REQUEST, e.getMessage());
+            throw new BootRestException(422, e.getMessage()); // HTTP 422: Unprocessable Entity
         }
     }
 }
