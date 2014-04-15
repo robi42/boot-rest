@@ -164,4 +164,4 @@ gruntBuild.dependsOn bowerInstall
 build.dependsOn gruntBuild
 
 // Used by Heroku
-task stage(dependsOn: build)
+task stage(dependsOn: ['processResources', 'classes', 'jar', 'bootRepackage', 'assemble'])
