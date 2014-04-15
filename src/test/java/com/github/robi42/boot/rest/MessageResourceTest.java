@@ -8,14 +8,12 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-import static java.util.UUID.randomUUID;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class MessageResourceTest extends IntegrationTestBase {
     private static final String MESSAGE_RESOURCE_PATH = "/messages";
-    private static final String MESSAGE_ID = randomUUID().toString();
 
     @Test
     public void shouldRespondSuccessfully() throws Exception {
@@ -34,6 +32,6 @@ public class MessageResourceTest extends IntegrationTestBase {
                 .request(APPLICATION_JSON_TYPE)
                 .get(new GenericType<List<Message>>() {});
 
-        assertThat(messages).isEmpty();
+        assertThat(messages).isNotEmpty();
     }
 }
