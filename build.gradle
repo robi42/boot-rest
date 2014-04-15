@@ -135,6 +135,7 @@ dependencies {
         exclude module: 'objenesis'
     }
     testCompile "org.objenesis:objenesis:$objenesisVersion"
+    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
 }
 
 task wrapper(type: Wrapper) {
@@ -158,9 +159,9 @@ task gruntBuild(type: Exec) {
     commandLine 'grunt', '--force'
 }
 
-bowerInstall.dependsOn 'npmInstall'
-gruntBuild.dependsOn 'bowerInstall'
-build.dependsOn 'gruntBuild'
+bowerInstall.dependsOn npmInstall
+gruntBuild.dependsOn bowerInstall
+build.dependsOn gruntBuild
 
 // Used by Heroku
-task stage(dependsOn: ['processResources', 'classes', 'jar', 'bootRepackage', 'assemble'])
+task stage(dependsOn: build)
