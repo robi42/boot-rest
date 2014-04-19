@@ -135,7 +135,6 @@ dependencies {
         exclude module: 'objenesis'
     }
     testCompile "org.objenesis:objenesis:$objenesisVersion"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
 }
 
 task wrapper(type: Wrapper) {

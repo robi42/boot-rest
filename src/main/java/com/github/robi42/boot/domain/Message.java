@@ -19,8 +19,11 @@ import static org.springframework.data.elasticsearch.annotations.FieldType.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(indexName = "messages", type = "message")
+@Document(indexName = Message.INDEX_NAME, type = Message.TYPE_NAME)
 public class Message {
+    public static final String INDEX_NAME = "messages";
+    public static final String TYPE_NAME = "message";
+
     // Note: Spring Data ES doesn't support `UUID` typed IDs (yet?)
     private String id;
     @Field(type = Date, pattern = ISO_DATE_TIME_FORMAT_PATTERN)

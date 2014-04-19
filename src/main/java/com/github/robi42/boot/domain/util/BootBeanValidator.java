@@ -1,6 +1,5 @@
 package com.github.robi42.boot.domain.util;
 
-import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
@@ -9,7 +8,6 @@ import java.util.Set;
 public class BootBeanValidator implements BeanValidator {
     private final Validator validator;
 
-    @Inject
     public BootBeanValidator(final Validator validator) {
         this.validator = validator;
     }
