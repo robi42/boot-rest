@@ -33,5 +33,7 @@ public class MessageResourceTest extends IntegrationTestBase {
                 .get(new GenericType<List<Message>>() {});
 
         assertThat(messages).isNotEmpty();
+        assertThat(messages.size()).isEqualTo(3);
+        assertThat(messages.get(0).getBody()).isEqualTo("Foo");
     }
 }
