@@ -113,7 +113,7 @@ public class MessageResource {
     private void validate(final Message.Input payload) {
         try {
             validator.validate(payload);
-        } catch (ValidationException e) {
+        } catch (final ValidationException e) {
             log.debug("{} Payload: {}", e.getMessage(), payload);
             throw new BootRestException(Response.Status.BAD_REQUEST, e.getMessage());
         }
