@@ -33,6 +33,8 @@ import static java.util.UUID.randomUUID;
 @Path("/messages")
 @Api(value = "messages", description = "CRUD")
 public class MessageResource {
+    private static final String NOT_FOUND_FORMAT = "Message with ID '%s' not found";
+
     private final MessageRepository repository;
     private final BeanValidator validator;
 
@@ -80,8 +82,7 @@ public class MessageResource {
         if (messageOptional.isPresent()) {
             return messageOptional.get();
         }
-        throw new BootRestException(Response.Status.NOT_FOUND,
-                String.format("Message with ID '%s' not found", messageId));
+        throw new BootRestException(Response.Status.NOT_FOUND, String.format(NOT_FOUND_FORMAT, messageId));
     }
 
     @PUT
@@ -94,8 +95,7 @@ public class MessageResource {
 
         final Optional<Message> messageOptional = Optional.ofNullable(repository.findOne(messageId.toString()));
         if (!messageOptional.isPresent()) {
-            throw new BootRestException(Response.Status.NOT_FOUND,
-                    String.format("Message with ID '%s' not found", messageId));
+            throw new BootRestException(Response.Status.NOT_FOUND, String.format(NOT_FOUND_FORMAT, messageId));
         }
         final Message messageToUpdate = messageOptional.get();
         messageToUpdate.setBody(payload.getBody());
