@@ -8,6 +8,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.fest.assertions.Assertions.assertThat;
@@ -34,6 +35,9 @@ public class MessageResourceTest extends IntegrationTestBase {
 
         assertThat(messages).isNotEmpty();
         assertThat(messages.size()).isEqualTo(3);
-        assertThat(messages.get(0).getBody()).isEqualTo("Foo");
+
+        final List<String> messageBodies = messages.stream()
+                .map(Message::getBody).collect(toList());
+        assertThat(messageBodies).contains("Foo");
     }
 }

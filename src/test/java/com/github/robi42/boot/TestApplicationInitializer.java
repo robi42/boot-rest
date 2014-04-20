@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ import static java.util.UUID.randomUUID;
 
 @Configuration
 @ComponentScan
-@Import(TestBeanConfig.class)
+@Profile("test")
 @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
 @EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class, ManagementSecurityAutoConfiguration.class})
 public class TestApplicationInitializer extends ApplicationInitializer {
