@@ -19,8 +19,7 @@ public class MessageResourceTest extends IntegrationTestBase {
     @Test
     public void shouldRespondSuccessfully() throws Exception {
         final Response response = restApi.path(MESSAGE_RESOURCE_PATH)
-                .request(APPLICATION_JSON_TYPE)
-                .get(Response.class);
+                .request(APPLICATION_JSON_TYPE).get();
 
         assertThat(response.getStatusInfo().getFamily())
                 .isEqualTo(Response.Status.Family.SUCCESSFUL);
