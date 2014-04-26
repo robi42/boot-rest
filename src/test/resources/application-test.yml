@@ -2,5 +2,3 @@ spring:
   application.name: boot-rest-test
   main.show_banner: false
 server.port: 8889
-
-elasticsearch.clusterName: boot-rest-test-cluster

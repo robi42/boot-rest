@@ -1,3 +1,7 @@
-node.name: boot-rest-node
+cluster.name: boot-rest-cluster
+node:
+  name: boot-rest-node
+  local: true
+  data: true
 path.data: ./data
 http.enabled: false

@@ -35,8 +35,8 @@ import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_C
 
 @Configuration
 public class BeanConfig {
-    @Value("${elasticsearch.clusterName}")
-    protected String elasticsearchClusterName;
+    @Value("${spring.profiles.active}")
+    protected String activeSpringProfile;
     @Value("${webClient.connectionPool.maxTotal}")
     protected int webClientConnectionPoolMaxTotal;
     @Value("${webClient.connectionPool.defaultMaxPerRoute}")
@@ -80,18 +80,26 @@ public class BeanConfig {
         clientConfig.property(CONNECTION_MANAGER, poolingConnectionManager);
         clientConfig.connectorProvider(new ApacheConnectorProvider());
 
-        return newClient(clientConfig).register(jacksonJsonProvider());
+        return newClient(clientConfig)
+                .register(jacksonJsonProvider());
+    }
+
+    @Bean
+    public Node elasticsearchNode() {
+        final String settingsResourceName = String.format("elasticsearch%s.yml",
+                activeSpringProfile.equals("test") ? "-test" : "");
+        return nodeBuilder().settings(settingsBuilder().loadFromClasspath(settingsResourceName))
+                .node();
+    }
+
+    @Bean
+    public org.elasticsearch.client.Client elasticsearchClient() {
+        return elasticsearchNode().client();
     }
 
     @Bean
     public ElasticsearchOperations elasticsearchTemplate() {
-        // Note: in a real prod env one would rather connect to a dedicated remote cluster instead of embedding locally
-        final Node node = nodeBuilder()
-                .settings(settingsBuilder().loadFromClasspath("elasticsearch.yml"))
-                .clusterName(elasticsearchClusterName)
-                .data(true).local(true)
-                .node();
-        return new ElasticsearchTemplate(node.client(), new ElasticsearchEntityMapper(objectMapper()));
+        return new ElasticsearchTemplate(elasticsearchClient(), new ElasticsearchEntityMapper(objectMapper()));
     }
 
     @Bean
