@@ -2,7 +2,7 @@ package com.github.robi42.boot;
 
 import com.github.robi42.boot.dao.MessageRepository;
 import com.github.robi42.boot.dao.RepositoryRoot;
-import com.github.robi42.boot.domain.Message;
+import com.github.robi42.boot.util.TestFixtureFactory;
 import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.actuate.autoconfigure.ManagementSecurityAutoConfiguration;
@@ -14,9 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
-import java.time.LocalDateTime;
-
-import static java.util.UUID.randomUUID;
+import javax.inject.Inject;
 
 @Configuration
 @ComponentScan
@@ -24,21 +22,18 @@ import static java.util.UUID.randomUUID;
 @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
 @EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class, ManagementSecurityAutoConfiguration.class})
 public class TestApplicationInitializer extends ApplicationInitializer {
+    @Inject
+    private TestFixtureFactory fixtures;
 
     @Bean
     @Override
     public InitializingBean populateMessageIndex(final MessageRepository repository) {
         return () -> {
             repository.deleteAll();
-            repository.save(ImmutableList.of(message("Foo"), message("Bar"), message("Baz")));
+            repository.save(ImmutableList.of(
+                    fixtures.message("Foo"),
+                    fixtures.message("Bar"),
+                    fixtures.message("Baz")));
         };
-    }
-
-    private Message message(final String text) {
-        return Message.builder()
-                .id(randomUUID().toString())
-                .body(text)
-                .lastModifiedAt(LocalDateTime.now())
-                .build();
     }
 }
