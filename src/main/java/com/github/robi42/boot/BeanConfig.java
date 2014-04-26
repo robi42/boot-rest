@@ -10,6 +10,7 @@ import com.github.robi42.boot.rest.util.JerseyApplication;
 import com.github.robi42.boot.rest.util.JerseySwaggerServlet;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.eclipse.jetty.servlets.GzipFilter;
+import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.node.Node;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
@@ -88,7 +89,8 @@ public class BeanConfig {
     public Node elasticsearchNode() {
         final String settingsResourceName = String.format("elasticsearch%s.yml",
                 activeSpringProfile.equals("test") ? "-test" : "");
-        return nodeBuilder().settings(settingsBuilder().loadFromClasspath(settingsResourceName))
+        final ImmutableSettings.Builder settingsBuilder = settingsBuilder().loadFromClasspath(settingsResourceName);
+        return nodeBuilder().settings(settingsBuilder)
                 .node();
     }
 
