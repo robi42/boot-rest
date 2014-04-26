@@ -31,7 +31,6 @@ public class MessageResourceTest extends IntegrationTestBase {
         final List<Message> messages = restApi.path(MESSAGE_RESOURCE_PATH)
                 .request(APPLICATION_JSON_TYPE)
                 .get(new GenericType<List<Message>>() {});
-
         assertThat(messages).isNotEmpty();
         assertThat(messages.size()).isEqualTo(3);
 
