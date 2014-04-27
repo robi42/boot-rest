@@ -4,9 +4,12 @@ import com.github.robi42.boot.dao.MessageRepository;
 import com.github.robi42.boot.domain.Message;
 import com.github.robi42.boot.domain.util.BeanValidator;
 import com.github.robi42.boot.rest.util.BootRestException;
+import com.github.robi42.boot.search.ElasticsearchProvider;
+import com.github.robi42.boot.search.SearchHitDto;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.ElasticsearchException;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -18,6 +21,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
@@ -28,21 +32,26 @@ import java.util.UUID;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.UUID.randomUUID;
+import static org.elasticsearch.index.query.QueryBuilders.matchPhrasePrefixQuery;
 
 @Slf4j
 @Path("/messages")
-@Api(value = "messages", description = "CRUD")
+@Api(value = "messages", description = "CRUD & Search")
 public class MessageResource {
     private static final String NOT_FOUND_FORMAT = "Message with ID '%s' not found";
 
     private final MessageRepository repository;
     private final BeanValidator validator;
+    private final ElasticsearchProvider searchProvider;
 
     @Inject
     public MessageResource(@SuppressWarnings("SpringJavaAutowiringInspection")
-                           final MessageRepository repository, final BeanValidator validator) {
+                           final MessageRepository repository,
+                           final BeanValidator validator,
+                           final ElasticsearchProvider searchProvider) {
         this.repository = repository;
         this.validator = validator;
+        this.searchProvider = searchProvider;
     }
 
     @POST
@@ -108,6 +117,19 @@ public class MessageResource {
     @ApiOperation("Delete a message")
     public void deleteMessage(final @PathParam("messageId") UUID messageId) {
         repository.delete(messageId.toString());
+    }
+
+    @GET
+    @Path("/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation("Search for messages by body content")
+    public List<SearchHitDto> search(final @QueryParam("q") String term) {
+        try {
+            return searchProvider.search(Message.INDEX_NAME, matchPhrasePrefixQuery("body", term));
+        } catch (final ElasticsearchException e) {
+            throw new BootRestException(Response.Status.PRECONDITION_FAILED,
+                    String.format("Searching for '%s' failed; %s", term, e.getMessage()));
+        }
     }
 
     private void validate(final Message.Input payload) {

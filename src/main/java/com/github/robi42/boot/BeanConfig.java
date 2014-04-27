@@ -8,6 +8,8 @@ import com.github.robi42.boot.domain.util.BootBeanValidator;
 import com.github.robi42.boot.domain.util.ElasticsearchEntityMapper;
 import com.github.robi42.boot.rest.util.JerseyApplication;
 import com.github.robi42.boot.rest.util.JerseySwaggerServlet;
+import com.github.robi42.boot.search.BootElasticsearchProvider;
+import com.github.robi42.boot.search.ElasticsearchProvider;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.eclipse.jetty.servlets.GzipFilter;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -102,6 +104,11 @@ public class BeanConfig {
     @Bean
     public ElasticsearchOperations elasticsearchTemplate() {
         return new ElasticsearchTemplate(elasticsearchClient(), new ElasticsearchEntityMapper(objectMapper()));
+    }
+
+    @Bean
+    public ElasticsearchProvider elasticsearchProvider() {
+        return new BootElasticsearchProvider(elasticsearchClient());
     }
 
     @Bean

@@ -3,5 +3,5 @@ node:
   name: boot-rest-test-node
   local: true
   data: true
-path.data: ./data
+path.data: ./data-test
 http.enabled: false
