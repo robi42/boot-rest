@@ -41,12 +41,12 @@ repositories {
 // Versions
 // ========
 // Core
-def springBootVersion = '1.0.1.RELEASE'
+def springBootVersion = '1.0.2.RELEASE'
 def springDataEsVersion = '1.0.0.BUILD-SNAPSHOT'
 def thymeleafVersion = '2.1.2.RELEASE'
 def hibernateValidatorVersion = '5.1.0.Final'
 def servletApiVersion = '3.1.0'
-def jettyVersion = '9.1.3.v20140225'
+def jettyVersion = '9.1.4.v20140401'
 def springHk2BridgeVersion = '2.2.0'
 def jerseyVersion = '2.7'
 def apacheHttpClientVersion = '4.3.3'
@@ -55,7 +55,7 @@ def swaggerVersion = '1.3.4'
 
 // Utilities
 def lombokVersion = '1.12.6'
-def guavaVersion = '16.0.1'
+def guavaVersion = '17.0'
 def groovyVersion = '2.2.2'
 def yamlVersion = '1.13'
 
@@ -135,10 +135,11 @@ dependencies {
         exclude module: 'objenesis'
     }
     testCompile "org.objenesis:objenesis:$objenesisVersion"
+    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.11'
+    gradleVersion = '1.12'
 }
 
 def webappDevDir = 'src/main/webapp-dev'

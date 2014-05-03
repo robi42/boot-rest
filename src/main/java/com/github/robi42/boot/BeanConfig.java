@@ -38,8 +38,8 @@ import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_C
 
 @Configuration
 public class BeanConfig {
-    @Value("${spring.profiles.active}")
-    protected String activeSpringProfile;
+    @Value("${spring.profiles.active:prod}")
+    protected String activeSpringProfiles;
     @Value("${webClient.connectionPool.maxTotal}")
     protected int webClientConnectionPoolMaxTotal;
     @Value("${webClient.connectionPool.defaultMaxPerRoute}")
@@ -90,7 +90,7 @@ public class BeanConfig {
     @Bean
     public Node elasticsearchNode() {
         final String settingsResourceName = String.format("elasticsearch%s.yml",
-                activeSpringProfile.equals("test") ? "-test" : "");
+                activeSpringProfiles.equals("test") ? "-test" : "");
         final ImmutableSettings.Builder settingsBuilder = settingsBuilder().loadFromClasspath(settingsResourceName);
         return nodeBuilder().settings(settingsBuilder)
                 .node();

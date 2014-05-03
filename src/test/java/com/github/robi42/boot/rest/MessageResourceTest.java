@@ -26,6 +26,7 @@ public class MessageResourceTest extends IntegrationTestBase {
         assertThat(response.getStatusInfo().getFamily())
                 .isEqualTo(Response.Status.Family.SUCCESSFUL);
         assertThat(response.getStatus()).isEqualTo(OK.getStatusCode());
+        response.close();
     }
 
     @Test

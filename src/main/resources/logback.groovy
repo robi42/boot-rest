@@ -15,7 +15,7 @@ appender("STDOUT", ConsoleAppender) {
 
 def isTestEnv = System.getProperty("spring.profiles.active") == 'test'
 
-logger "org.springframework.boot", isTestEnv ? WARN : INFO
+logger "org.springframework", isTestEnv ? WARN : INFO
 logger "org.eclipse.jetty", isTestEnv ? WARN : INFO
 logger "org.glassfish.jersey", isTestEnv ? WARN : INFO
 
