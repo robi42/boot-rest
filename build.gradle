@@ -119,11 +119,9 @@ dependencies {
     compile "org.projectlombok:lombok:$lombokVersion"
     compile "com.google.guava:guava:$guavaVersion"
     runtime "org.codehaus.groovy:groovy-all:$groovyVersion"
-    runtime "org.yaml:snakeyaml"
 
     // Testing
     // =======
-    testCompile "junit:junit"
     testCompile "org.easytesting:fest-assert:$festAssertVersion"
     testCompile("org.mockito:mockito-core") {
         exclude module: 'objenesis'

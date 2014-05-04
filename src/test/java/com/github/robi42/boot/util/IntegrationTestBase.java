@@ -34,6 +34,6 @@ public abstract class IntegrationTestBase {
 
     @Before
     public void setUp() {
-        restApi = webClient.target(String.format("http://localhost:%s/api", serverPort));
+        restApi = webClient.target(String.format("http://localhost:%d/api", serverPort));
     }
 }
