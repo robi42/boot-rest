@@ -122,12 +122,12 @@ dependencies {
 
     // Testing
     // =======
+    testCompile "org.springframework.boot:spring-boot-starter-test"
     testCompile "org.easytesting:fest-assert:$festAssertVersion"
     testCompile("org.mockito:mockito-core") {
         exclude module: 'objenesis'
     }
     testCompile "org.objenesis:objenesis:$objenesisVersion"
-    testCompile "org.springframework.boot:spring-boot-starter-test"
 }
 
 task wrapper(type: Wrapper) {
