@@ -38,7 +38,7 @@ import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_C
 
 @Configuration
 public class BeanConfig {
-    @Value("${spring.profiles.active:prod}")
+    @Value("${spring.profiles.active:dev}")
     protected String activeSpringProfiles;
     @Value("${webClient.connectionPool.maxTotal}")
     protected int webClientConnectionPoolMaxTotal;
