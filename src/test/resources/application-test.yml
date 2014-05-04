@@ -1,4 +1,4 @@
 spring:
   application.name: boot-rest-test
-  main.show_banner: false
+  main.showBanner: false
 server.port: 8889
