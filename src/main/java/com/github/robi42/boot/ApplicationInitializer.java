@@ -41,7 +41,7 @@ public class ApplicationInitializer extends SpringBootServletInitializer {
     }
 
     @Bean
-    public HealthIndicator<Object> messageIndexHealthIndicator(final ElasticsearchOperations elasticsearchTemplate) {
+    public HealthIndicator<String> messageIndexHealthIndicator(final ElasticsearchOperations elasticsearchTemplate) {
         return () -> elasticsearchTemplate.typeExists(Message.INDEX_NAME, Message.TYPE_NAME) ? "ok" : "error";
     }
 
