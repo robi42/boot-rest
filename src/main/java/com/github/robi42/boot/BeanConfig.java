@@ -3,9 +3,7 @@ package com.github.robi42.boot;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import com.github.robi42.boot.domain.util.BeanValidator;
-import com.github.robi42.boot.domain.util.BootBeanValidator;
-import com.github.robi42.boot.domain.util.ElasticsearchEntityMapper;
+import com.github.robi42.boot.search.ElasticsearchEntityMapper;
 import com.github.robi42.boot.rest.util.JerseyApplication;
 import com.github.robi42.boot.rest.util.JerseySwaggerServlet;
 import com.github.robi42.boot.search.BootElasticsearchProvider;
@@ -22,10 +20,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.servlet.Filter;
-import javax.validation.Validator;
 import javax.ws.rs.client.Client;
 
 import static javax.ws.rs.client.ClientBuilder.newClient;
@@ -109,15 +105,5 @@ public class BeanConfig {
     @Bean
     public ElasticsearchProvider elasticsearchProvider() {
         return new BootElasticsearchProvider(elasticsearchClient());
-    }
-
-    @Bean
-    public Validator validator() {
-        return new LocalValidatorFactoryBean();
-    }
-
-    @Bean
-    public BeanValidator beanValidator() {
-        return new BootBeanValidator(validator());
     }
 }

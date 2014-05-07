@@ -2,7 +2,6 @@ package com.github.robi42.boot.rest;
 
 import com.github.robi42.boot.dao.MessageRepository;
 import com.github.robi42.boot.domain.Message;
-import com.github.robi42.boot.domain.util.BeanValidator;
 import com.github.robi42.boot.rest.util.BootRestException;
 import com.github.robi42.boot.search.ElasticsearchProvider;
 import com.github.robi42.boot.search.SearchHitDto;
@@ -12,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.ElasticsearchException;
 
 import javax.inject.Inject;
-import javax.validation.ValidationException;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -41,16 +40,13 @@ public class MessageResource {
     private static final String NOT_FOUND_FORMAT = "Message with ID '%s' not found";
 
     private final MessageRepository repository;
-    private final BeanValidator validator;
     private final ElasticsearchProvider searchProvider;
 
     @Inject
     public MessageResource(@SuppressWarnings("SpringJavaAutowiringInspection")
                            final MessageRepository repository,
-                           final BeanValidator validator,
                            final ElasticsearchProvider searchProvider) {
         this.repository = repository;
-        this.validator = validator;
         this.searchProvider = searchProvider;
     }
 
@@ -58,9 +54,7 @@ public class MessageResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation("Create a new message")
-    public Response createMessage(final Message.Input payload) {
-        validate(payload);
-
+    public Response createMessage(final @Valid Message.Input payload) {
         final Message messageToPersist = Message.builder()
                 .id(randomUUID().toString())
                 .lastModifiedAt(LocalDateTime.now())
@@ -99,9 +93,7 @@ public class MessageResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation("Update a message")
-    public Message updateMessage(final @PathParam("messageId") UUID messageId, final Message.Input payload) {
-        validate(payload);
-
+    public Message updateMessage(final @PathParam("messageId") UUID messageId, final @Valid Message.Input payload) {
         final Optional<Message> messageOptional = Optional.ofNullable(repository.findOne(messageId.toString()));
         if (!messageOptional.isPresent()) {
             throw new BootRestException(Response.Status.NOT_FOUND, String.format(NOT_FOUND_FORMAT, messageId));
@@ -129,15 +121,6 @@ public class MessageResource {
         } catch (final ElasticsearchException e) {
             throw new BootRestException(Response.Status.PRECONDITION_FAILED,
                     String.format("Searching for '%s' failed; %s", term, e.getMessage()));
-        }
-    }
-
-    private void validate(final Message.Input payload) {
-        try {
-            validator.validate(payload);
-        } catch (final ValidationException e) {
-            log.debug("{} Payload: {}", e.getMessage(), payload);
-            throw new BootRestException(Response.Status.BAD_REQUEST, e.getMessage());
         }
     }
 }

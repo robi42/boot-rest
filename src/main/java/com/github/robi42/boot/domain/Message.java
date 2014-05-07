@@ -12,7 +12,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-import static com.github.robi42.boot.domain.util.ElasticsearchEntityMapper.ISO_DATE_TIME_FORMAT_PATTERN;
+import static com.github.robi42.boot.search.ElasticsearchEntityMapper.ISO_DATE_TIME_FORMAT_PATTERN;
 import static org.springframework.data.elasticsearch.annotations.FieldType.Date;
 
 @Data

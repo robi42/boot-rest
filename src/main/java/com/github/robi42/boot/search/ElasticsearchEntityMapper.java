@@ -1,4 +1,4 @@
-package com.github.robi42.boot.domain.util;
+package com.github.robi42.boot.search;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.elasticsearch.core.EntityMapper;
