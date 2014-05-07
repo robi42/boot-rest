@@ -9,9 +9,11 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.ElasticsearchException;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -54,7 +56,7 @@ public class MessageResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation("Create a new message")
-    public Response createMessage(final @Valid Message.Input payload) {
+    public Response createMessage(final @NotNull @Valid Message.Input payload) {
         final Message messageToPersist = Message.builder()
                 .id(randomUUID().toString())
                 .lastModifiedAt(LocalDateTime.now())
@@ -80,7 +82,7 @@ public class MessageResource {
     @Path("/{messageId}")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation("Get a message by ID")
-    public Message getMessage(final @PathParam("messageId") UUID messageId) {
+    public Message getMessage(final @NotNull @PathParam("messageId") UUID messageId) {
         final Optional<Message> messageOptional = Optional.ofNullable(repository.findOne(messageId.toString()));
         if (messageOptional.isPresent()) {
             return messageOptional.get();
@@ -93,7 +95,8 @@ public class MessageResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation("Update a message")
-    public Message updateMessage(final @PathParam("messageId") UUID messageId, final @Valid Message.Input payload) {
+    public Message updateMessage(final @NotNull @PathParam("messageId") UUID messageId,
+                                 final @NotNull @Valid Message.Input payload) {
         final Optional<Message> messageOptional = Optional.ofNullable(repository.findOne(messageId.toString()));
         if (!messageOptional.isPresent()) {
             throw new BootRestException(Response.Status.NOT_FOUND, String.format(NOT_FOUND_FORMAT, messageId));
@@ -107,7 +110,7 @@ public class MessageResource {
     @DELETE
     @Path("/{messageId}")
     @ApiOperation("Delete a message")
-    public void deleteMessage(final @PathParam("messageId") UUID messageId) {
+    public void deleteMessage(final @NotNull @PathParam("messageId") UUID messageId) {
         repository.delete(messageId.toString());
     }
 
@@ -115,7 +118,7 @@ public class MessageResource {
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation("Search for messages by body content")
-    public List<SearchHitDto> search(final @QueryParam("q") String term) {
+    public List<SearchHitDto> search(final @NotEmpty @QueryParam("q") String term) {
         try {
             return searchProvider.search(Message.INDEX_NAME, matchPhrasePrefixQuery("body", term));
         } catch (final ElasticsearchException e) {
