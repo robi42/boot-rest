@@ -4,4 +4,5 @@ node:
   local: true
   data: true
 path.data: ./data-test
+discovery.zen.ping.multicast.enabled: false
 http.enabled: false
