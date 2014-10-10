@@ -18,11 +18,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.elasticsearch.core.DefaultResultMapper;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.EntityMapper;
-import org.springframework.data.elasticsearch.core.ResultsMapper;
 
 import javax.servlet.Filter;
 import javax.ws.rs.client.Client;
@@ -101,18 +98,8 @@ public class BeanConfig {
     }
 
     @Bean
-    public EntityMapper elasticsearchEntityMapper() {
-        return new ElasticsearchEntityMapper(objectMapper());
-    }
-
-    @Bean
-    public ResultsMapper elasticsearchResultsMapper() {
-        return new DefaultResultMapper(elasticsearchEntityMapper());
-    }
-
-    @Bean
     public ElasticsearchOperations elasticsearchTemplate() {
-        return new ElasticsearchTemplate(elasticsearchClient(), elasticsearchResultsMapper());
+        return new ElasticsearchTemplate(elasticsearchClient(), new ElasticsearchEntityMapper(objectMapper()));
     }
 
     @Bean
