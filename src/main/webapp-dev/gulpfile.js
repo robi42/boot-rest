@@ -13,7 +13,7 @@ gulp.task('styles', function () {
   return gulp.src('app/styles/main.less')
     .pipe($.less())
     .pipe($.autoprefixer('last 1 version'))
-    .pipe(gulp.dest('.tmp/styles'))
+    .pipe(gulp.dest('.tmp/styles'));
 });
 
 gulp.task('scripts', function () {
@@ -21,7 +21,7 @@ gulp.task('scripts', function () {
     .pipe($.jshint())
     .pipe($.jshint.reporter(require('jshint-stylish')))
     .pipe($.jshint.reporter('fail'))
-    .pipe($.ngAnnotate())
+    .pipe($.ngAnnotate());
 });
 
 gulp.task('html', ['styles', 'scripts'], function () {
@@ -51,7 +51,7 @@ gulp.task('html', ['styles', 'scripts'], function () {
 gulp.task('views', function () {
   return gulp.src('app/views/**/*')
     .pipe($.htmlmin({collapseWhitespace: true}))
-    .pipe(gulp.dest(distDir + '/views'))
+    .pipe(gulp.dest(distDir + '/views'));
 });
 
 gulp.task('images', function () {
@@ -61,7 +61,7 @@ gulp.task('images', function () {
       progressive: true,
       interlaced: true
     })))
-    .pipe(gulp.dest(distDir + '/images'))
+    .pipe(gulp.dest(distDir + '/images'));
 });
 
 gulp.task('fonts', function () {
@@ -73,7 +73,7 @@ gulp.task('fonts', function () {
 
 gulp.task('fontawesome', function () {
   return gulp.src('app/bower_components/components-font-awesome/fonts/**/*')
-    .pipe(gulp.dest(distDir + '/fonts'))
+    .pipe(gulp.dest(distDir + '/fonts'));
 });
 
 gulp.task('extras', function () {
@@ -83,7 +83,7 @@ gulp.task('extras', function () {
 
 gulp.task('apidocs', function () {
   return gulp.src('api-docs/**/*')
-    .pipe(gulp.dest(distDir + '/api-docs'))
+    .pipe(gulp.dest(distDir + '/api-docs'));
 });
 
 gulp.task('test', function () {
