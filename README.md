@@ -16,6 +16,10 @@ To build & run via command line shell:
 
 Or simply run `ApplicationInitializer.main()` via IDEA (min. 13.1 with installed Lombok plugin recommended).
 
+Also (pre-packaged):
+
+    bin/run.sh
+
 An endpoint to play with:
 
     curl -i localhost:8888/api/messages
@@ -30,5 +34,5 @@ Note: this thing is ready to be deployed on Heroku (and verified to run packaged
 
 FYI: using Spring Data Elasticsearch as embedded data source provider for fun.
 
-PS: Bootstrap/Angular SPA is developed & built with the help of Yeoman, Grunt, and Bower...<br>
-    So, you'll need to have Node.js/NPM as well as Bower and Grunt CLI (globally) installed.
+PS: Bootstrap/Angular SPA is developed & built with the help of Yeoman, Gulp, and Bower...<br>
+    So, you'll need to have Node.js/NPM as well as Bower and Gulp CLI (globally) installed.

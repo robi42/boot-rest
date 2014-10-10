@@ -1,18 +1,19 @@
 (function (window, angular, undefined) {
   'use strict';
 
-  angular.module('yoaControllers', []);
-  angular.module('yoaDirectives', []);
-  angular.module('yoaModels', ['ngResource']);
+  angular.module('brModels', ['ngResource']);
+  angular.module('brControllers', []);
+  angular.module('brDirectives', []);
 
-  var app = angular.module('yoaApp', [
+  var app = angular.module('brApp', [
+    'ngAnimate',
     'ngCookies',
     'ngSanitize',
     'ngRoute',
     'xeditable',
-    'yoaControllers',
-    'yoaDirectives',
-    'yoaModels'
+    'brModels',
+    'brControllers',
+    'brDirectives'
   ]);
 
   app.config(function ($locationProvider, $routeProvider) {

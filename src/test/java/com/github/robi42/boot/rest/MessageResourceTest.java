@@ -3,6 +3,7 @@ package com.github.robi42.boot.rest;
 import com.github.robi42.boot.domain.Message;
 import com.github.robi42.boot.search.SearchHitDto;
 import com.github.robi42.boot.util.IntegrationTestBase;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.core.GenericType;
@@ -16,11 +17,10 @@ import static javax.ws.rs.core.Response.Status.OK;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class MessageResourceTest extends IntegrationTestBase {
-    private static final String MESSAGE_RESOURCE_PATH = "/messages";
 
     @Test
     public void shouldRespondSuccessfully() throws Exception {
-        final Response response = restApi.path(MESSAGE_RESOURCE_PATH)
+        final Response response = restApi.path(MessageResource.BASE_PATH)
                 .request(APPLICATION_JSON_TYPE).get();
 
         assertThat(response.getStatusInfo().getFamily())
@@ -31,7 +31,7 @@ public class MessageResourceTest extends IntegrationTestBase {
 
     @Test
     public void shouldRespondWithMessages() throws Exception {
-        final List<Message> messages = restApi.path(MESSAGE_RESOURCE_PATH)
+        final List<Message> messages = restApi.path(MessageResource.BASE_PATH)
                 .request(APPLICATION_JSON_TYPE)
                 .get(new GenericType<List<Message>>() {});
         assertThat(messages).isNotEmpty();
@@ -44,7 +44,7 @@ public class MessageResourceTest extends IntegrationTestBase {
 
     @Test
     public void shouldFindMessageViaSearch() throws Exception {
-        final List<SearchHitDto> hits = restApi.path(MESSAGE_RESOURCE_PATH + "/search")
+        final List<SearchHitDto> hits = restApi.path(MessageResource.BASE_PATH + "/search")
                 .queryParam("q", "bar")
                 .request(APPLICATION_JSON_TYPE)
                 .get(new GenericType<List<SearchHitDto>>() {});

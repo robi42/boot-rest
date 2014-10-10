@@ -2,7 +2,7 @@ package com.github.robi42.boot.rest;
 
 import com.github.robi42.boot.dao.MessageRepository;
 import com.github.robi42.boot.domain.Message;
-import com.github.robi42.boot.rest.util.BootRestException;
+import com.github.robi42.boot.util.BootRestException;
 import com.github.robi42.boot.search.ElasticsearchProvider;
 import com.github.robi42.boot.search.SearchHitDto;
 import com.wordnik.swagger.annotations.Api;
@@ -26,9 +26,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -36,9 +35,10 @@ import static java.util.UUID.randomUUID;
 import static org.elasticsearch.index.query.QueryBuilders.matchPhrasePrefixQuery;
 
 @Slf4j
-@Path("/messages")
-@Api(value = "messages", description = "CRUD & Search")
+@Path(MessageResource.BASE_PATH)
+@Api(value = MessageResource.BASE_PATH, description = "CRUD & Search")
 public class MessageResource {
+    public static final String BASE_PATH = "messages";
     private static final String NOT_FOUND_FORMAT = "Message with ID '%s' not found";
 
     private final MessageRepository repository;
@@ -59,11 +59,11 @@ public class MessageResource {
     public Response createMessage(final @NotNull @Valid Message.Input payload) {
         final Message messageToPersist = Message.builder()
                 .id(randomUUID().toString())
-                .lastModifiedAt(LocalDateTime.now())
+                .lastModifiedAt(new Date())
                 .body(payload.getBody())
                 .build();
         final Message persistedMessage = repository.save(messageToPersist);
-        final String messagePath = String.format("/api/messages/%s", persistedMessage.getId());
+        final String messagePath = String.format("%s/%s", BASE_PATH, persistedMessage.getId());
         return Response.created(URI.create(messagePath))
                 .entity(persistedMessage)
                 .build();
@@ -83,9 +83,9 @@ public class MessageResource {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation("Get a message by ID")
     public Message getMessage(final @NotNull @PathParam("messageId") UUID messageId) {
-        final Optional<Message> messageOptional = Optional.ofNullable(repository.findOne(messageId.toString()));
-        if (messageOptional.isPresent()) {
-            return messageOptional.get();
+        final Message message = repository.findOne(messageId.toString());
+        if (message != null) {
+            return message;
         }
         throw new BootRestException(Response.Status.NOT_FOUND, String.format(NOT_FOUND_FORMAT, messageId));
     }
@@ -97,13 +97,12 @@ public class MessageResource {
     @ApiOperation("Update a message")
     public Message updateMessage(final @NotNull @PathParam("messageId") UUID messageId,
                                  final @NotNull @Valid Message.Input payload) {
-        final Optional<Message> messageOptional = Optional.ofNullable(repository.findOne(messageId.toString()));
-        if (!messageOptional.isPresent()) {
+        final Message messageToUpdate = repository.findOne(messageId.toString());
+        if (messageToUpdate == null) {
             throw new BootRestException(Response.Status.NOT_FOUND, String.format(NOT_FOUND_FORMAT, messageId));
         }
-        final Message messageToUpdate = messageOptional.get();
         messageToUpdate.setBody(payload.getBody());
-        messageToUpdate.setLastModifiedAt(LocalDateTime.now());
+        messageToUpdate.setLastModifiedAt(new Date());
         return repository.save(messageToUpdate);
     }
 

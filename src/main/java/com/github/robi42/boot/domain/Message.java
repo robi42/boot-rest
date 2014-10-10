@@ -10,7 +10,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import static com.github.robi42.boot.search.ElasticsearchEntityMapper.ISO_DATE_TIME_FORMAT_PATTERN;
 import static org.springframework.data.elasticsearch.annotations.FieldType.Date;
@@ -27,7 +27,7 @@ public class Message {
     // Note: Spring Data ES doesn't support `UUID` typed IDs (yet?)
     private String id;
     @Field(type = Date, pattern = ISO_DATE_TIME_FORMAT_PATTERN)
-    private LocalDateTime lastModifiedAt;
+    private Date lastModifiedAt;
     private String body;
 
     @Data

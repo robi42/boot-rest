@@ -4,6 +4,7 @@ import com.github.robi42.boot.domain.Message;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import static java.util.UUID.randomUUID;
 
@@ -14,7 +15,7 @@ public class TestFixtureFactory {
         return Message.builder()
                 .id(randomUUID().toString())
                 .body(text)
-                .lastModifiedAt(LocalDateTime.now())
+                .lastModifiedAt(new Date())
                 .build();
     }
 }

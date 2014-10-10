@@ -1,10 +1,11 @@
 buildscript {
     repositories {
-        maven { url 'http://repo.spring.io/libs-snapshot' }
         mavenLocal()
+        mavenCentral()
+        maven { url "http://repo.spring.io/libs-release" }
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.0.2.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.1.6.RELEASE'
     }
 }
 
@@ -15,12 +16,12 @@ apply plugin: 'spring-boot'
 ext {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
-    baseName = 'boot-rest'
-    version = '0.1.0'
 }
 
 jar {
+    baseName = 'boot-rest'
     archiveName = "${baseName}.jar"
+    version = new File('src/main/resources/version.txt').text.trim()
 }
 
 // Toggle to enable building WAR
@@ -34,45 +35,41 @@ def buildWar = false
 // -----------------------------
 
 repositories {
+    mavenLocal()
     mavenCentral()
-    maven { url 'http://repo.spring.io/libs-snapshot' }
+    maven { url "http://repo.spring.io/libs-release" }
 }
 
 // Versions
 // ========
 // Core
-def springDataEsVersion = '1.0.0.BUILD-SNAPSHOT'
-def hibernateValidatorVersion = '5.1.0.Final'
+def springDataEsVersion = '1.1.0.RELEASE'
+def hibernateValidatorVersion = '5.1.2.Final'
 def servletApiVersion = '3.1.0'
-def jettyVersion = '9.1.4.v20140401'
-def springHk2BridgeVersion = '2.2.0'
-def jerseyVersion = '2.8'
-def jacksonVersion = '2.3.2'
-def swaggerVersion = '1.3.4'
+def jettyVersion = '9.2.2.v20140723'
+def springHk2BridgeVersion = '2.3.0'
+def jerseyVersion = '2.12'
+def jacksonVersion = '2.4.2'
+def swaggerVersion = '1.3.6'
 def metricsVersion = '3.0.2'
 
 // Utilities
-def lombokVersion = '1.12.6'
-def guavaVersion = '17.0'
+def lombokVersion = '1.14.4'
+def guavaVersion = '18.0'
 
 // Testing
 def festAssertVersion = '1.4'
-def objenesisVersion = '2.1'
 
 dependencies {
     // Core
     // ====
     // Spring Boot
-    compile("org.springframework.boot:spring-boot-starter-web") {
-        exclude module: 'spring-boot-starter-tomcat'
-    }
+    compile("org.springframework.boot:spring-boot-starter-web") { exclude module: 'spring-boot-starter-tomcat' }
     if (!buildWar) {
         compile "org.springframework.boot:spring-boot-starter-jetty"
     }
     compile "org.springframework.boot:spring-boot-starter-security"
-    compile("org.springframework.boot:spring-boot-starter-actuator") {
-        exclude module: 'hsqldb'
-    }
+    compile("org.springframework.boot:spring-boot-starter-actuator") { exclude module: 'hsqldb' }
     // Spring Data Elasticsearch
     compile "org.springframework.data:spring-data-elasticsearch:$springDataEsVersion"
     // Thymeleaf Templating
@@ -96,16 +93,13 @@ dependencies {
         // Servlet API
         compile "javax.servlet:javax.servlet-api:$servletApiVersion"
     }
-    // Jersey REST
+    // JAX-RS REST
     compile "org.glassfish.hk2:spring-bridge:$springHk2BridgeVersion"
-    compile("org.glassfish.jersey.core:jersey-common:$jerseyVersion") {
-        exclude module: 'guava'
-    }
+    compile "org.glassfish.jersey.core:jersey-server:$jerseyVersion"
     compile "org.glassfish.jersey.containers:jersey-container-servlet:$jerseyVersion"
     compile "org.glassfish.jersey.ext:jersey-bean-validation:$jerseyVersion"
     // Apache HTTP Client
     compile "org.glassfish.jersey.connectors:jersey-apache-connector:$jerseyVersion"
-    compile "org.apache.httpcomponents:httpclient"
     // Jackson JSON
     compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
@@ -126,14 +120,12 @@ dependencies {
     // =======
     testCompile "org.springframework.boot:spring-boot-starter-test"
     testCompile "org.easytesting:fest-assert:$festAssertVersion"
-    testCompile("org.mockito:mockito-core") {
-        exclude module: 'objenesis'
-    }
-    testCompile "org.objenesis:objenesis:$objenesisVersion"
 }
 
+// Tasks
+// =====
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.1'
 }
 
 def webappDevDir = 'src/main/webapp-dev'
@@ -148,14 +140,26 @@ task bowerInstall(type: Exec) {
     commandLine 'bower', 'install'
 }
 
-task gruntBuild(type: Exec) {
+task gulpBuild(type: Exec) {
     workingDir webappDevDir
-    commandLine 'grunt', '--force'
+    commandLine 'gulp'
+}
+
+task gulpWatch(type: Exec) {
+    workingDir webappDevDir
+    commandLine 'gulp', 'watch'
+}
+
+task copyJar(type: Exec) {
+    workingDir 'build/libs'
+    commandLine 'cp', jar.archiveName, '../../bin'
 }
 
 bowerInstall.dependsOn npmInstall
-gruntBuild.dependsOn bowerInstall
-build.dependsOn gruntBuild
+gulpBuild.dependsOn bowerInstall
+build.dependsOn gulpBuild
+
+task dist(dependsOn: ['build', 'copyJar'])
 
 // Used by Heroku
 task stage(dependsOn: ['processResources', 'classes', 'jar', 'bootRepackage', 'assemble'])

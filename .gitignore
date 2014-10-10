@@ -1,17 +1,21 @@
+# General
 .DS_Store
 *~
 *.swp
 *.log
 
+# IDEA
 *.iml
 *.iws
 *.ipr
 .idea/
 /out
+/classes
 
-rebel.xml
-
+# Gradle
 .gradle/
 /build
 
+# Elasticsearch
 /data
+/data-test

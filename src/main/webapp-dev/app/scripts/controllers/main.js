@@ -12,7 +12,7 @@
       });
   };
 
-  angular.module('yoaControllers')
+  angular.module('brControllers')
     .controller('MainCtrl', function ($scope, $log, Message) {
       $scope.messages = [];
       $scope.newMessage = {body: ''};
