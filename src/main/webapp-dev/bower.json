@@ -3,21 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "angular": "v1.2.26-build.483+sha.038ca9b",
+    "angular": "v1.3.2",
     "jquery": "~2.1.1",
     "lodash": "~2.4.1",
     "bootstrap": "~3.2.0",
     "components-font-awesome": "~4.2.0",
-    "angular-resource": "v1.2.26-build.483+sha.038ca9b",
-    "angular-cookies": "v1.2.26-build.483+sha.038ca9b",
-    "angular-sanitize": "v1.2.26-build.483+sha.038ca9b",
-    "angular-animate": "v1.2.26-build.483+sha.038ca9b",
-    "angular-route": "v1.2.26-build.483+sha.038ca9b",
+    "angular-resource": "v1.3.2",
+    "angular-cookies": "v1.3.2",
+    "angular-sanitize": "v1.3.2",
+    "angular-animate": "v1.3.2",
+    "angular-route": "v1.3.2",
     "angular-xeditable": "~0.1.8",
     "moment": "~2.8.3"
   },
   "devDependencies": {
-    "angular-mocks": "v1.2.26-build.483+sha.038ca9b",
-    "angular-scenario": "v1.2.26-build.483+sha.038ca9b"
+    "angular-mocks": "v1.3.2",
+    "angular-scenario": "v1.3.2"
   }
 }
