@@ -5,7 +5,7 @@ buildscript {
         maven { url "http://repo.spring.io/libs-release" }
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.1.6.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.1.8.RELEASE'
     }
 }
 
@@ -43,18 +43,18 @@ repositories {
 // Versions
 // ========
 // Core
-def springDataEsVersion = '1.1.0.RELEASE'
-def hibernateValidatorVersion = '5.1.2.Final'
+def springDataEsVersion = '1.1.1.RELEASE'
+def hibernateValidatorVersion = '5.1.3.Final'
 def servletApiVersion = '3.1.0'
-def jettyVersion = '9.2.2.v20140723'
+def jettyVersion = '9.2.3.v20140905'
 def springHk2BridgeVersion = '2.3.0'
-def jerseyVersion = '2.12'
-def jacksonVersion = '2.4.2'
+def jerseyVersion = '2.13'
+def jacksonVersion = '2.4.3'
 def swaggerVersion = '1.3.6'
 def metricsVersion = '3.0.2'
 
 // Utilities
-def lombokVersion = '1.14.4'
+def lombokVersion = '1.14.8'
 def guavaVersion = '18.0'
 
 // Testing
