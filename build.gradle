@@ -1,11 +1,14 @@
 buildscript {
+    ext {
+        springBootVersion = '1.1.8.RELEASE'
+    }
     repositories {
         mavenLocal()
         mavenCentral()
         maven { url "http://repo.spring.io/libs-release" }
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.1.8.RELEASE'
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
     }
 }
 
