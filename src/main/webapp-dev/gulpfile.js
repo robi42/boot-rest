@@ -25,43 +25,38 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('html', ['styles', 'scripts'], function () {
-  var jsFilter = $.filter('**/*.js');
-  var cssFilter = $.filter('**/*.css');
-  var htmlFilter = $.filter('**/*.html');
+  var assets = $.useref.assets({searchPath: '{.tmp,app}'});
 
   return gulp.src('app/*.html')
-    .pipe($.useref.assets({searchPath: '{.tmp,app}'}))
-    .pipe(jsFilter)
-    .pipe($.uglify({mangle: false}))
-    .pipe(jsFilter.restore())
-    .pipe(cssFilter)
-    .pipe($.csso())
-    .pipe(cssFilter.restore())
+    .pipe(assets)
+    .pipe($.if('*.js', $.uglify({mangle: false})))
+    .pipe($.if('*.css', $.csso()))
     .pipe($.rev())
-    .pipe($.useref.restore())
+    .pipe(assets.restore())
     .pipe($.useref())
     .pipe($.revReplace())
-    .pipe(htmlFilter)
-    .pipe($.htmlmin({collapseWhitespace: true}))
-    .pipe(htmlFilter.restore())
+    .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true, empty: true})))
     .pipe(gulp.dest(distDir))
     .pipe($.size());
 });
 
 gulp.task('views', function () {
   return gulp.src('app/views/**/*')
-    .pipe($.htmlmin({collapseWhitespace: true}))
+    .pipe($.minifyHtml({conditionals: true, loose: true, empty: true}))
     .pipe(gulp.dest(distDir + '/views'));
 });
 
 gulp.task('images', function () {
-  return gulp.src('app/images/**/*')
-    .pipe($.cache($.imagemin({
+  var imageDest = distDir + '/images';
+
+    return gulp.src('app/images/**/*')
+    .pipe($.newer(imageDest))
+    .pipe($.imagemin({
       optimizationLevel: 3,
       progressive: true,
       interlaced: true
-    })))
-    .pipe(gulp.dest(distDir + '/images'));
+    }))
+    .pipe(gulp.dest(imageDest));
 });
 
 gulp.task('fonts', function () {
@@ -93,7 +88,7 @@ gulp.task('test', function () {
   });
 });
 
-gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
+gulp.task('clean', require('del').bind(null, ['.tmp', distDir], {force: true}));
 
 gulp.task('build', ['test', 'html', 'views', 'images', 'fonts', 'fontawesome', 'extras', 'apidocs']);
 
@@ -102,18 +97,22 @@ gulp.task('default', ['clean'], function () {
 });
 
 gulp.task('connect', function () {
-  var connect = require('connect');
   var proxy = require('proxy-middleware');
   var url = require('url');
   var proxyOptions = url.parse('http://localhost:8888/api');
   proxyOptions.route = '/api';
 
-  var app = connect()
+  var serveStatic = require('serve-static');
+  var serveIndex = require('serve-index');
+  var app = require('connect')()
     .use(require('connect-livereload')({port: 35729}))
     .use(proxy(proxyOptions))
-    .use(connect.static('app'))
-    .use(connect.static('.tmp'))
-    .use(connect.directory('app'));
+    .use(serveStatic('app'))
+    .use(serveStatic('.tmp'))
+    // paths to bower_components should be relative to the current file
+    // e.g. in app/index.html you should use ../bower_components
+    .use('/bower_components', serveStatic('bower_components'))
+    .use(serveIndex('app'));
 
   require('http').createServer(app)
     .listen(9000)
