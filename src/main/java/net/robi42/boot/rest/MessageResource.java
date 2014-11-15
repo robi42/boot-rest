@@ -2,6 +2,7 @@ package net.robi42.boot.rest;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.robi42.boot.dao.MessageRepository;
 import net.robi42.boot.domain.Message;
@@ -46,8 +47,8 @@ public class MessageResource {
 
     @Inject
     public MessageResource(@SuppressWarnings("SpringJavaAutowiringInspection")
-                           final MessageRepository repository,
-                           final ElasticsearchProvider searchProvider) {
+                           final @NonNull MessageRepository repository,
+                           final @NonNull ElasticsearchProvider searchProvider) {
         this.repository = repository;
         this.searchProvider = searchProvider;
     }

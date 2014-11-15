@@ -1,5 +1,7 @@
 package net.robi42.boot.search;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -12,15 +14,12 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.stream.Collectors.toList;
 
+@RequiredArgsConstructor
 public class BootElasticsearchProvider implements ElasticsearchProvider {
-    private final Client client;
-
-    public BootElasticsearchProvider(final Client client) {
-        this.client = client;
-    }
+    private final @NonNull Client client;
 
     @Override
-    public List<SearchHitDto> search(final String indexName, final QueryBuilder query) {
+    public List<SearchHitDto> search(final @NonNull String indexName, final @NonNull QueryBuilder query) {
         final SearchResponse response = client.prepareSearch(indexName)
                 .setQuery(query).execute()
                 .actionGet(10, SECONDS);
