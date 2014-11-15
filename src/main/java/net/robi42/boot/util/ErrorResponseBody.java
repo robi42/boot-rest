@@ -1,12 +1,8 @@
 package net.robi42.boot.util;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Value
 public class ErrorResponseBody {
-    private String errorMessage;
+    String errorMessage;
 }
