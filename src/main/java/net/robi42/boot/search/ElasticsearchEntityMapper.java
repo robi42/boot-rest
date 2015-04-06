@@ -13,13 +13,11 @@ public class ElasticsearchEntityMapper implements EntityMapper {
 
     private final @NonNull ObjectMapper objectMapper;
 
-    @Override
-    public String mapToString(final Object object) throws IOException {
+    public @Override String mapToString(Object object) throws IOException {
         return objectMapper.writeValueAsString(object);
     }
 
-    @Override
-    public <T> T mapToObject(final String source, final Class<T> clazz) throws IOException {
+    public @Override <T> T mapToObject(String source, Class<T> clazz) throws IOException {
         return objectMapper.readValue(source, clazz);
     }
 }

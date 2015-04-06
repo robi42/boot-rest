@@ -1,8 +1,0 @@
-cluster.name: boot-rest-test-cluster
-node:
-  name: boot-rest-test-node
-  local: true
-  data: true
-path.data: ./data-test
-discovery.zen.ping.multicast.enabled: false
-http.enabled: false

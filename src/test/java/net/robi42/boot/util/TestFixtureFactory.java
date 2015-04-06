@@ -7,8 +7,7 @@ import java.util.Date;
 
 import static java.util.UUID.randomUUID;
 
-@Service
-public class TestFixtureFactory {
+public @Service class TestFixtureFactory {
 
     public Message message(final String text) {
         return Message.builder()

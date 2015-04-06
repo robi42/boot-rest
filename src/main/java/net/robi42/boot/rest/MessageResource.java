@@ -3,6 +3,7 @@ package net.robi42.boot.rest;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.robi42.boot.dao.MessageRepository;
 import net.robi42.boot.domain.Message;
@@ -35,29 +36,20 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.util.UUID.randomUUID;
 import static org.elasticsearch.index.query.QueryBuilders.matchPhrasePrefixQuery;
 
-@Slf4j
-@Path(MessageResource.BASE_PATH)
 @Api(value = MessageResource.BASE_PATH, description = "CRUD & Search")
-public class MessageResource {
+@Path(MessageResource.BASE_PATH)
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
+public @Slf4j class MessageResource {
     public static final String BASE_PATH = "messages";
     private static final String NOT_FOUND_FORMAT = "Message with ID '%s' not found";
 
-    private final MessageRepository repository;
-    private final ElasticsearchProvider searchProvider;
+    private final @NonNull MessageRepository repository;
+    private final @NonNull ElasticsearchProvider searchProvider;
 
-    @Inject
-    public MessageResource(@SuppressWarnings("SpringJavaAutowiringInspection")
-                           final @NonNull MessageRepository repository,
-                           final @NonNull ElasticsearchProvider searchProvider) {
-        this.repository = repository;
-        this.searchProvider = searchProvider;
-    }
-
-    @POST
+    @ApiOperation("Create a new message")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation("Create a new message")
-    public Response createMessage(final @NotNull @Valid Message.Input payload) {
+    public @POST Response createMessage(@NotNull @Valid Message.Input payload) {
         final Message messageToPersist = Message.builder()
                 .id(randomUUID().toString())
                 .lastModifiedAt(new Date())
@@ -70,20 +62,17 @@ public class MessageResource {
                 .build();
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation("Get all messages")
-    public List<Message> getMessages() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public @GET List<Message> getMessages() {
         final List<Message> allMessages = newArrayList(repository.findAll());
         log.debug("Number of messages to serve: {}", allMessages.size());
         return allMessages;
     }
 
-    @GET
-    @Path("/{messageId}")
-    @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation("Get a message by ID")
-    public Message getMessage(final @NotNull @PathParam("messageId") UUID messageId) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public @GET @Path("/{messageId}") Message getMessage(@NotNull @PathParam("messageId") UUID messageId) {
         final Message message = repository.findOne(messageId.toString());
         if (message != null) {
             return message;
@@ -91,13 +80,11 @@ public class MessageResource {
         throw new BootRestException(Response.Status.NOT_FOUND, String.format(NOT_FOUND_FORMAT, messageId));
     }
 
-    @PUT
-    @Path("/{messageId}")
+    @ApiOperation("Update a message")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation("Update a message")
-    public Message updateMessage(final @NotNull @PathParam("messageId") UUID messageId,
-                                 final @NotNull @Valid Message.Input payload) {
+    public @PUT @Path("/{messageId}") Message updateMessage(@NotNull @PathParam("messageId") UUID messageId,
+                                                            @NotNull @Valid Message.Input payload) {
         final Message messageToUpdate = repository.findOne(messageId.toString());
         if (messageToUpdate == null) {
             throw new BootRestException(Response.Status.NOT_FOUND, String.format(NOT_FOUND_FORMAT, messageId));
@@ -107,21 +94,17 @@ public class MessageResource {
         return repository.save(messageToUpdate);
     }
 
-    @DELETE
-    @Path("/{messageId}")
     @ApiOperation("Delete a message")
-    public void deleteMessage(final @NotNull @PathParam("messageId") UUID messageId) {
+    public @DELETE @Path("/{messageId}") void deleteMessage(@NotNull @PathParam("messageId") UUID messageId) {
         repository.delete(messageId.toString());
     }
 
-    @GET
-    @Path("/search")
-    @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation("Search for messages by body content")
-    public List<SearchHitDto> search(final @NotEmpty @QueryParam("q") String term) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public @GET @Path("/search") List<SearchHitDto> search(@NotEmpty @QueryParam("q") String term) {
         try {
             return searchProvider.search(Message.INDEX_NAME, matchPhrasePrefixQuery("body", term));
-        } catch (final ElasticsearchException e) {
+        } catch (ElasticsearchException e) {
             throw new BootRestException(Response.Status.PRECONDITION_FAILED,
                     String.format("Searching for '%s' failed; %s", term, e.getMessage()));
         }

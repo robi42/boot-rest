@@ -5,7 +5,7 @@ import javax.ws.rs.core.Response;
 
 public class BootRestException extends WebApplicationException {
 
-    public BootRestException(final Response.Status status, final String message) {
+    public BootRestException(Response.Status status, String message) {
         super(Response.status(status)
                 .entity(new ErrorResponseBody(message))
                 .build());

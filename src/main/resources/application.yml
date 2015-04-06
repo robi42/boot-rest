@@ -1,17 +1,24 @@
-spring.application.name: boot-rest
-server.port: 8888
-management.contextPath: /admin
-
-admin:
-  username: admin
-  password: secret
-
-webClient.connectionPool:
-  maxTotal: 100
-  defaultMaxPerRoute: 20
-
----
-
 spring:
-  profiles: dev
-  thymeleaf.cache: false
+  application.name: boot-rest
+  jackson.serialization.write-dates-as-timestamps: false
+  data.elasticsearch.properties:
+    node.name: BootRestEs
+    discovery.zen.ping.multicast.enabled: false
+
+server.port: 8888
+
+management:
+  port: 8889
+  context-path: /manage
+
+security:
+  basic.path: /manage/**
+  user:
+    name: admin
+    password: secret
+
+logging.level.net.robi42.boot: DEBUG
+
+web-client.connection-pool:
+  max-total: 100
+  default-max-per-route: 20

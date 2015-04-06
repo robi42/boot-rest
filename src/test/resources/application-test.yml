@@ -1,4 +1,11 @@
 spring:
   application.name: boot-rest-test
-  main.showBanner: false
-server.port: 8889
+  main.show-banner: false
+  data.elasticsearch.properties:
+    node.name: BootRestTestEs
+    index.store.type: memory
+
+server.port: 0
+management.port: 0
+
+logging.level.root: WARN

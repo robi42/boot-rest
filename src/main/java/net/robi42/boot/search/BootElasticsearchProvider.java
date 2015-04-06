@@ -18,8 +18,7 @@ import static java.util.stream.Collectors.toList;
 public class BootElasticsearchProvider implements ElasticsearchProvider {
     private final @NonNull Client client;
 
-    @Override
-    public List<SearchHitDto> search(final @NonNull String indexName, final @NonNull QueryBuilder query) {
+    public @Override List<SearchHitDto> search(@NonNull String indexName, @NonNull QueryBuilder query) {
         final SearchResponse response = client.prepareSearch(indexName)
                 .setQuery(query).execute()
                 .actionGet(10, SECONDS);
@@ -28,7 +27,7 @@ public class BootElasticsearchProvider implements ElasticsearchProvider {
                 .map(this::convert).collect(toList());
     }
 
-    private SearchHitDto convert(final SearchHit hit) {
+    private SearchHitDto convert(SearchHit hit) {
         return SearchHitDto.builder()
                 .id(hit.id())
                 .score(hit.score())

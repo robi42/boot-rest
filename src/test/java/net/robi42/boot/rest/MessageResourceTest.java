@@ -11,16 +11,15 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class MessageResourceTest extends IntegrationTestBase {
 
     @Test
-    public void shouldRespondSuccessfully() throws Exception {
-        final Response response = restApi.path(MessageResource.BASE_PATH)
-                .request(APPLICATION_JSON_TYPE).get();
+    public void respondsSuccessfully() throws Exception {
+        final Response response = restApi.path(MessageResource.BASE_PATH).request().get();
 
         assertThat(response.getStatusInfo().getFamily())
                 .isEqualTo(Response.Status.Family.SUCCESSFUL);
@@ -29,9 +28,8 @@ public class MessageResourceTest extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldRespondWithMessages() throws Exception {
-        final List<Message> messages = restApi.path(MessageResource.BASE_PATH)
-                .request(APPLICATION_JSON_TYPE)
+    public void respondsWithMessages() throws Exception {
+        final List<Message> messages = restApi.path(MessageResource.BASE_PATH).request()
                 .get(new GenericType<List<Message>>() {});
         assertThat(messages).isNotEmpty();
         assertThat(messages.size()).isEqualTo(3);
@@ -42,10 +40,9 @@ public class MessageResourceTest extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldFindMessageViaSearch() throws Exception {
+    public void findsMessageViaSearch() throws Exception {
         final List<SearchHitDto> hits = restApi.path(MessageResource.BASE_PATH + "/search")
-                .queryParam("q", "bar")
-                .request(APPLICATION_JSON_TYPE)
+                .queryParam("q", "bar").request()
                 .get(new GenericType<List<SearchHitDto>>() {});
         assertThat(hits.size()).isEqualTo(1);
 

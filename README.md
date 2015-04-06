@@ -14,7 +14,7 @@ To build & run via command line shell:
 
     ./gradlew clean build && java -server -jar build/libs/boot-rest.jar
 
-Or simply run `ApplicationInitializer.main()` via IDEA (min. 13.1 with installed Lombok plugin recommended).
+Or simply run `Application.main()` via IDEA (14.1 with installed Lombok plugin recommended).
 
 Also (pre-packaged):
 
@@ -26,7 +26,7 @@ An endpoint to play with:
 
 SPA frontend UI resides at root URL, BTW.<br>
 Admin endpoints, powered by Spring Boot, at:<br>
-`/admin/*` (auth-protected)<br>
+`/manage/*` (auth-protected)<br>
 REST API docs, powered by Swagger (UI), at:<br>
 `/api-docs/index.html`
 

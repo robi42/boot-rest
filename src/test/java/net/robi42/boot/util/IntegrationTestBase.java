@@ -1,8 +1,7 @@
 package net.robi42.boot.util;
 
-import net.robi42.boot.TestApplicationInitializer;
+import net.robi42.boot.TestApplication;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
@@ -16,24 +15,16 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = TestApplicationInitializer.class)
-@WebAppConfiguration
-@IntegrationTest
-@ActiveProfiles("test")
-public abstract class IntegrationTestBase {
-    @Value("${server.port}")
-    private int serverPort;
-    @Inject
-    private Client webClient;
-    protected WebTarget restApi;
+@SpringApplicationConfiguration(classes = TestApplication.class)
+@WebAppConfiguration @ActiveProfiles("test")
+public abstract @IntegrationTest class IntegrationTestBase {
+    @Value("${local.server.port}") int port;
+    @Inject Client webClient;
 
-    @BeforeClass
-    public static void init() {
-        System.setProperty("spring.profiles.active", "test");
-    }
+    protected WebTarget restApi;
 
     @Before
     public void setUp() {
-        restApi = webClient.target(String.format("http://localhost:%d/api", serverPort));
+        restApi = webClient.target(String.format("http://localhost:%d/api", port));
     }
 }
