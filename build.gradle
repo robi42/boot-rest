@@ -1,14 +1,9 @@
 buildscript {
-    ext {
-        springBootVersion = '1.2.3.RELEASE'
-    }
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
-    }
+    repositories { jcenter() }
+    dependencies { classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE' }
 }
+
+plugins { id 'org.asciidoctor.convert' version '1.5.2' }
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -17,31 +12,37 @@ apply plugin: 'spring-boot'
 ext {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+    generatedDocumentation = file('build/generated-docs')
+
+    // Versions
+    // ========
+    springDataEsVersion = '1.2.0.RELEASE'
+    jerseyVersion = '2.14'
+    metricsVersion = '3.1.0'
+    guavaVersion = '18.0'
+    lombokVersion = '1.16.2'
+    swaggerVersion = '1.3.12'
+    festAssertVersion = '1.4'
 }
 
 jar {
     baseName = 'boot-rest'
     archiveName = "${baseName}.jar"
     version = '0.1.0-SNAPSHOT'
+    dependsOn 'copyDocs'
 }
 
-repositories {
-    mavenCentral()
+asciidoctor {
+    sourceDir 'src/asciidoc'
+    outputDir "$projectDir/docs"
+    attributes generated: generatedDocumentation
+    inputs.dir generatedDocumentation
+    dependsOn 'gulpBuild'
 }
 
-// Versions
-// ========
-def springDataEsVersion = '1.2.0.RELEASE'
-def jerseyVersion = '2.14'
-def metricsVersion = '3.1.0'
-def guavaVersion = '18.0'
-def lombokVersion = '1.16.2'
-def swaggerVersion = '1.3.12'
-def festAssertVersion = '1.4'
+repositories { jcenter() }
 
-configurations {
-    compile.exclude module: 'spring-boot-starter-tomcat'
-}
+configurations { compile.exclude module: 'spring-boot-starter-tomcat' }
 
 dependencies {
     // Core
@@ -75,42 +76,52 @@ dependencies {
 
 // Tasks
 // =====
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.1'
-}
+task wrapper(type: Wrapper) { gradleVersion = '2.3' }
 
-def webappDevDir = 'src/main/webapp-dev'
+def webappDir = "src/webapp"
 
 task npmInstall(type: Exec) {
-    workingDir webappDevDir
+    workingDir webappDir
     commandLine 'npm', 'install'
 }
 
 task bowerInstall(type: Exec) {
-    workingDir webappDevDir
+    dependsOn npmInstall
+    workingDir webappDir
     commandLine 'bower', 'install'
 }
 
 task gulpBuild(type: Exec) {
-    workingDir webappDevDir
+    dependsOn bowerInstall
+    workingDir webappDir
     commandLine 'gulp'
 }
 
 task gulpWatch(type: Exec) {
-    workingDir webappDevDir
+    workingDir webappDir
     commandLine 'gulp', 'watch'
 }
 
-task copyJar(type: Exec) {
-    workingDir 'build/libs'
-    commandLine 'cp', jar.archiveName, '../../bin'
+def docsDir = 'src/main/resources/public/docs'
+
+task makeDocsDir(type: Exec) {
+    dependsOn asciidoctor
+    workingDir projectDir
+    commandLine 'mkdir', docsDir
 }
 
-bowerInstall.dependsOn npmInstall
-gulpBuild.dependsOn bowerInstall
-build.dependsOn gulpBuild
+task copyDocs(type: Exec) {
+    dependsOn makeDocsDir
+    workingDir projectDir
+    commandLine 'cp', "${asciidoctor.outputDir}/html5/index.html", docsDir
+}
 
-task dist(dependsOn: ['build', 'copyJar'])
+task copyDistJar(type: Exec) {
+    workingDir 'build/libs'
+    commandLine 'cp', jar.archiveName, "$projectDir/bin"
+}
+
+task dist(dependsOn: ['build', 'copyDistJar'])
 
 // Used by Heroku
 task stage(dependsOn: ['processResources', 'classes', 'jar', 'bootRepackage', 'assemble'])

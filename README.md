@@ -29,6 +29,8 @@ Admin endpoints, powered by Spring Boot, at:<br>
 `/manage/*` (auth-protected)<br>
 REST API docs, powered by Swagger (UI), at:<br>
 `/api-docs/index.html`
+Generated ones, via Asciidoctor, at:<br>
+`/docs/index.html`
 
 Note: this thing is ready to be deployed on Heroku (and verified to run packaged as WAR in Tomcat 8 as `ROOT` context).
 
