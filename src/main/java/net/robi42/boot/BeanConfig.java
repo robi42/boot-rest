@@ -72,16 +72,19 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
                 .register(new ObjectMapperProvider(objectMapper));
     }
 
+    @Bean ElasticsearchEntityMapper elasticsearchEntityMapper() {
+        return new ElasticsearchEntityMapper(objectMapper);
+    }
+
+    @Bean ElasticsearchOperations elasticsearchTemplate() {
+        return new ElasticsearchTemplate(nodeBuilder().local(true).node().client(), elasticsearchEntityMapper());
+    }
+
     @Bean MessageService messageService(MessageRepository repository) {
         return new MessageServiceImpl(repository, new ElasticsearchProviderImpl(elasticsearchTemplate()));
     }
 
-    @Bean ElasticsearchOperations elasticsearchTemplate() {
-        val entityMapper = new ElasticsearchEntityMapper(objectMapper);
-        return new ElasticsearchTemplate(nodeBuilder().local(true).node().client(), entityMapper);
-    }
-
-    @Bean HealthIndicator elasticsearchIndexHealthIndicator(ElasticsearchOperations elasticsearchTemplate) {
+    @Bean HealthIndicator messageIndexHealthIndicator(ElasticsearchOperations elasticsearchTemplate) {
         return () -> elasticsearchTemplate.typeExists(Message.INDEX_NAME, Message.TYPE_NAME)
                 ? Health.up().build() : Health.down().build();
     }
