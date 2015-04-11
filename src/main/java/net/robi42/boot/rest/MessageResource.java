@@ -5,12 +5,10 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.robi42.boot.dao.MessageRepository;
+import lombok.val;
 import net.robi42.boot.domain.Message;
-import net.robi42.boot.search.ElasticsearchProvider;
-import net.robi42.boot.search.SearchHitDto;
-import net.robi42.boot.util.BootRestException;
-import org.elasticsearch.ElasticsearchException;
+import net.robi42.boot.search.ElasticsearchProvider.SearchHitDto;
+import net.robi42.boot.service.MessageService;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.inject.Inject;
@@ -28,85 +26,56 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static java.util.UUID.randomUUID;
-import static org.elasticsearch.index.query.QueryBuilders.matchPhrasePrefixQuery;
 
 @Api(value = MessageResource.BASE_PATH, description = "CRUD & Search")
 @Path(MessageResource.BASE_PATH)
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public @Slf4j class MessageResource {
     public static final String BASE_PATH = "messages";
-    private static final String NOT_FOUND_FORMAT = "Message with ID '%s' not found";
 
-    private final @NonNull MessageRepository repository;
-    private final @NonNull ElasticsearchProvider searchProvider;
+    private final @NonNull MessageService service;
 
     @ApiOperation("Create a new message")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public @POST Response createMessage(@NotNull @Valid Message.Input payload) {
-        final Message messageToPersist = Message.builder()
-                .id(randomUUID().toString())
-                .lastModifiedAt(new Date())
-                .body(payload.getBody())
-                .build();
-        final Message persistedMessage = repository.save(messageToPersist);
-        final String messagePath = String.format("%s/%s", BASE_PATH, persistedMessage.getId());
-        return Response.created(URI.create(messagePath))
-                .entity(persistedMessage)
+    @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
+    public @POST Response create(@NotNull @Valid Message.Input payload) {
+        val message = service.create(payload.getBody());
+        val path = String.format("%s/%s", BASE_PATH, message.getId());
+        return Response.created(URI.create(path))
+                .entity(message)
                 .build();
     }
 
     @ApiOperation("Get all messages")
     @Produces(MediaType.APPLICATION_JSON)
-    public @GET List<Message> getMessages() {
-        final List<Message> allMessages = newArrayList(repository.findAll());
-        log.debug("Number of messages to serve: {}", allMessages.size());
-        return allMessages;
+    public @GET List<Message> getAll() {
+        val messages = service.getAll();
+        log.debug("Number of messages to serve: {}", messages.size());
+        return messages;
     }
 
     @ApiOperation("Get a message by ID")
     @Produces(MediaType.APPLICATION_JSON)
-    public @GET @Path("/{messageId}") Message getMessage(@NotNull @PathParam("messageId") UUID messageId) {
-        final Message message = repository.findOne(messageId.toString());
-        if (message != null) {
-            return message;
-        }
-        throw new BootRestException(Response.Status.NOT_FOUND, String.format(NOT_FOUND_FORMAT, messageId));
+    public @GET @Path("/{id}") Message get(@NotNull @PathParam("id") UUID id) {
+        return service.get(id);
     }
 
     @ApiOperation("Update a message")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public @PUT @Path("/{messageId}") Message updateMessage(@NotNull @PathParam("messageId") UUID messageId,
-                                                            @NotNull @Valid Message.Input payload) {
-        final Message messageToUpdate = repository.findOne(messageId.toString());
-        if (messageToUpdate == null) {
-            throw new BootRestException(Response.Status.NOT_FOUND, String.format(NOT_FOUND_FORMAT, messageId));
-        }
-        messageToUpdate.setBody(payload.getBody());
-        messageToUpdate.setLastModifiedAt(new Date());
-        return repository.save(messageToUpdate);
+    @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
+    public @PUT @Path("/{id}") Message update(@NotNull @PathParam("id") UUID id,
+                                              @NotNull @Valid Message.Input payload) {
+        return service.update(id, payload.getBody());
     }
 
     @ApiOperation("Delete a message")
-    public @DELETE @Path("/{messageId}") void deleteMessage(@NotNull @PathParam("messageId") UUID messageId) {
-        repository.delete(messageId.toString());
+    public @DELETE @Path("/{id}") void delete(@NotNull @PathParam("id") UUID id) {
+        service.delete(id);
     }
 
     @ApiOperation("Search for messages by body content")
     @Produces(MediaType.APPLICATION_JSON)
     public @GET @Path("/search") List<SearchHitDto> search(@NotEmpty @QueryParam("q") String term) {
-        try {
-            return searchProvider.search(Message.INDEX_NAME, matchPhrasePrefixQuery("body", term));
-        } catch (ElasticsearchException e) {
-            throw new BootRestException(Response.Status.PRECONDITION_FAILED,
-                    String.format("Searching for '%s' failed; %s", term, e.getMessage()));
-        }
+        return service.search(term);
     }
 }

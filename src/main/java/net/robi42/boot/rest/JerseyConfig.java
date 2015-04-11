@@ -4,6 +4,7 @@ import com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider;
 import com.wordnik.swagger.jaxrs.listing.ApiListingResource;
 import com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON;
 import com.wordnik.swagger.jaxrs.listing.ResourceListingProvider;
+import lombok.val;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.ws.rs.ApplicationPath;
@@ -14,7 +15,7 @@ import static org.glassfish.jersey.server.ServerProperties.BV_SEND_ERROR_IN_RESP
 public class JerseyConfig extends ResourceConfig {
 
     public JerseyConfig() {
-        final boolean recursive = true;
+        val recursive = true;
         packages(recursive, getClass().getPackage().getName());
 
         registerSwaggerRestApiDocs();

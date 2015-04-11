@@ -1,5 +1,6 @@
 package net.robi42.boot;
 
+import lombok.val;
 import net.robi42.boot.dao.RepositoryRoot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,12 +23,12 @@ public @SpringBootApplication class Application implements EmbeddedServletContai
     }
 
     public static String version() {
-        final String implementationVersion = Application.class.getPackage().getImplementationVersion();
+        val implementationVersion = Application.class.getPackage().getImplementationVersion();
         return firstNonNull(implementationVersion, "DEV-SNAPSHOT");
     }
 
     public @Override void customize(ConfigurableEmbeddedServletContainer container) {
-        final MimeMappings mappings = new MimeMappings(DEFAULT);
+        val mappings = new MimeMappings(DEFAULT);
         mappings.add("html", MediaType.TEXT_HTML + ";charset=utf-8");
         mappings.add("woff", "application/font-woff;charset=utf-8");
         container.setMimeMappings(mappings);

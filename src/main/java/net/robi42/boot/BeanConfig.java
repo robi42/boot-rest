@@ -7,12 +7,15 @@ import com.wordnik.swagger.config.SwaggerConfig;
 import com.wordnik.swagger.jaxrs.config.DefaultJaxrsScanner;
 import com.wordnik.swagger.jersey.JerseyApiReader;
 import com.wordnik.swagger.reader.ClassReaders;
+import lombok.val;
+import net.robi42.boot.dao.MessageRepository;
 import net.robi42.boot.domain.Message;
 import net.robi42.boot.rest.JerseyConfig;
 import net.robi42.boot.rest.ObjectMapperProvider;
-import net.robi42.boot.search.BootElasticsearchProvider;
 import net.robi42.boot.search.ElasticsearchEntityMapper;
-import net.robi42.boot.search.ElasticsearchProvider;
+import net.robi42.boot.search.ElasticsearchProviderImpl;
+import net.robi42.boot.service.MessageService;
+import net.robi42.boot.service.MessageServiceImpl;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
@@ -45,10 +48,11 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
     }
 
     @Bean CommandLineRunner swaggerConfig() {
+        val swaggerConfig = new SwaggerConfig();
+        swaggerConfig.setBasePath("/");
+        swaggerConfig.setApiVersion(Application.version());
+
         return args -> {
-            final SwaggerConfig swaggerConfig = new SwaggerConfig();
-            swaggerConfig.setBasePath("/");
-            swaggerConfig.setApiVersion(Application.version());
             ConfigFactory.setConfig(swaggerConfig);
             ScannerFactory.setScanner(new DefaultJaxrsScanner());
             ClassReaders.setReader(new JerseyApiReader());
@@ -56,7 +60,7 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
     }
 
     @Bean Client webClient() {
-        final PoolingHttpClientConnectionManager poolingConnectionManager = new PoolingHttpClientConnectionManager();
+        val poolingConnectionManager = new PoolingHttpClientConnectionManager();
         poolingConnectionManager.setMaxTotal(webClientConnectionPoolMaxTotal);
         poolingConnectionManager.setDefaultMaxPerRoute(webClientConnectionPoolDefaultMaxPerRoute);
 
@@ -68,16 +72,13 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
                 .register(new ObjectMapperProvider(objectMapper));
     }
 
-    @Bean org.elasticsearch.client.Client elasticsearchClient() {
-        return nodeBuilder().local(true).node().client();
+    @Bean MessageService messageService(MessageRepository repository) {
+        return new MessageServiceImpl(repository, new ElasticsearchProviderImpl(elasticsearchTemplate()));
     }
 
     @Bean ElasticsearchOperations elasticsearchTemplate() {
-        return new ElasticsearchTemplate(elasticsearchClient(), new ElasticsearchEntityMapper(objectMapper));
-    }
-
-    @Bean ElasticsearchProvider elasticsearchProvider() {
-        return new BootElasticsearchProvider(elasticsearchClient());
+        val entityMapper = new ElasticsearchEntityMapper(objectMapper);
+        return new ElasticsearchTemplate(nodeBuilder().local(true).node().client(), entityMapper);
     }
 
     @Bean HealthIndicator elasticsearchIndexHealthIndicator(ElasticsearchOperations elasticsearchTemplate) {

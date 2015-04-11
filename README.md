@@ -14,7 +14,7 @@ To build & run via command line shell:
 
     ./gradlew clean build && java -server -jar build/libs/boot-rest.jar
 
-Or simply run `Application.main()` via IDEA (14.1 with installed Lombok plugin recommended).
+Or simply run `Application.main()` via IDEA (14.1+ with latest Lombok plugin recommended).
 
 Also (pre-packaged):
 
