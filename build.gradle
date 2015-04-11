@@ -29,7 +29,6 @@ jar {
     baseName = 'boot-rest'
     archiveName = "${baseName}.jar"
     version = '0.1.0-SNAPSHOT'
-    dependsOn 'copyDocs'
 }
 
 asciidoctor {
@@ -37,12 +36,19 @@ asciidoctor {
     outputDir "$projectDir/docs"
     attributes generated: generatedDocumentation
     inputs.dir generatedDocumentation
-    dependsOn 'gulpBuild'
 }
 
 repositories { jcenter() }
 
-configurations { compile.exclude module: 'spring-boot-starter-tomcat' }
+configurations {
+    provided
+    compile.exclude module: 'spring-boot-starter-tomcat'
+}
+
+sourceSets {
+    main.compileClasspath += configurations.provided
+    test.compileClasspath += configurations.provided
+}
 
 dependencies {
     // Core
@@ -65,7 +71,7 @@ dependencies {
     // Utilities
     // =========
     compile "com.google.guava:guava:$guavaVersion"
-    compile "org.projectlombok:lombok:$lombokVersion"
+    provided "org.projectlombok:lombok:$lombokVersion"
     compile "com.wordnik:swagger-jersey2-jaxrs_2.10:$swaggerVersion"
 
     // Testing
@@ -107,21 +113,24 @@ def docsDir = 'src/main/resources/public/docs'
 task makeDocsDir(type: Exec) {
     dependsOn asciidoctor
     workingDir projectDir
-    commandLine 'mkdir', docsDir
+    commandLine 'mkdir', '-p', docsDir
 }
 
-task copyDocs(type: Exec) {
+task copyDocs(type: Copy) {
     dependsOn makeDocsDir
-    workingDir projectDir
-    commandLine 'cp', "${asciidoctor.outputDir}/html5/index.html", docsDir
+    from "${asciidoctor.outputDir}/html5/index.html"
+    into docsDir
 }
 
-task copyDistJar(type: Exec) {
-    workingDir 'build/libs'
-    commandLine 'cp', jar.archiveName, "$projectDir/bin"
+task copyDistJar(type: Copy) {
+    from "build/libs/${jar.archiveName}"
+    into "$projectDir/bin"
 }
 
-task dist(dependsOn: ['build', 'copyDistJar'])
+processResources.dependsOn copyDocs
+build.mustRunAfter gulpBuild
+
+task dist(dependsOn: [gulpBuild, build, copyDistJar])
 
 // Used by Heroku
-task stage(dependsOn: ['processResources', 'classes', 'jar', 'bootRepackage', 'assemble'])
+task stage(dependsOn: ['classes', 'jar', 'assemble'])
