@@ -39,11 +39,15 @@ def lombokVersion = '1.16.2'
 def swaggerVersion = '1.3.12'
 def festAssertVersion = '1.4'
 
+configurations {
+    compile.exclude module: 'spring-boot-starter-tomcat'
+}
+
 dependencies {
     // Core
     // ====
-    compile("org.springframework.boot:spring-boot-starter-web") { exclude module: 'spring-boot-starter-tomcat' }
-    compile("org.springframework.boot:spring-boot-starter-jersey") { exclude module: 'spring-boot-starter-tomcat' }
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-jersey'
     compile 'org.springframework.boot:spring-boot-starter-jetty'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'org.springframework.boot:spring-boot-starter-security'
