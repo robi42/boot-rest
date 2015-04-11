@@ -11,7 +11,6 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static javax.ws.rs.core.Response.Status.OK;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class MessageResourceTest extends IntegrationTestBase {
@@ -21,18 +20,15 @@ public class MessageResourceTest extends IntegrationTestBase {
         val response = restApi.path(MessageResource.BASE_PATH).request().get();
 
         assertThat(response.getStatusInfo().getFamily()).isEqualTo(Response.Status.Family.SUCCESSFUL);
-        assertThat(response.getStatus()).isEqualTo(OK.getStatusCode());
         response.close();
     }
 
     @Test
     public void respondsWithMessages() throws Exception {
         val messages = restApi.path(MessageResource.BASE_PATH).request().get(new GenericType<List<Message>>() {});
-        assertThat(messages).isNotEmpty();
-        assertThat(messages.size()).isEqualTo(3);
 
-        val messageBodies = messages.stream().map(Message::getBody).collect(toList());
-        assertThat(messageBodies).contains("Foo");
+        assertThat(messages.size()).isEqualTo(3);
+        assertThat(messages.stream().map(Message::getBody).collect(toList())).contains("Foo");
     }
 
     @Test
