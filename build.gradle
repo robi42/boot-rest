@@ -140,9 +140,9 @@ task copyDistJar(type: Copy) {
     into "$projectDir/bin"
 }
 
-build.mustRunAfter gulpBuild
-
 task dist(dependsOn: [gulpBuild, build, copyDistJar])
+
+build.mustRunAfter gulpBuild
 
 // Heroku
 // ------
