@@ -29,8 +29,8 @@ public @SpringBootApplication class Application implements EmbeddedServletContai
 
     public @Override void customize(ConfigurableEmbeddedServletContainer container) {
         val mappings = new MimeMappings(DEFAULT);
-        mappings.add("html", MediaType.TEXT_HTML + ";charset=utf-8");
-        mappings.add("woff", "application/font-woff;charset=utf-8");
+        mappings.add("html", MediaType.TEXT_HTML + "; charset=UTF-8");
+        mappings.add("woff", "application/font-woff; charset=UTF-8");
         container.setMimeMappings(mappings);
     }
 }
