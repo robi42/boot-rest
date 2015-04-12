@@ -68,7 +68,7 @@ public @Slf4j class MessageResource {
     }
 
     @ApiOperation("Delete a message")
-    public @DELETE @Path("/{id}") void delete(@NotNull @PathParam("id") UUID id) {
+    public @DELETE @Path("/{id}") void delete(@PathParam("id") UUID id) {
         service.delete(id);
     }
 
