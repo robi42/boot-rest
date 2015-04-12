@@ -131,19 +131,19 @@ task copyDocs(type: Copy) {
     into docsDir
 }
 
+processResources.dependsOn copyDocs
+
+// Dist
+// ----
 task copyDistJar(type: Copy) {
     from "build/libs/${jar.archiveName}"
     into "$projectDir/bin"
 }
 
-processResources.dependsOn copyDocs
-
-// Dist
-// ----
 build.mustRunAfter gulpBuild
 
 task dist(dependsOn: [gulpBuild, build, copyDistJar])
 
 // Heroku
 // ------
-task stage(dependsOn: ['classes', 'jar', 'assemble'])
+task stage(dependsOn: [classes, jar, assemble])
