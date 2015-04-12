@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static org.springframework.boot.context.embedded.MimeMappings.DEFAULT;
 
-@Import({BeanConfig.class}) @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
+@Import(BeanConfig.class) @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
 public @SpringBootApplication class Application implements EmbeddedServletContainerCustomizer {
 
     public static void main(final String[] args) {
