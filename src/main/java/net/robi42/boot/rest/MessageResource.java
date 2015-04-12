@@ -57,14 +57,13 @@ public @Slf4j class MessageResource {
 
     @ApiOperation("Get a message by ID")
     @Produces(MediaType.APPLICATION_JSON)
-    public @GET @Path("/{id}") Message get(@NotNull @PathParam("id") UUID id) {
+    public @GET @Path("/{id}") Message get(@PathParam("id") UUID id) {
         return service.get(id);
     }
 
     @ApiOperation("Update a message")
     @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
-    public @PUT @Path("/{id}") Message update(@NotNull @PathParam("id") UUID id,
-                                              @NotNull @Valid Message.Input payload) {
+    public @PUT @Path("/{id}") Message update(@PathParam("id") UUID id, @NotNull @Valid Message.Input payload) {
         return service.update(id, payload.getBody());
     }
 
