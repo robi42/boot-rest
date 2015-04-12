@@ -90,7 +90,7 @@ gulp.task('test', function () {
 
 gulp.task('clean', require('del').bind(null, ['.tmp', distDir], {force: true}));
 
-gulp.task('build', ['html', 'views', 'images', 'fonts', 'fontawesome', 'extras', 'apidocs']);
+gulp.task('build', ['test', 'html', 'views', 'images', 'fonts', 'fontawesome', 'extras', 'apidocs']);
 
 gulp.task('default', ['clean'], function () {
   gulp.start('build');

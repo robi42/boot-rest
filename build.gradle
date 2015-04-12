@@ -1,28 +1,35 @@
 buildscript {
+    ext {
+        // Versions
+        // ========
+        springBootVersion  = '1.2.3.RELEASE'
+        asciidoctorVersion = '1.5.2'
+    }
     repositories { jcenter() }
-    dependencies { classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE' }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+        classpath "org.asciidoctor:asciidoctor-gradle-plugin:$asciidoctorVersion"
+    }
 }
-
-plugins { id 'org.asciidoctor.convert' version '1.5.2' }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
+apply plugin: 'org.asciidoctor.gradle.asciidoctor'
 
 ext {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-    generatedDocumentation = file('build/generated-docs')
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
     // Versions
     // ========
     springDataEsVersion = '1.2.0.RELEASE'
-    jerseyVersion = '2.14'
-    metricsVersion = '3.1.0'
-    guavaVersion = '18.0'
-    lombokVersion = '1.16.2'
-    swaggerVersion = '1.3.12'
-    festAssertVersion = '1.4'
+    jerseyVersion       = '2.14'
+    metricsVersion      = '3.1.0'
+    guavaVersion        = '18.0'
+    lombokVersion       = '1.16.2'
+    swaggerVersion      = '1.3.12'
+    festAssertVersion   = '1.4'
 }
 
 jar {
@@ -32,10 +39,8 @@ jar {
 }
 
 asciidoctor {
-    sourceDir 'src/asciidoc'
-    outputDir "$projectDir/docs"
-    attributes generated: generatedDocumentation
-    inputs.dir generatedDocumentation
+    sourceDir = file('src/asciidoc')
+    outputDir = file('docs')
 }
 
 repositories { jcenter() }
@@ -84,6 +89,8 @@ dependencies {
 // =====
 task wrapper(type: Wrapper) { gradleVersion = '2.3' }
 
+// Webapp
+// ------
 def webappDir = "src/webapp"
 
 task npmInstall(type: Exec) {
@@ -108,6 +115,8 @@ task gulpWatch(type: Exec) {
     commandLine 'gulp', 'watch'
 }
 
+// Docs
+// ----
 def docsDir = 'src/main/resources/public/docs'
 
 task makeDocsDir(type: Exec) {
@@ -128,9 +137,13 @@ task copyDistJar(type: Copy) {
 }
 
 processResources.dependsOn copyDocs
+
+// Dist
+// ----
 build.mustRunAfter gulpBuild
 
 task dist(dependsOn: [gulpBuild, build, copyDistJar])
 
-// Used by Heroku
+// Heroku
+// ------
 task stage(dependsOn: ['classes', 'jar', 'assemble'])

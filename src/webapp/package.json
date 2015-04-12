@@ -29,7 +29,7 @@
     "gulp-useref": "^1.0.2",
     "gulp-util": "^2.2.16",
     "jshint-stylish": "^1.0.0",
-    "karma": "~0.12.23",
+    "karma": "~0.12.31",
     "karma-chrome-launcher": "~0.1.5",
     "karma-jasmine": "~0.1.5",
     "karma-ng-html2js-preprocessor": "~0.1.2",
