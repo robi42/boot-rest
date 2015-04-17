@@ -43,8 +43,7 @@ public @Slf4j class MessageResource {
         val message = service.create(payload.getBody());
         val path = String.format("%s/%s", BASE_PATH, message.getId());
         return Response.created(URI.create(path))
-                .entity(message)
-                .build();
+                .entity(message).build();
     }
 
     @ApiOperation("Get all messages")
