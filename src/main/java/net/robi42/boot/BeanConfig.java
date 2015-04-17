@@ -16,7 +16,6 @@ import net.robi42.boot.search.ElasticsearchEntityMapper;
 import net.robi42.boot.search.ElasticsearchProviderImpl;
 import net.robi42.boot.service.MessageDtoConverter;
 import net.robi42.boot.service.MessageEntityFactory;
-import net.robi42.boot.service.MessageEntityFactoryImpl;
 import net.robi42.boot.service.MessageService;
 import net.robi42.boot.service.MessageServiceImpl;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -84,7 +83,7 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
     }
 
     @Bean MessageEntityFactory messageEntityFactory() {
-        return new MessageEntityFactoryImpl();
+        return new MessageEntityFactory.DefaultImpl();
     }
 
     @Bean MessageService messageService(MessageRepository repository) {
