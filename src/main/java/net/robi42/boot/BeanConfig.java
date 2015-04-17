@@ -9,11 +9,16 @@ import com.wordnik.swagger.jersey.JerseyApiReader;
 import com.wordnik.swagger.reader.ClassReaders;
 import lombok.val;
 import net.robi42.boot.dao.MessageRepository;
-import net.robi42.boot.domain.Message;
+import net.robi42.boot.domain.MessageDto;
+import net.robi42.boot.domain.MessageEntity;
 import net.robi42.boot.rest.JerseyConfig;
 import net.robi42.boot.rest.ObjectMapperProvider;
 import net.robi42.boot.search.ElasticsearchEntityMapper;
 import net.robi42.boot.search.ElasticsearchProviderImpl;
+import net.robi42.boot.service.DtoConverter;
+import net.robi42.boot.service.MessageDtoConverter;
+import net.robi42.boot.service.MessageEntityFactory;
+import net.robi42.boot.service.MessageEntityFactoryImpl;
 import net.robi42.boot.service.MessageService;
 import net.robi42.boot.service.MessageServiceImpl;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -80,12 +85,21 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
         return new ElasticsearchTemplate(nodeBuilder().local(true).node().client(), elasticsearchEntityMapper());
     }
 
+    @Bean MessageEntityFactory entityFactory() {
+        return new MessageEntityFactoryImpl();
+    }
+
+    @Bean DtoConverter<MessageEntity, MessageDto> dtoConverter() {
+        return new MessageDtoConverter();
+    }
+
     @Bean MessageService messageService(MessageRepository repository) {
-        return new MessageServiceImpl(repository, new ElasticsearchProviderImpl(elasticsearchTemplate()));
+        val searchProvider = new ElasticsearchProviderImpl(elasticsearchTemplate());
+        return new MessageServiceImpl(repository, entityFactory(), dtoConverter(), searchProvider);
     }
 
     @Bean HealthIndicator messageIndexHealthIndicator(ElasticsearchOperations elasticsearchTemplate) {
-        return () -> elasticsearchTemplate.typeExists(Message.INDEX_NAME, Message.TYPE_NAME)
+        return () -> elasticsearchTemplate.typeExists(MessageEntity.INDEX_NAME, MessageEntity.TYPE_NAME)
                 ? Health.up().build() : Health.down().build();
     }
 }

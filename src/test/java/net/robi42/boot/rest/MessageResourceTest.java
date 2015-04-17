@@ -1,7 +1,7 @@
 package net.robi42.boot.rest;
 
 import lombok.val;
-import net.robi42.boot.domain.Message;
+import net.robi42.boot.domain.MessageDto;
 import net.robi42.boot.search.ElasticsearchProvider.SearchHitDto;
 import net.robi42.boot.util.IntegrationTestBase;
 import org.junit.Test;
@@ -25,15 +25,15 @@ public class MessageResourceTest extends IntegrationTestBase {
 
     @Test
     public void respondsWithMessages() throws Exception {
-        val messages = restApi.path(MessageResource.BASE_PATH).request().get(new GenericType<List<Message>>() {});
+        val messages = restApi.path(MessageResource.BASE_PATH).request().get(new GenericType<List<MessageDto>>() {});
 
         assertThat(messages.size()).isEqualTo(3);
-        assertThat(messages.stream().map(Message::getBody).collect(toList())).contains("Foo");
+        assertThat(messages.stream().map(MessageDto::getBody).collect(toList())).contains("Foo");
     }
 
     @Test
     public void findsMessageViaSearch() throws Exception {
-        final List<SearchHitDto> hits = restApi.path(MessageResource.BASE_PATH + "/search")
+        val hits = restApi.path(MessageResource.BASE_PATH + "/search")
                 .queryParam("q", "bar").request()
                 .get(new GenericType<List<SearchHitDto>>() {});
         assertThat(hits.size()).isEqualTo(1);

@@ -6,7 +6,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import net.robi42.boot.domain.Message;
+import net.robi42.boot.domain.MessageDto;
 import net.robi42.boot.search.ElasticsearchProvider.SearchHitDto;
 import net.robi42.boot.service.MessageService;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -39,7 +39,7 @@ public @Slf4j class MessageResource {
 
     @ApiOperation("Create a new message")
     @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
-    public @POST Response create(@NotNull @Valid Message.Input payload) {
+    public @POST Response create(@NotNull @Valid MessageDto.Input payload) {
         val message = service.create(payload.getBody());
         val path = String.format("%s/%s", BASE_PATH, message.getId());
         return Response.created(URI.create(path))
@@ -49,7 +49,7 @@ public @Slf4j class MessageResource {
 
     @ApiOperation("Get all messages")
     @Produces(MediaType.APPLICATION_JSON)
-    public @GET List<Message> getAll() {
+    public @GET List<MessageDto> getAll() {
         val messages = service.getAll();
         log.debug("Number of messages to serve: {}", messages.size());
         return messages;
@@ -57,13 +57,13 @@ public @Slf4j class MessageResource {
 
     @ApiOperation("Get a message by ID")
     @Produces(MediaType.APPLICATION_JSON)
-    public @GET @Path("/{id}") Message get(@PathParam("id") UUID id) {
+    public @GET @Path("/{id}") MessageDto get(@PathParam("id") UUID id) {
         return service.get(id);
     }
 
     @ApiOperation("Update a message")
     @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
-    public @PUT @Path("/{id}") Message update(@PathParam("id") UUID id, @NotNull @Valid Message.Input payload) {
+    public @PUT @Path("/{id}") MessageDto update(@PathParam("id") UUID id, @NotNull @Valid MessageDto.Input payload) {
         return service.update(id, payload.getBody());
     }
 
