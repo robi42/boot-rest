@@ -20,7 +20,7 @@ public class MessageDtoConverter implements DtoConverter<MessageEntity, MessageD
         return Optional.of(dto);
     }
 
-    @Override public List<MessageDto> convert(Iterable<MessageEntity> entities) {
+    public @Override List<MessageDto> convert(Iterable<MessageEntity> entities) {
         val dtoBuilder = new ImmutableList.Builder<MessageDto>();
         entities.forEach(entity -> convert(entity).ifPresent(dtoBuilder::add));
         return dtoBuilder.build();
