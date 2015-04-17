@@ -9,13 +9,11 @@ import com.wordnik.swagger.jersey.JerseyApiReader;
 import com.wordnik.swagger.reader.ClassReaders;
 import lombok.val;
 import net.robi42.boot.dao.MessageRepository;
-import net.robi42.boot.domain.MessageDto;
 import net.robi42.boot.domain.MessageEntity;
 import net.robi42.boot.rest.JerseyConfig;
 import net.robi42.boot.rest.ObjectMapperProvider;
 import net.robi42.boot.search.ElasticsearchEntityMapper;
 import net.robi42.boot.search.ElasticsearchProviderImpl;
-import net.robi42.boot.service.DtoConverter;
 import net.robi42.boot.service.MessageDtoConverter;
 import net.robi42.boot.service.MessageEntityFactory;
 import net.robi42.boot.service.MessageEntityFactoryImpl;
@@ -89,13 +87,9 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
         return new MessageEntityFactoryImpl();
     }
 
-    @Bean DtoConverter<MessageEntity, MessageDto> messageDtoConverter() {
-        return new MessageDtoConverter();
-    }
-
     @Bean MessageService messageService(MessageRepository repository) {
         val searchProvider = new ElasticsearchProviderImpl(elasticsearchTemplate());
-        return new MessageServiceImpl(repository, messageEntityFactory(), messageDtoConverter(), searchProvider);
+        return new MessageServiceImpl(repository, messageEntityFactory(), new MessageDtoConverter(), searchProvider);
     }
 
     @Bean HealthIndicator messageIndexHealthIndicator(ElasticsearchOperations elasticsearchTemplate) {

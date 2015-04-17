@@ -19,7 +19,7 @@ import java.util.UUID;
 import static java.util.Collections.emptyList;
 import static org.elasticsearch.index.query.QueryBuilders.matchPhrasePrefixQuery;
 
-@RequiredArgsConstructor @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+@RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
     private final @NonNull MessageRepository repository;
     private final @NonNull MessageEntityFactory factory;
@@ -32,6 +32,7 @@ public class MessageServiceImpl implements MessageService {
         return dtoConverter.convert(savedMessage).get();
     }
 
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     public @Override MessageDto get(UUID id) {
         val entity = repository.findOne(id.toString());
         val dto = dtoConverter.convert(entity);
@@ -43,6 +44,7 @@ public class MessageServiceImpl implements MessageService {
         return dtoConverter.convert(entities);
     }
 
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     public @Override MessageDto update(UUID id, String text) {
         val messageToUpdate = Optional.ofNullable(repository.findOne(id.toString()))
                 .orElseThrow(() -> newNotFoundException(id));
