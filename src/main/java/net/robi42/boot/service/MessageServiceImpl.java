@@ -19,7 +19,7 @@ import java.util.UUID;
 import static java.util.Collections.emptyList;
 import static org.elasticsearch.index.query.QueryBuilders.matchPhrasePrefixQuery;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
 public class MessageServiceImpl implements MessageService {
     private final @NonNull MessageRepository repository;
     private final @NonNull MessageEntityFactory factory;

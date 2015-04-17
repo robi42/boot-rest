@@ -85,17 +85,17 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
         return new ElasticsearchTemplate(nodeBuilder().local(true).node().client(), elasticsearchEntityMapper());
     }
 
-    @Bean MessageEntityFactory entityFactory() {
+    @Bean MessageEntityFactory messageEntityFactory() {
         return new MessageEntityFactoryImpl();
     }
 
-    @Bean DtoConverter<MessageEntity, MessageDto> dtoConverter() {
+    @Bean DtoConverter<MessageEntity, MessageDto> messageDtoConverter() {
         return new MessageDtoConverter();
     }
 
     @Bean MessageService messageService(MessageRepository repository) {
         val searchProvider = new ElasticsearchProviderImpl(elasticsearchTemplate());
-        return new MessageServiceImpl(repository, entityFactory(), dtoConverter(), searchProvider);
+        return new MessageServiceImpl(repository, messageEntityFactory(), messageDtoConverter(), searchProvider);
     }
 
     @Bean HealthIndicator messageIndexHealthIndicator(ElasticsearchOperations elasticsearchTemplate) {
