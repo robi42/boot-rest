@@ -1,9 +1,11 @@
 spring:
   application.name: boot-rest
   jackson.serialization.write-dates-as-timestamps: false
-  data.elasticsearch.properties:
-    node.name: BootRestEs
-    discovery.zen.ping.multicast.enabled: false
+  data.elasticsearch:
+    cluster-name: boot-rest
+    properties:
+      node.name: Boot Rest
+      discovery.zen.ping.multicast.enabled: false
 
 server.port: 8888
 
