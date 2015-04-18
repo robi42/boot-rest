@@ -2,7 +2,7 @@ spring:
   application.name: boot-rest
   jackson.serialization.write-dates-as-timestamps: false
   data.elasticsearch:
-    cluster-name: boot-rest
+    cluster-name: ${spring.application.name}
     properties:
       node.name: Boot Rest
       discovery.zen.ping.multicast.enabled: false

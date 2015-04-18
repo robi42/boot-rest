@@ -2,7 +2,7 @@ spring:
   application.name: boot-rest-test
   main.show-banner: false
   data.elasticsearch:
-    cluster-name: boot-rest-test
+    cluster-name: ${spring.application.name}
     properties:
       node.name: Boot Rest Test
 
