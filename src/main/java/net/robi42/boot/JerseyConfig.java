@@ -17,9 +17,13 @@ import static org.glassfish.jersey.server.ServerProperties.BV_SEND_ERROR_IN_RESP
 public class JerseyConfig extends ResourceConfig {
 
     public JerseyConfig(MessageService messageService, ObjectMapper objectMapper) {
-        registerInstances(new MessageResource(messageService), new ObjectMapperProvider(objectMapper));
+        registerInstances(
+                new MessageResource(messageService),
+                new ObjectMapperProvider(objectMapper)
+        );
         registerClasses( // Swagger API Docs
-                ApiListingResourceJSON.class, JerseyApiDeclarationProvider.class, JerseyResourceListingProvider.class);
+                ApiListingResourceJSON.class, JerseyApiDeclarationProvider.class, JerseyResourceListingProvider.class
+        );
 
         property(BV_SEND_ERROR_IN_RESPONSE, true);
     }
