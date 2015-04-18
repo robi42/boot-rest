@@ -69,9 +69,7 @@ dependencies {
     // =========
     compile "com.google.guava:guava:$guavaVersion"
     compile "org.projectlombok:lombok:$lombokVersion"
-    compile("com.wordnik:swagger-jersey2-jaxrs_2.10:$swaggerVersion") {
-        exclude module: 'jsr311-api'
-    }
+    compile("com.wordnik:swagger-jersey2-jaxrs_2.10:$swaggerVersion") { exclude module: 'jsr311-api' }
 
     // Testing
     // =======
