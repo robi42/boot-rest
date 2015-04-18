@@ -11,6 +11,8 @@ import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 public class NotFoundWebException extends WebApplicationException {
 
     public NotFoundWebException(String message) {
-        super(message, Response.status(NOT_FOUND).entity(ImmutableSet.of(new ErrorDto(message))).build());
+        super(message, Response.status(NOT_FOUND)
+                .entity(ImmutableSet.of(new ErrorDto(message)))
+                .build());
     }
 }
