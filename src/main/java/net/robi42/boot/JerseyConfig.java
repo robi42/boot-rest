@@ -24,7 +24,6 @@ public class JerseyConfig extends ResourceConfig {
         registerClasses( // Swagger API Docs
                 ApiListingResourceJSON.class, JerseyApiDeclarationProvider.class, JerseyResourceListingProvider.class
         );
-
         property(BV_SEND_ERROR_IN_RESPONSE, true);
     }
 }
