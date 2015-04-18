@@ -11,7 +11,6 @@ import net.robi42.boot.search.ElasticsearchProvider.SearchHitDto;
 import net.robi42.boot.service.MessageService;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -30,8 +29,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Api(value = MessageResource.BASE_PATH, description = "CRUD & Search")
-@Path(MessageResource.BASE_PATH)
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
+@Path(MessageResource.BASE_PATH) @RequiredArgsConstructor
 public @Slf4j class MessageResource {
     public static final String BASE_PATH = "messages";
 
@@ -57,13 +55,16 @@ public @Slf4j class MessageResource {
     @ApiOperation("Get a message by ID")
     @Produces(MediaType.APPLICATION_JSON)
     public @GET @Path("/{id}") MessageDto get(@PathParam("id") UUID id) {
-        return service.get(id);
+        return service.get(id).orElseThrow(() ->
+                new NotFoundWebException(notFoundMessageWith(id)));
     }
 
     @ApiOperation("Update a message")
     @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
-    public @PUT @Path("/{id}") MessageDto update(@PathParam("id") UUID id, @NotNull @Valid MessageDto.Input payload) {
-        return service.update(id, payload.getBody());
+    public @PUT @Path("/{id}") MessageDto update(@PathParam("id") UUID id,
+                                                 @NotNull @Valid MessageDto.Input payload) {
+        return service.update(id, payload.getBody())
+                .orElseThrow(() -> new NotFoundWebException(notFoundMessageWith(id)));
     }
 
     @ApiOperation("Delete a message")
@@ -75,5 +76,9 @@ public @Slf4j class MessageResource {
     @Produces(MediaType.APPLICATION_JSON)
     public @GET @Path("/search") List<SearchHitDto> search(@NotEmpty @QueryParam("q") String term) {
         return service.search(term);
+    }
+
+    private String notFoundMessageWith(UUID id) {
+        return String.format("Message with ID '%s' not found", id);
     }
 }

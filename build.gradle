@@ -45,15 +45,7 @@ asciidoctor {
 
 repositories { jcenter() }
 
-configurations {
-    provided
-    compile.exclude module: 'spring-boot-starter-tomcat'
-}
-
-sourceSets {
-    main.compileClasspath += configurations.provided
-    test.compileClasspath += configurations.provided
-}
+configurations { compile.exclude module: 'spring-boot-starter-tomcat' }
 
 dependencies {
     // Core
@@ -76,8 +68,10 @@ dependencies {
     // Utilities
     // =========
     compile "com.google.guava:guava:$guavaVersion"
-    provided "org.projectlombok:lombok:$lombokVersion"
-    compile "com.wordnik:swagger-jersey2-jaxrs_2.10:$swaggerVersion"
+    compile "org.projectlombok:lombok:$lombokVersion"
+    compile("com.wordnik:swagger-jersey2-jaxrs_2.10:$swaggerVersion") {
+        exclude module: 'jsr311-api'
+    }
 
     // Testing
     // =======

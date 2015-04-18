@@ -2,7 +2,7 @@ package net.robi42.boot;
 
 import com.google.common.collect.ImmutableList;
 import net.robi42.boot.dao.MessageRepository;
-import net.robi42.boot.service.MessageEntityFactory;
+import net.robi42.boot.util.MessageEntityFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

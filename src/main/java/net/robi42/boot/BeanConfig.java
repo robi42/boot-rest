@@ -10,12 +10,11 @@ import com.wordnik.swagger.reader.ClassReaders;
 import lombok.val;
 import net.robi42.boot.dao.MessageRepository;
 import net.robi42.boot.domain.MessageEntity;
-import net.robi42.boot.rest.JerseyConfig;
 import net.robi42.boot.rest.ObjectMapperProvider;
 import net.robi42.boot.search.ElasticsearchEntityMapper;
 import net.robi42.boot.search.ElasticsearchProviderImpl;
 import net.robi42.boot.service.MessageDtoConverter;
-import net.robi42.boot.service.MessageEntityFactory;
+import net.robi42.boot.util.MessageEntityFactory;
 import net.robi42.boot.service.MessageService;
 import net.robi42.boot.service.MessageServiceImpl;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -44,9 +43,10 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
     @Value("${web-client.connection-pool.default-max-per-route}") int webClientConnectionPoolDefaultMaxPerRoute;
 
     @Inject ObjectMapper objectMapper;
+    @Inject MessageRepository messageRepository;
 
     @Bean JerseyConfig jerseyConfig() {
-        return new JerseyConfig();
+        return new JerseyConfig(messageService(), objectMapper);
     }
 
     @Bean CommandLineRunner swaggerConfig() {
@@ -86,9 +86,10 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
         return new MessageEntityFactory.DefaultImpl();
     }
 
-    @Bean MessageService messageService(MessageRepository repository) {
+    @Bean MessageService messageService() {
         val searchProvider = new ElasticsearchProviderImpl(elasticsearchTemplate());
-        return new MessageServiceImpl(repository, messageEntityFactory(), new MessageDtoConverter(), searchProvider);
+        val dtoConverter = new MessageDtoConverter();
+        return new MessageServiceImpl(messageRepository, messageEntityFactory(), dtoConverter, searchProvider);
     }
 
     @Bean HealthIndicator messageIndexHealthIndicator(ElasticsearchOperations elasticsearchTemplate) {

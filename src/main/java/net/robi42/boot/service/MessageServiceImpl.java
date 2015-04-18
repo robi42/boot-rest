@@ -8,7 +8,7 @@ import net.robi42.boot.domain.MessageDto;
 import net.robi42.boot.domain.MessageEntity;
 import net.robi42.boot.search.ElasticsearchProvider;
 import net.robi42.boot.search.ElasticsearchProvider.SearchHitDto;
-import net.robi42.boot.util.NotFoundException;
+import net.robi42.boot.util.MessageEntityFactory;
 import org.elasticsearch.ElasticsearchException;
 
 import java.util.Date;
@@ -32,11 +32,9 @@ public class MessageServiceImpl implements MessageService {
         return dtoConverter.convert(savedMessage).get();
     }
 
-    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
-    public @Override MessageDto get(UUID id) {
+    public @Override Optional<MessageDto> get(UUID id) {
         val entity = repository.findOne(id.toString());
-        val dto = dtoConverter.convert(entity);
-        return dto.orElseThrow(() -> newNotFoundException(id));
+        return dtoConverter.convert(entity);
     }
 
     public @Override List<MessageDto> getAll() {
@@ -44,14 +42,15 @@ public class MessageServiceImpl implements MessageService {
         return dtoConverter.convert(entities);
     }
 
-    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
-    public @Override MessageDto update(UUID id, String text) {
-        val messageToUpdate = Optional.ofNullable(repository.findOne(id.toString()))
-                .orElseThrow(() -> newNotFoundException(id));
+    public @Override Optional<MessageDto> update(UUID id, String text) {
+        val messageToUpdate = repository.findOne(id.toString());
+        if (messageToUpdate == null) {
+            return Optional.empty();
+        }
         messageToUpdate.setBody(text);
         messageToUpdate.setLastModifiedAt(new Date());
         val updatedMessage = repository.save(messageToUpdate);
-        return dtoConverter.convert(updatedMessage).get();
+        return dtoConverter.convert(updatedMessage);
     }
 
     public @Override void delete(UUID id) {
@@ -64,9 +63,5 @@ public class MessageServiceImpl implements MessageService {
         } catch (ElasticsearchException e) {
             return emptyList();
         }
-    }
-
-    private NotFoundException newNotFoundException(UUID id) {
-        return new NotFoundException(String.format("Message with ID '%s' not found", id));
     }
 }

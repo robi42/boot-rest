@@ -2,19 +2,19 @@ package net.robi42.boot.service;
 
 import net.robi42.boot.domain.MessageDto;
 import net.robi42.boot.search.ElasticsearchProvider.SearchHitDto;
-import net.robi42.boot.util.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface MessageService {
     MessageDto create(String text);
 
-    MessageDto get(UUID id) throws NotFoundException;
+    Optional<MessageDto> get(UUID id);
 
     List<MessageDto> getAll();
 
-    MessageDto update(UUID id, String text) throws NotFoundException;
+    Optional<MessageDto> update(UUID id, String text);
 
     void delete(UUID id);
 
