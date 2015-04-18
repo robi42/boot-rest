@@ -1,4 +1,4 @@
-package net.robi42.boot.util;
+package net.robi42.boot.domain;
 
 import lombok.Value;
 

@@ -5,7 +5,6 @@ spring:
     cluster-name: boot-rest-test
     properties:
       node.name: Boot Rest Test
-      index.store.type: memory
 
 server.port: 0
 management.port: 0

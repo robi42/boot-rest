@@ -6,25 +6,18 @@ import lombok.val;
 import net.robi42.boot.dao.MessageRepository;
 import net.robi42.boot.domain.MessageDto;
 import net.robi42.boot.domain.MessageEntity;
-import net.robi42.boot.search.ElasticsearchProvider;
-import net.robi42.boot.search.ElasticsearchProvider.SearchHitDto;
 import net.robi42.boot.util.MessageEntityFactory;
-import org.elasticsearch.ElasticsearchException;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static java.util.Collections.emptyList;
-import static org.elasticsearch.index.query.QueryBuilders.matchPhrasePrefixQuery;
-
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
     private final @NonNull MessageRepository repository;
     private final @NonNull MessageEntityFactory factory;
     private final @NonNull DtoConverter<MessageEntity, MessageDto> dtoConverter;
-    private final @NonNull ElasticsearchProvider searchProvider;
 
     public @Override MessageDto create(String text) {
         val messageToSave = factory.newMessage(text);
@@ -66,11 +59,8 @@ public class MessageServiceImpl implements MessageService {
         repository.delete(id.toString());
     }
 
-    public @Override List<SearchHitDto> search(String term) {
-        try {
-            return searchProvider.search(matchPhrasePrefixQuery("body", term));
-        } catch (ElasticsearchException e) {
-            return emptyList();
-        }
+    public @Override List<MessageDto> search(String term) {
+        val entities = repository.findByBodyLike(term);
+        return dtoConverter.convert(entities);
     }
 }

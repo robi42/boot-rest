@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import net.robi42.boot.domain.MessageDto;
-import net.robi42.boot.search.ElasticsearchProvider.SearchHitDto;
 import net.robi42.boot.service.MessageService;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -74,7 +73,7 @@ public @Slf4j class MessageResource {
 
     @ApiOperation("Search for messages by body content")
     @Produces(MediaType.APPLICATION_JSON)
-    public @GET @Path("/search") List<SearchHitDto> search(@NotEmpty @QueryParam("q") String term) {
+    public @GET @Path("/search") List<MessageDto> search(@NotEmpty @QueryParam("q") String term) {
         return service.search(term);
     }
 

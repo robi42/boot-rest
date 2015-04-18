@@ -1,7 +1,6 @@
 package net.robi42.boot.service;
 
 import net.robi42.boot.domain.MessageDto;
-import net.robi42.boot.search.ElasticsearchProvider.SearchHitDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,5 +17,5 @@ public interface MessageService {
 
     void delete(UUID id);
 
-    List<SearchHitDto> search(String term);
+    List<MessageDto> search(String term);
 }

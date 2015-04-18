@@ -11,12 +11,11 @@ import lombok.val;
 import net.robi42.boot.dao.MessageRepository;
 import net.robi42.boot.domain.MessageEntity;
 import net.robi42.boot.rest.ObjectMapperProvider;
-import net.robi42.boot.search.ElasticsearchEntityMapper;
-import net.robi42.boot.search.ElasticsearchProviderImpl;
 import net.robi42.boot.service.MessageDtoConverter;
-import net.robi42.boot.util.MessageEntityFactory;
 import net.robi42.boot.service.MessageService;
 import net.robi42.boot.service.MessageServiceImpl;
+import net.robi42.boot.util.CustomEntityMapper;
+import net.robi42.boot.util.MessageEntityFactory;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
@@ -74,12 +73,12 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
                 .register(new ObjectMapperProvider(objectMapper));
     }
 
-    @Bean ElasticsearchEntityMapper elasticsearchEntityMapper() {
-        return new ElasticsearchEntityMapper(objectMapper);
+    @Bean CustomEntityMapper entityMapper() {
+        return new CustomEntityMapper(objectMapper);
     }
 
     @Bean ElasticsearchOperations elasticsearchTemplate() {
-        return new ElasticsearchTemplate(nodeBuilder().local(true).node().client(), elasticsearchEntityMapper());
+        return new ElasticsearchTemplate(nodeBuilder().local(true).node().client(), entityMapper());
     }
 
     @Bean MessageEntityFactory messageEntityFactory() {
@@ -87,9 +86,7 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
     }
 
     @Bean MessageService messageService() {
-        val searchProvider = new ElasticsearchProviderImpl(elasticsearchTemplate());
-        val dtoConverter = new MessageDtoConverter();
-        return new MessageServiceImpl(messageRepository, messageEntityFactory(), dtoConverter, searchProvider);
+        return new MessageServiceImpl(messageRepository, messageEntityFactory(), new MessageDtoConverter());
     }
 
     @Bean HealthIndicator messageIndexHealthIndicator(ElasticsearchOperations elasticsearchTemplate) {

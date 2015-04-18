@@ -1,7 +1,7 @@
 package net.robi42.boot.rest;
 
 import com.google.common.collect.ImmutableSet;
-import net.robi42.boot.util.ErrorDto;
+import net.robi42.boot.domain.ErrorDto;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;

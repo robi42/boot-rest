@@ -1,4 +1,4 @@
-package net.robi42.boot.search;
+package net.robi42.boot.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.core.EntityMapper;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class ElasticsearchEntityMapper implements EntityMapper {
+public class CustomEntityMapper implements EntityMapper {
     private final @NonNull ObjectMapper objectMapper;
 
     public @Override String mapToString(Object object) throws IOException {
