@@ -29,12 +29,16 @@ public class MessageServiceImpl implements MessageService {
     public @Override MessageDto create(String text) {
         val messageToSave = factory.newMessage(text);
         val savedMessage = repository.save(messageToSave);
-        return dtoConverter.convert(savedMessage).get();
+        return dtoConverter.convert(savedMessage);
     }
 
     public @Override Optional<MessageDto> get(UUID id) {
         val entity = repository.findOne(id.toString());
-        return dtoConverter.convert(entity);
+        if (entity == null) {
+            return Optional.empty();
+        }
+        val dto = dtoConverter.convert(entity);
+        return Optional.of(dto);
     }
 
     public @Override List<MessageDto> getAll() {
@@ -47,10 +51,15 @@ public class MessageServiceImpl implements MessageService {
         if (messageToUpdate == null) {
             return Optional.empty();
         }
-        messageToUpdate.setBody(text);
-        messageToUpdate.setLastModifiedAt(new Date());
-        val updatedMessage = repository.save(messageToUpdate);
-        return dtoConverter.convert(updatedMessage);
+        val updatedMessage = updateAndSave(text, messageToUpdate);
+        val dto = dtoConverter.convert(updatedMessage);
+        return Optional.of(dto);
+    }
+
+    private MessageEntity updateAndSave(String text, MessageEntity message) {
+        message.setBody(text);
+        message.setLastModifiedAt(new Date());
+        return repository.save(message);
     }
 
     public @Override void delete(UUID id) {

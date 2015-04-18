@@ -7,22 +7,18 @@ import net.robi42.boot.domain.MessageEntity;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;
-import java.util.Optional;
 
 public class MessageDtoConverter implements DtoConverter<MessageEntity, MessageDto> {
 
-    public @Override Optional<MessageDto> convert(MessageEntity entity) {
-        if (entity == null) {
-            return Optional.empty();
-        }
+    public @Override MessageDto convert(MessageEntity entity) {
         val dto = new MessageDto();
         BeanUtils.copyProperties(entity, dto);
-        return Optional.of(dto);
+        return dto;
     }
 
     public @Override List<MessageDto> convert(Iterable<MessageEntity> entities) {
         val dtoBuilder = new ImmutableList.Builder<MessageDto>();
-        entities.forEach(entity -> convert(entity).ifPresent(dtoBuilder::add));
+        entities.forEach(entity -> dtoBuilder.add(convert(entity)));
         return dtoBuilder.build();
     }
 }
