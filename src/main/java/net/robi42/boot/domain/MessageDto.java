@@ -1,6 +1,5 @@
 package net.robi42.boot.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,11 +13,5 @@ import java.util.Date;
 public @Data @Builder class MessageDto {
     private String id;
     private Date lastModifiedAt;
-    private String body;
-
-    @NoArgsConstructor @AllArgsConstructor
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static @Data class Input {
-        private @NotEmpty @Size(max = 140) String body;
-    }
+    private @NotEmpty @Size(max = 140) String body;
 }

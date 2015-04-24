@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import net.robi42.boot.domain.Message;
 import net.robi42.boot.domain.MessageDto;
 import net.robi42.boot.service.MessageService;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -27,6 +28,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.stream.Collectors.toList;
+
 @Api(value = MessageResource.BASE_PATH, description = "CRUD & Search")
 @Path(MessageResource.BASE_PATH) @RequiredArgsConstructor
 public @Slf4j class MessageResource {
@@ -36,8 +39,8 @@ public @Slf4j class MessageResource {
 
     @ApiOperation("Create a new message")
     @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
-    public @POST Response create(@NotNull @Valid MessageDto.Input payload) {
-        val message = service.create(payload.getBody());
+    public @POST Response create(@NotNull @Valid MessageDto dto) {
+        val message = service.create(dto.getBody()).toDto();
         val path = String.format("%s/%s", BASE_PATH, message.getId());
         return Response.created(URI.create(path))
                 .entity(message).build();
@@ -48,22 +51,24 @@ public @Slf4j class MessageResource {
     public @GET List<MessageDto> getAll() {
         val messages = service.getAll();
         log.debug("Number of messages to serve: {}", messages.size());
-        return messages;
+        return messages.stream().map(Message::toDto).collect(toList());
     }
 
     @ApiOperation("Get a message by ID")
     @Produces(MediaType.APPLICATION_JSON)
     public @GET @Path("/{id}") MessageDto get(@PathParam("id") UUID id) {
-        return service.get(id).orElseThrow(() ->
-                new NotFoundWebException(notFoundMessageWith(id)));
+        return service.get(id)
+                .map(Message::toDto).orElseThrow(() ->
+                        new NotFoundWebException(notFoundMessageWith(id)));
     }
 
     @ApiOperation("Update a message")
     @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
     public @PUT @Path("/{id}") MessageDto update(@PathParam("id") UUID id,
-                                                 @NotNull @Valid MessageDto.Input payload) {
-        return service.update(id, payload.getBody())
-                .orElseThrow(() -> new NotFoundWebException(notFoundMessageWith(id)));
+                                                 @NotNull @Valid MessageDto dto) {
+        return service.update(id, dto.getBody())
+                .map(Message::toDto).orElseThrow(() ->
+                        new NotFoundWebException(notFoundMessageWith(id)));
     }
 
     @ApiOperation("Delete a message")
@@ -74,7 +79,8 @@ public @Slf4j class MessageResource {
     @ApiOperation("Search for messages by body content")
     @Produces(MediaType.APPLICATION_JSON)
     public @GET @Path("/search") List<MessageDto> search(@NotEmpty @QueryParam("q") String term) {
-        return service.search(term);
+        return service.search(term).stream()
+                .map(Message::toDto).collect(toList());
     }
 
     private String notFoundMessageWith(UUID id) {

@@ -2,7 +2,7 @@ package net.robi42.boot;
 
 import com.google.common.collect.ImmutableList;
 import net.robi42.boot.dao.MessageRepository;
-import net.robi42.boot.util.MessageEntityFactory;
+import net.robi42.boot.util.MessageFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.inject.Inject;
 
 @Configuration class TestBeanConfig extends BeanConfig {
-    @Inject MessageEntityFactory fixtures;
+    @Inject MessageFactory fixtures;
 
     @Bean CommandLineRunner populateMessageIndex(MessageRepository repository) {
         return args -> {

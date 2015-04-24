@@ -9,13 +9,12 @@ import com.wordnik.swagger.jersey.JerseyApiReader;
 import com.wordnik.swagger.reader.ClassReaders;
 import lombok.val;
 import net.robi42.boot.dao.MessageRepository;
-import net.robi42.boot.domain.MessageEntity;
+import net.robi42.boot.domain.Message;
 import net.robi42.boot.rest.ObjectMapperProvider;
-import net.robi42.boot.service.MessageDtoConverter;
 import net.robi42.boot.service.MessageService;
 import net.robi42.boot.service.MessageServiceImpl;
 import net.robi42.boot.util.CustomEntityMapper;
-import net.robi42.boot.util.MessageEntityFactory;
+import net.robi42.boot.util.MessageFactory;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
@@ -81,16 +80,16 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
         return new ElasticsearchTemplate(nodeBuilder().local(true).node().client(), entityMapper());
     }
 
-    @Bean MessageEntityFactory messageEntityFactory() {
-        return new MessageEntityFactory.DefaultImpl();
+    @Bean MessageFactory messageFactory() {
+        return new MessageFactory.Impl();
     }
 
     @Bean MessageService messageService() {
-        return new MessageServiceImpl(messageRepository, messageEntityFactory(), new MessageDtoConverter());
+        return new MessageServiceImpl(messageRepository, messageFactory());
     }
 
     @Bean HealthIndicator messageIndexHealthIndicator(ElasticsearchOperations elasticsearchTemplate) {
-        return () -> elasticsearchTemplate.typeExists(MessageEntity.INDEX_NAME, MessageEntity.TYPE_NAME)
+        return () -> elasticsearchTemplate.typeExists(Message.INDEX_NAME, Message.TYPE_NAME)
                 ? Health.up().build() : Health.down().build();
     }
 }

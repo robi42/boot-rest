@@ -1,21 +1,21 @@
 package net.robi42.boot.service;
 
-import net.robi42.boot.domain.MessageDto;
+import net.robi42.boot.domain.Message;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface MessageService {
-    MessageDto create(String text);
+    Message create(String text);
 
-    Optional<MessageDto> get(UUID id);
+    Optional<Message> get(UUID id);
 
-    List<MessageDto> getAll();
+    List<Message> getAll();
 
-    Optional<MessageDto> update(UUID id, String text);
+    Optional<Message> update(UUID id, String text);
 
     void delete(UUID id);
 
-    List<MessageDto> search(String term);
+    List<Message> search(String term);
 }
