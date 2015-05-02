@@ -33,6 +33,13 @@ ext {
 }
 
 jar {
+    doFirst {
+        manifest {
+            attributes 'Implementation-Title': project.name,
+                    'Implementation-Version': version,
+                    'Implementation-Timestamp': new Date()
+        }
+    }
     baseName = 'boot-rest'
     archiveName = "${baseName}.jar"
     version = '0.1.0-SNAPSHOT'

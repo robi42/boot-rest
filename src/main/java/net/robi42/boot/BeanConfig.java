@@ -14,6 +14,7 @@ import net.robi42.boot.rest.ObjectMapperProvider;
 import net.robi42.boot.service.MessageService;
 import net.robi42.boot.service.MessageServiceImpl;
 import net.robi42.boot.util.CustomEntityMapper;
+import net.robi42.boot.util.Manifest;
 import net.robi42.boot.util.MessageFactory;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
@@ -50,7 +51,7 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
     @Bean CommandLineRunner swaggerConfig() {
         val swaggerConfig = new SwaggerConfig();
         swaggerConfig.setBasePath("/");
-        swaggerConfig.setApiVersion(Application.version());
+        swaggerConfig.setApiVersion(Manifest.version());
 
         return args -> {
             ConfigFactory.setConfig(swaggerConfig);

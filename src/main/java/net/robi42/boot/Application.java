@@ -1,7 +1,9 @@
 package net.robi42.boot;
 
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import net.robi42.boot.dao.RepositoryRoot;
+import net.robi42.boot.util.Manifest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
@@ -12,19 +14,14 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 import javax.ws.rs.core.MediaType;
 
-import static com.google.common.base.MoreObjects.firstNonNull;
 import static org.springframework.boot.context.embedded.MimeMappings.DEFAULT;
 
 @Import(BeanConfig.class) @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
-public @SpringBootApplication class Application implements EmbeddedServletContainerCustomizer {
+public @SpringBootApplication @Slf4j class Application implements EmbeddedServletContainerCustomizer {
 
     public static void main(final String[] args) {
         SpringApplication.run(Application.class, args);
-    }
-
-    public static String version() {
-        val implementationVersion = Application.class.getPackage().getImplementationVersion();
-        return firstNonNull(implementationVersion, "DEV-SNAPSHOT");
+        log.info("Version: {}", Manifest.version());
     }
 
     public @Override void customize(ConfigurableEmbeddedServletContainer container) {

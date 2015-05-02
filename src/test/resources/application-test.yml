@@ -4,7 +4,7 @@ spring:
   data.elasticsearch:
     cluster-name: ${spring.application.name}
     properties:
-      node.name: Boot Rest Test
+      node.name: Boot REST Test
 
 server.port: 0
 management.port: 0

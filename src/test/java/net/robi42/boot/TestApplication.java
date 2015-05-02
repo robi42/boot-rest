@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @Import(TestBeanConfig.class) @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
 public @SpringBootApplication class TestApplication {
 
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         SpringApplication.run(TestApplication.class, args);
     }
 }
