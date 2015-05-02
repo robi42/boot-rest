@@ -58,7 +58,7 @@ dependencies {
     // Core
     // ====
     compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-jersey'
+    compile('org.springframework.boot:spring-boot-starter-jersey') { exclude module: 'jersey-media-multipart' }
     compile 'org.springframework.boot:spring-boot-starter-jetty'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'org.springframework.boot:spring-boot-starter-security'
@@ -69,6 +69,7 @@ dependencies {
     compile 'org.thymeleaf:thymeleaf-spring4'
     compile 'org.eclipse.jetty:jetty-servlets'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    compile "org.glassfish.jersey.media:jersey-media-multipart:$jerseyVersion"
     compile "org.glassfish.jersey.connectors:jersey-apache-connector:$jerseyVersion"
     compile "io.dropwizard.metrics:metrics-core:$metricsVersion"
 
