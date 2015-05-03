@@ -1,4 +1,4 @@
 node_modules
+jspm_packages
 dist
 .tmp
-app/bower_components

@@ -35,9 +35,7 @@ ext {
 jar {
     doFirst {
         manifest {
-            attributes 'Implementation-Title': project.name,
-                    'Implementation-Version': version,
-                    'Implementation-Timestamp': new Date()
+            attributes 'Implementation-Title': project.name, 'Implementation-Version': version
         }
     }
     baseName = 'boot-rest'
@@ -98,14 +96,8 @@ task npmInstall(type: Exec) {
     commandLine 'npm', 'install'
 }
 
-task bowerInstall(type: Exec) {
-    dependsOn npmInstall
-    workingDir webappDir
-    commandLine 'bower', 'install'
-}
-
 task gulpBuild(type: Exec) {
-    dependsOn bowerInstall
+    dependsOn npmInstall
     workingDir webappDir
     commandLine 'gulp'
 }

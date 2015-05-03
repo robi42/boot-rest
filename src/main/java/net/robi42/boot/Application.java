@@ -28,6 +28,7 @@ public @SpringBootApplication @Slf4j class Application implements EmbeddedServle
         val mappings = new MimeMappings(DEFAULT);
         mappings.add("html", MediaType.TEXT_HTML + "; charset=UTF-8");
         mappings.add("woff", "application/font-woff; charset=UTF-8");
+        mappings.add("woff2", "application/font-woff2; charset=UTF-8");
         container.setMimeMappings(mappings);
     }
 }

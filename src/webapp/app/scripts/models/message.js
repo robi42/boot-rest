@@ -1,9 +1,8 @@
-(function (window, angular, undefined) {
-  'use strict';
+'use strict';
 
-  angular.module('brModels')
-    .factory('Message', function ($resource) {
-      return $resource('/api/messages/:messageId',
-        {messageId: '@id'}, {update: {method: 'PUT'}});
-    });
-})(window, window.angular);
+export default $resource => {
+  'ngInject';
+
+  return $resource('/api/messages/:messageId',
+    {messageId: '@id'}, {update: {method: 'PUT'}});
+};
