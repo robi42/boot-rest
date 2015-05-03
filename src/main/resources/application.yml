@@ -14,7 +14,7 @@ management:
   context-path: /manage
 
 security:
-  basic.path: /manage/**
+  basic.path: ${management.context-path}/**
   user:
     name: admin
     password: secret
