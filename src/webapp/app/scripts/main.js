@@ -2,10 +2,12 @@
 
 import 'jquery';
 import 'bootstrap';
+import angular from 'angular';
 import 'angular-route';
 import 'angular-resource';
 import 'angular-xeditable';
 
-import bootstrap from './config';
+import appModule from './config';
 
-bootstrap();
+angular.element(document).ready(() =>
+  angular.bootstrap(document.body, [appModule.name]));
