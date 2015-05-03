@@ -37,4 +37,4 @@ Note: this thing is ready to be deployed on Heroku (and verified to run packaged
 FYI: using Spring Data Elasticsearch as embedded data source provider for fun.
 
 PS: Bootstrap/Angular SPA is developed & built with the help of Yeoman, Gulp, and JSPM/ES6...<br>
-    So, you'll need to have Node.js/NPM as well as Bower and Gulp CLI (globally) installed.
+    So, you'll need to have Node.js/NPM as well as JSPM and Gulp CLI (globally) installed.
