@@ -34,7 +34,7 @@ Generated ones, via Asciidoctor, at:<br>
 
 Note: this thing is ready to be deployed on Heroku (and verified to run packaged as WAR in Tomcat 8 as `ROOT` context).
 
-FYI: using Spring Data Elasticsearch as embedded data source provider for fun.
+FYI: using Spring Data Elasticsearch as embedded data source provider for fun & DRYness.
 
 PS: Bootstrap/Angular SPA is developed & built with the help of Yeoman, Gulp, and JSPM/ES6...<br>
     So, you'll need to have Node.js/NPM as well as JSPM and Gulp CLI (globally) installed.

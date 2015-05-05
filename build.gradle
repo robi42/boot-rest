@@ -102,9 +102,9 @@ task gulpBuild(type: Exec) {
     commandLine 'gulp'
 }
 
-task gulpWatch(type: Exec) {
+task gulpServe(type: Exec) {
     workingDir webappDir
-    commandLine 'gulp', 'watch'
+    commandLine 'gulp', 'serve'
 }
 
 // Docs
