@@ -57,9 +57,8 @@ public @Slf4j class MessageResource {
     @ApiOperation("Get a message by ID")
     @Produces(MediaType.APPLICATION_JSON)
     public @GET @Path("/{id}") MessageDto get(@PathParam("id") UUID id) {
-        return service.get(id)
-                .map(Message::toDto).orElseThrow(() ->
-                        new NotFoundWebException(notFoundMessageWith(id)));
+        return service.get(id).map(Message::toDto)
+                .orElseThrow(() -> new NotFoundWebException(notFoundMessageWith(id)));
     }
 
     @ApiOperation("Update a message")

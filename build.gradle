@@ -89,7 +89,7 @@ task wrapper(type: Wrapper) { gradleVersion = '2.3' }
 
 // Webapp
 // ------
-def webappDir = "src/webapp"
+def webappDir = 'src/webapp'
 
 task npmInstall(type: Exec) {
     workingDir webappDir

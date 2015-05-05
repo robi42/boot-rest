@@ -3,6 +3,6 @@
 export default $resource => {
   'ngInject';
 
-  return $resource('/api/messages/:messageId',
-    {messageId: '@id'}, {update: {method: 'PUT'}});
+  return $resource('/api/messages/:id',
+    {id: '@id'}, {update: {method: 'PUT'}});
 };

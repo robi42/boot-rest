@@ -17,7 +17,8 @@ export default class HomeCtrl {
 
     _focusNewMessageInput();
 
-    $scope.messages = Message.query(messages =>  $log.debug('Number of messages to display:', messages.length));
+    $scope.messages = Message.query(messages =>
+      $log.debug('Number of messages to display:', messages.length));
     $scope.newMessage = {body: ''};
   }
 
