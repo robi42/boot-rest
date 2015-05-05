@@ -28,7 +28,7 @@ SPA frontend UI resides at root URL, BTW.<br>
 Admin endpoints, powered by Spring Boot, at:<br>
 `/manage/*` (auth-protected)<br>
 REST API docs, powered by Swagger (UI), at:<br>
-`/api-docs/index.html`
+`/api-docs/index.html`<br>
 Generated ones, via Asciidoctor, at:<br>
 `/docs/index.html`
 
