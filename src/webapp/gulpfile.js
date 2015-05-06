@@ -16,12 +16,13 @@ gulp.task('scripts', ['jshint'], function (cb) {
 
   builder.loadConfig('./config.js')
     .then(function () {
-      builder.buildSFX('app/scripts/main', '.tmp/scripts/build.min.js', {minify: true, mangle: false})
-        .then(function () {
-          return cb();
-        }).catch(function (err) {
-          cb(new Error(err));
-        });
+      builder.buildSFX('app/scripts/main', '.tmp/scripts/bundle.min.js', {
+        minify: true, mangle: false
+      }).then(function () {
+        return cb();
+      }).catch(function (err) {
+        cb(new Error(err));
+      });
     });
 });
 
