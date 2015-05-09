@@ -17,8 +17,9 @@ import javax.inject.Inject;
             repository.deleteAll();
             repository.save(ImmutableList.of(
                     fixtures.newMessage("Foo"),
-                    fixtures.newMessage("Bar"),
-                    fixtures.newMessage("Baz")));
+                    fixtures.newMessage("Bar")));
+            Thread.sleep(1000);
+            repository.save(fixtures.newMessage("Baz"));
         };
     }
 }

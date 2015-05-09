@@ -12,15 +12,32 @@ System.config({
   "map": {
     "FortAwesome/Font-Awesome": "github:FortAwesome/Font-Awesome@4.3.0",
     "angular": "github:angular/bower-angular@1.3.15",
+    "angular-animate": "github:angular/bower-angular-animate@1.3.15",
+    "angular-cookies": "github:angular/bower-angular-cookies@1.3.15",
     "angular-resource": "github:angular/bower-angular-resource@1.3.15",
     "angular-route": "github:angular/bower-angular-route@1.3.15",
+    "angular-sanitize": "github:angular/bower-angular-sanitize@1.3.15",
+    "angular-touch": "github:angular/bower-angular-touch@1.3.15",
     "angular-xeditable": "github:vitalets/angular-xeditable@0.1.8",
     "bootstrap": "github:twbs/bootstrap@3.3.4",
     "jquery": "github:components/jquery@2.1.3",
     "lodash": "npm:lodash@3.8.0",
+    "moment": "github:moment/moment@2.10.2",
     "traceur": "github:jmcriffey/bower-traceur@0.0.88",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88",
+    "github:angular/bower-angular-animate@1.3.15": {
+      "angular": "github:angular/bower-angular@1.3.15"
+    },
+    "github:angular/bower-angular-cookies@1.3.15": {
+      "angular": "github:angular/bower-angular@1.3.15"
+    },
     "github:angular/bower-angular-route@1.3.15": {
+      "angular": "github:angular/bower-angular@1.3.15"
+    },
+    "github:angular/bower-angular-sanitize@1.3.15": {
+      "angular": "github:angular/bower-angular@1.3.15"
+    },
+    "github:angular/bower-angular-touch@1.3.15": {
       "angular": "github:angular/bower-angular@1.3.15"
     },
     "github:jspm/nodelibs-assert@0.1.0": {

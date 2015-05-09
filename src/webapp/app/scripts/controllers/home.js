@@ -2,14 +2,14 @@
 
 import _ from 'lodash';
 
-let _focusNewMessageInput = () => angular.element('#new-message-input').focus();
+const _focusNewMessageInput = () => $('#new-message-input').focus();
 
-let _showInputValidationModal = () =>
-  angular.element('#input-validation-modal').modal({show: true})
+const _showInputValidationModal = () =>
+  $('#input-validation-modal').modal({show: true})
     .on('hidden.bs.modal', () => _focusNewMessageInput());
 
 export default class HomeCtrl {
-  constructor($log, $scope, Message) {
+  constructor($scope, $log, Message) {
     'ngInject';
 
     this.$scope = $scope;
@@ -47,7 +47,7 @@ export default class HomeCtrl {
 
   update(message) {
     message.$update(updatedMessage => {
-      let messageIndex = _(this.$scope.messages).findIndex({id: updatedMessage.id});
+      var messageIndex = _(this.$scope.messages).findIndex({id: updatedMessage.id});
       this.$scope.messages[messageIndex] = updatedMessage;
       _focusNewMessageInput();
     });

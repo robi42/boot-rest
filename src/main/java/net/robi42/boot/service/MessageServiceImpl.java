@@ -6,6 +6,7 @@ import lombok.val;
 import net.robi42.boot.dao.MessageRepository;
 import net.robi42.boot.domain.Message;
 import net.robi42.boot.util.MessageFactory;
+import org.springframework.data.domain.Sort;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static jersey.repackaged.com.google.common.collect.Lists.newArrayList;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
@@ -30,7 +32,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     public @Override List<Message> getAll() {
-        return newArrayList(repository.findAll());
+        return newArrayList(repository.findAll(new Sort(DESC, "lastModifiedAt")));
     }
 
     public @Override Optional<Message> update(UUID id, String text) {

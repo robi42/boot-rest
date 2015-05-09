@@ -27,7 +27,7 @@ public class MessageResourceTest extends IntegrationTestBase {
         val messages = restApi.path(MessageResource.BASE_PATH).request().get(new GenericType<List<MessageDto>>() {});
 
         assertThat(messages.size()).isEqualTo(3);
-        assertThat(messages.stream().map(MessageDto::getBody).collect(toList())).contains("Foo");
+        assertThat(messages.stream().map(MessageDto::getBody).collect(toList()).get(0)).isEqualTo("Baz");
     }
 
     @Test
