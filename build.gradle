@@ -68,19 +68,22 @@ dependencies {
     compile 'org.eclipse.jetty:jetty-servlets'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     compile "org.glassfish.jersey.media:jersey-media-multipart:$jerseyVersion"
-    compile "org.glassfish.jersey.connectors:jersey-apache-connector:$jerseyVersion"
     compile "io.dropwizard.metrics:metrics-core:$metricsVersion"
 
     // Utilities
     // =========
     compile "com.google.guava:guava:$guavaVersion"
     compile "org.projectlombok:lombok:$lombokVersion"
-    compile("com.wordnik:swagger-jersey2-jaxrs_2.10:$swaggerVersion") { exclude module: 'jsr311-api' }
+    compile("com.wordnik:swagger-jersey2-jaxrs_2.10:$swaggerVersion") {
+        exclude module: 'jsr311-api'
+        exclude module: 'scala-compiler'
+    }
 
     // Testing
     // =======
     testCompile "org.springframework.boot:spring-boot-starter-test"
     testCompile "org.easytesting:fest-assert:$festAssertVersion"
+    testCompile "org.glassfish.jersey.connectors:jersey-apache-connector:$jerseyVersion"
 }
 
 // Tasks

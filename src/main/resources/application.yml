@@ -20,7 +20,3 @@ security:
     password: secret
 
 logging.level.net.robi42.boot: DEBUG
-
-web-client.connection-pool:
-  max-total: 100
-  default-max-per-route: 20
