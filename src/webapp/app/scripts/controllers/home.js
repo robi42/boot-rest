@@ -47,8 +47,9 @@ export default class HomeCtrl {
 
   update(message) {
     message.$update(updatedMessage => {
-      var messageIndex = _(this.$scope.messages).findIndex({id: updatedMessage.id});
-      this.$scope.messages[messageIndex] = updatedMessage;
+      let i = this.$scope.messages
+        .findIndex(m => m.id === updatedMessage.id);
+      this.$scope.messages[i] = updatedMessage;
       _focusNewMessageInput();
     });
   }
