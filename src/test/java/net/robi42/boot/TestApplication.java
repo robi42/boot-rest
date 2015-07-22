@@ -6,7 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
-@Import(TestBeanConfig.class) @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
+@Import(TestBeanConfig.class)
+@EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
 public @SpringBootApplication class TestApplication {
 
     public static void main(String[] args) {

@@ -10,7 +10,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.util.Date;
 
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(indexName = Message.INDEX_NAME, type = Message.TYPE_NAME)
 public @Data @Builder class Message {
     public static final String INDEX_NAME = "messages";

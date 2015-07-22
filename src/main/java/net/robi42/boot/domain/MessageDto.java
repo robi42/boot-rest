@@ -9,7 +9,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public @Data @Builder class MessageDto {
     private String id;
     private Date lastModifiedAt;

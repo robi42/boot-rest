@@ -30,15 +30,18 @@ import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 
+@Slf4j
+@RequiredArgsConstructor
 @Api(value = MessageResource.BASE_PATH, description = "CRUD & Search")
-@Path(MessageResource.BASE_PATH) @RequiredArgsConstructor
-public @Slf4j class MessageResource {
+@Path(MessageResource.BASE_PATH)
+public class MessageResource {
     public static final String BASE_PATH = "messages";
 
     private final @NonNull MessageService service;
 
     @ApiOperation("Create a new message")
-    @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public @POST Response create(@NotNull @Valid MessageDto dto) {
         val message = service.create(dto.getBody()).toDto();
         val path = String.format("%s/%s", BASE_PATH, message.getId());
@@ -62,7 +65,8 @@ public @Slf4j class MessageResource {
     }
 
     @ApiOperation("Update a message")
-    @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public @PUT @Path("/{id}") MessageDto update(@PathParam("id") UUID id,
                                                  @NotNull @Valid MessageDto dto) {
         return service.update(id, dto.getBody())

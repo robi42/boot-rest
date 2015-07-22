@@ -16,8 +16,10 @@ import javax.ws.rs.core.MediaType;
 
 import static org.springframework.boot.context.embedded.MimeMappings.DEFAULT;
 
-@Import(BeanConfig.class) @EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
-public @SpringBootApplication @Slf4j class Application implements EmbeddedServletContainerCustomizer {
+@Slf4j
+@Import(BeanConfig.class)
+@EnableElasticsearchRepositories(basePackageClasses = RepositoryRoot.class)
+public @SpringBootApplication class Application implements EmbeddedServletContainerCustomizer {
 
     public static void main(final String[] args) {
         SpringApplication.run(Application.class, args);

@@ -13,7 +13,8 @@ import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 
-@RunWith(SpringJUnit4ClassRunner.class) @ActiveProfiles("test")
+@ActiveProfiles("test")
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TestApplication.class)
 public abstract @WebIntegrationTest class IntegrationTestBase {
     @Value("${local.server.port}") int port;
