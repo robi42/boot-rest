@@ -17,10 +17,10 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'org.asciidoctor.gradle.asciidoctor'
 
-ext {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
+ext {
     // Versions
     // ========
     springDataEsVersion = '1.2.1.RELEASE'
